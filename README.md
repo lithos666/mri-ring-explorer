@@ -148,3 +148,15 @@ Verification includes atomic group counts 14/28, all six local directions and op
 The assembly is the initial view. Large, explicitly non-scaled editing tiles retain real magnet identities and local magnetization directions. Only Compute field launches a solve. Each result stays paired with the captured layout; later draft changes require another click. Geometry, analytical field calculations, baseline scale and legacy design files are unchanged.
 
 验证覆盖无自动求场、计算中继续编辑、结果与独立完整解析求和一致、撤销/重做返回计算状态、方案切换取消旧任务、14/28整层与单块、混合方向、旧文件与保存、3D默认标签，以及1280×720、1024×768、390和320触屏布局及双语。
+
+## v12.1 · 初始场自动载入 / Initial field without Compute
+
+首次进入或切换方案时，自动载入完整初始场结果；初始场不启动浏览器Worker求解。两套结果由同一有限磁块解析叠加与三维轨迹求解器在构建阶段生成，验证来源签名、方案、数量、网格、数值与生成器版本后使用。中心指标、剖面及场线属于同一初始排布。
+
+在初始资源载入前编辑时，资源仍绑定初始模板，草稿保持待计算。手动点击计算会中止初始载入，避免迟到资源覆盖手动结果或计算状态。修改、撤销、重做、重置、导入仍不启动求解；只有明确点击计算才求修改后的场。
+
+Both schemes load their precomputed full initial 3D field without a Compute click or an initial Worker solve. Editing remains manual. Delayed template loads cannot overwrite explicit calculations, and every result stays paired with its captured layout.
+
+验证包括初始载入无Worker求解、切换两套方案、载入前编辑、载入与手动计算竞态、失败后按钮重试、结果来源核对、数组无损还原、完整解析中心场与网格一致，以及电脑端双语界面。
+
+    node --experimental-strip-types tests/initial-field.test.ts

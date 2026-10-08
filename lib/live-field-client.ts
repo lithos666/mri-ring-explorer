@@ -2,7 +2,7 @@
 // No worker starts at import time or during server rendering.
 import FieldWorker from "./live-field.worker.ts?worker";
 import type {LiveFieldRequest,LiveFieldResult,LiveFieldProgress} from "./live-field.ts";
-export type LiveStatus="idle"|"computing"|"ready"|"error";
+export type LiveStatus="idle"|"loading"|"computing"|"ready"|"error";
 export type LiveReply=LiveFieldProgress|LiveFieldResult|{type:"error";revision:number;schemeId:string;message:string};
 export class LiveFieldClient {
  private worker:Worker|null=null;private revision=0;private disposed=false;

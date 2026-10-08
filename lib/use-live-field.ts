@@ -3,6 +3,8 @@ import {useCallback,useEffect,useRef,useState} from "react";
 import {useMRIModel,useBaselineMRIModel,useMRIDesign} from "./mri-context";
 import {sameOverrides,type DirectionOverrides} from "./design";
 import {sourcesFor} from "./field";
+import {sourceSignature} from "./live-field";
+import {decodeInitialField} from "./initial-field";
 import {LiveFieldClient,type LiveStatus} from "./live-field-client";
 import type {MRIModel} from "./mri";
 import type {LiveFieldResult,LiveFieldProgress} from "./live-field";
@@ -12,8 +14,9 @@ export function useLiveField(){
  const model=useMRIModel(),baseline=useBaselineMRIModel(),{overrides}=useMRIDesign();
  const scheme=useRef(model.id);scheme.current=model.id;
  const pending=useRef<FieldRequestSnapshot|null>(null),client=useRef<LiveFieldClient|null>(null);
+ const initialLoad=useRef<AbortController|null>(null),manualRequested=useRef(false);
  const [lastCompleted,setLastCompleted]=useState<FieldSnapshot|null>(null);
- const [status,setStatus]=useState<LiveStatus>("idle"),[progress,setProgress]=useState<LiveFieldProgress|null>(null);
+ const [status,setStatus]=useState<LiveStatus>("loading"),[progress,setProgress]=useState<LiveFieldProgress|null>(null);
  useEffect(()=>{
   const solver=new LiveFieldClient(reply=>{
    const requested=pending.current;
@@ -24,10 +27,26 @@ export function useLiveField(){
    }else if(reply.type==="progress")setProgress(reply);
    else {pending.current=null;setStatus("error");setProgress(null);}
   });client.current=solver;
-  return ()=>{solver.dispose();client.current=null;pending.current=null;};
+  const controller=new AbortController();initialLoad.current=controller;
+  void (async()=>{
+   try{
+    const signature=await sourceSignature(sourcesFor(baseline));
+    if(controller.signal.aborted||manualRequested.current)return;
+    const response=await fetch("/live-field-initial-"+baseline.id+".json?source="+signature,{signal:controller.signal,cache:"no-store"});
+    if(!response.ok)throw new Error("Initial field asset is unavailable.");
+    const data=decodeInitialField(await response.json(),{schemeId:baseline.id,signature,count:baseline.magnets.length,angle:baseline.angularOffset});
+    if(controller.signal.aborted||manualRequested.current||scheme.current!==baseline.id)return;
+    // The asset belongs to the immutable template even if editing began while it loaded.
+    setLastCompleted({model:baseline,baseline,overrides:{},data});setStatus("ready");
+   }catch{
+    if(!controller.signal.aborted&&!manualRequested.current&&scheme.current===baseline.id)setStatus("error");
+   }
+  })();
+  return ()=>{controller.abort();solver.dispose();client.current=null;pending.current=null;};
  },[]);
  const compute=useCallback(()=>{
   if(pending.current)return;
+  manualRequested.current=true;initialLoad.current?.abort();
   const requested={model,baseline,overrides:{...overrides}};
   pending.current=requested;setStatus("computing");setProgress(null);
   try{

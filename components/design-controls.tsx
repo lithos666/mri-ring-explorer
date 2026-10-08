@@ -86,7 +86,7 @@ export default function DesignControls({selectedRing,selected,onSelect,scope,onS
   {fileError&&<p className="design-notice error" role="alert">{t(...fileError)}</p>}
   <details className="workbench-disclosure design-file-details"><summary>{t("文件与设计说明","Files & design notes")}</summary>
    {design.notice?.type==="success"&&<p className="design-notice success" role="status">{t(design.notice.zh,design.notice.en)}</p>}
-   <p className="magnet-design-note">{t("点击计算时保存一份排布快照。计算中可以继续编辑，但新修改需再次点击计算。保存设计只保存方向，不保存场结果。整层统一会覆盖该层差异，可一次撤销。","Compute captures the layout at that click. You can keep editing during calculation; later edits need another Compute. Saving stores orientations, not field results. Unifying a layer replaces its differences and is undone in one step.")}</p>
+   <p className="magnet-design-note">{t("初始磁场自动载入；修改后需点击计算。点击计算时保存一份排布快照。计算中可以继续编辑，但新修改需再次点击计算。保存设计只保存方向，不保存场结果。整层统一会覆盖该层差异，可一次撤销。","The initial field loads automatically. Edits require Compute, which captures the layout at that click. You can keep editing during calculation; later edits need another Compute. Saving stores orientations, not field results. Unifying a layer replaces its differences and is undone in one step.")}</p>
    <div className="design-file-actions">
     <Button variant="outline" disabled={!design.storageReady||!design.hasSaved} onClick={action(design.restore)}><FolderOpen size={15}/>{t("加载已保存","Load saved")}</Button>
     <Button variant="outline" onClick={action(download)}><Download size={15}/>{t("下载 JSON","Download JSON")}</Button>

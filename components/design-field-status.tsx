@@ -7,7 +7,7 @@ export default function DesignFieldStatus({data,status,progress,needsCompute,qui
  const {t}=useLanguage(),b=data?.center,reference=data?.referenceMagnitude??1;
  const delta=data?Math.hypot(...data.center.map((v,i)=>v-data.baselineCenter[i]))/reference*100:null;
  const angle=data?.centerAngleDegrees;
- const message=status==="computing"?t("计算中","Computing")+(progress?" · "+Math.round(progress.done/progress.total*100)+"%":"…"):status==="error"?t("计算失败，请重试","Calculation failed; retry"):!data?t("尚未计算","Not computed"):needsCompute?t("修改待计算","Draft changes · Compute again"):t("已计算","Computed");
+ const message=status==="loading"?t("载入初始场…","Loading initial field…"):status==="computing"?t("计算中","Computing")+(progress?" · "+Math.round(progress.done/progress.total*100)+"%":"…"):status==="error"?t("计算失败，请重试","Calculation failed; retry"):!data?t("尚未计算","Not computed"):needsCompute?t("修改待计算","Draft changes · Compute again"):data.revision===0?t("初始场","Initial field"):t("已计算","Computed");
  return <section className="design-field-status" aria-label={t("已计算磁场","Computed field")} data-status={status} data-needs-compute={needsCompute} data-center-ratio={data?.centerRatio??""} data-vector-delta={delta??""} data-center-vector={b?JSON.stringify(b):""}>
   <div className="design-field-metrics">
    <div><span title={t("中心场大小除以此方案初始中心场","Center magnitude divided by the scheme's initial center magnitude")}>{t("中心场比","Center ratio")}</span><strong>{data?data.centerRatio.toFixed(4)+"×":"—"}</strong></div>
