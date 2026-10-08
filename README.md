@@ -136,3 +136,15 @@ Verification includes atomic group counts 14/28, all six local directions and op
 
     node --experimental-strip-types tests/design.test.ts
     node --experimental-strip-types tests/live-field.test.ts
+
+## v12 · 3D 首屏与手动计算 / 3D first, explicit computation
+
+首屏改为整体3D装配，排布编辑位于第二个标签。编辑器新增非尺寸比例的大格排布板：桌面提供14环的径向层格子；手机提供44px环选择按钮与72px磁铁格子。可选择真实圆周列，混合层按全部实际磁铁统计。原有剖面、径向几何图及其缩放/平移保留。
+
+修改方向、选择、切换图形、撤销、重做、重置和导入均不启动求场。只有点击“计算磁场 / Compute field”提交排布快照。计算途中仍可编辑；完成结果属于点击时的排布，之后的修改保持待计算。重新点击才提交新快照。中心读数、截面、探针与三维轨迹均使用同一完成结果；没有计算时不显示伪读数。3D仅在结果匹配当前排布时叠加场线。
+
+状态用方向覆盖内容比较；撤销回已计算方向会恢复一致标记。切换方案清空旧图并终止旧Worker，过期结果不会覆盖另一方案。精确有限磁块求场、固定初始参考及旧schemaVersion=1设计文件不变；保存仍只保存方向。界面缩短常用文字，详细说明收进文件说明展开区。
+
+The assembly is the initial view. Large, explicitly non-scaled editing tiles retain real magnet identities and local magnetization directions. Only Compute field launches a solve. Each result stays paired with the captured layout; later draft changes require another click. Geometry, analytical field calculations, baseline scale and legacy design files are unchanged.
+
+验证覆盖无自动求场、计算中继续编辑、结果与独立完整解析求和一致、撤销/重做返回计算状态、方案切换取消旧任务、14/28整层与单块、混合方向、旧文件与保存、3D默认标签，以及1280×720、1024×768、390和320触屏布局及双语。

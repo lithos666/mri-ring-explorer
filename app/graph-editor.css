@@ -95,3 +95,69 @@
  .is-design .design-inspector button,.is-design .design-inspector summary,.is-design .editable-magnet,.is-design .diagram-tools button,.is-design .diagram-mode button,.is-design .diagram-rings button{scroll-margin-top:calc(clamp(380px,48dvh,410px) + 10px)}
 }
 @media(max-width:899px) and (max-height:450px){.is-design .graph-field-pane{height:350px;position:relative}.is-design .design-inspector button,.is-design .design-inspector summary,.is-design .editable-magnet,.is-design .diagram-tools button,.is-design .diagram-mode button,.is-design .diagram-rings button{scroll-margin-top:10px}}
+
+/* Larger editing targets and concise manual-compute controls. */
+.compute-field-button{width:100%;height:auto;min-height:44px;margin:0 0 10px;font-size:15px}
+.tile-board-context{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;padding:7px 10px;font-size:11px;color:#6e6e73;flex-shrink:0}
+.tile-board-context label{display:flex;align-items:center;gap:4px}
+.tile-board-context select{min-height:36px;padding:3px 5px;border:1px solid #d9dce2;border-radius:6px;font-size:12px;max-width:118px;color:#1d1d1f;background:white}
+.tile-board{flex:1;min-height:0;overflow:auto;padding:4px 8px;scrollbar-gutter:stable}
+.tile-ring-row{display:grid;grid-template-columns:34px repeat(6,minmax(0,1fr));gap:4px;margin:0 0 5px;align-items:center}
+.tile-ring-label{padding:3px!important;height:44px;font-size:11px;color:#6e6e73}
+.tile-ring-row[data-active=true] .tile-ring-label{color:#0071e3;font-weight:600}
+.tile-ring-row .magnet-tile{position:relative;display:flex;justify-content:center;align-items:center;gap:2px;min-width:0;height:44px;min-height:44px;padding:1px 2px;border-color:#d4d9df;border-radius:7px}
+.magnet-tile[aria-pressed=true]{border-color:#0071e3;background:#edf6ff;box-shadow:0 0 0 1px #0071e3}
+.tile-layer{font-size:10px;color:#6e6e73}
+.tile-poles{width:27px;height:32px;flex-shrink:0}
+.tile-mixed{position:absolute;right:3px;top:1px;font-size:15px;color:#986317;font-style:normal}
+.tile-key{display:flex;align-items:center;justify-content:center;gap:14px;font-size:12px;color:#6e6e73;padding:7px 8px;border-top:1px solid #eceef1;flex-shrink:0}
+.tile-key>span{display:flex;align-items:center;gap:4px}
+.tile-key i{width:9px;height:9px;border-radius:2px;display:inline-block}
+.tile-ring-picker{display:none}
+.design-inspector .magnet-design-heading{margin-bottom:12px}
+.design-inspector .design-edit-hint{font-size:12px;margin:8px 0 12px}
+.design-inspector .orientation-editor-title{margin-bottom:6px}
+.design-inspector .layer-strip-heading{font-size:11px}
+.design-inspector .selected-target{margin:11px 0}
+.design-inspector .edit-layer-strip button{min-height:45px}
+.design-inspector .target-summary{font-size:12px}
+.mri-workbench .graph-field-pane .design-field-metrics strong{font-size:17px}
+.mri-workbench .graph-field-pane .field-snapshot-label{padding:5px 10px}
+@media(min-width:900px){
+ .graph-workspace.has-no-field{grid-template-columns:minmax(0,1.25fr) minmax(0,.8fr)}
+ .has-no-field .tile-ring-row{grid-template-columns:34px repeat(6,minmax(0,1fr))}
+ .has-no-field .graph-field-placeholder{font-size:12px;padding:14px}
+ .mri-workbench .design-field-job>span{font-size:12px}
+}
+@media(min-width:900px) and (max-width:1100px){
+ .tile-ring-row .magnet-tile{flex-direction:column;gap:0;height:48px}
+ .tile-poles{width:26px;height:29px}
+ .tile-ring-row{gap:3px;grid-template-columns:31px repeat(6,minmax(0,1fr))}
+ .tile-layer{font-size:9px}
+}
+@media(max-width:899px){
+ .tile-ring-picker{display:grid;grid-template-columns:repeat(7,minmax(44px,1fr));overflow-x:auto;gap:3px;padding:4px 8px}
+ .tile-ring-picker button{padding:3px 1px;min-width:44px;min-height:44px;font-size:11px}
+ .tile-ring-picker button[aria-pressed=true]{color:#0071e3;background:#edf6ff}
+ .tile-board{padding:8px 10px}
+ .tile-ring-row{display:none}
+ .tile-ring-row[data-active=true]{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+ .tile-ring-row .tile-ring-label{display:none}
+ .tile-ring-row .magnet-tile{display:flex;flex-direction:column;gap:1px;height:72px;min-height:72px}
+ .tile-layer{font-size:12px}
+ .tile-poles{width:40px;height:40px}
+ .tile-board-context{padding:5px 9px}
+ .is-design .graph-pane-heading{gap:4px}
+ .diagram-mode button{padding:4px 6px;font-size:12px}
+ .is-design .graph-workspace.has-no-field .graph-field-pane{height:145px}
+ .has-no-field .graph-field-placeholder{display:none}
+ .is-design .graph-workspace.has-no-field .graph-edit-pane{height:350px}
+ .is-design .magnet-tile,.is-design .tile-ring-picker button,.is-design .tile-board-context select{scroll-margin-top:calc(clamp(380px,48dvh,410px) + 10px)}
+ .is-design:has(.has-no-field) .design-inspector button,.is-design:has(.has-no-field) .magnet-tile,.is-design:has(.has-no-field) .tile-ring-picker button,.is-design:has(.has-no-field) .tile-board-context select{scroll-margin-top:155px}
+}
+@media(max-width:899px) and (max-height:450px){.is-design .magnet-tile,.is-design .tile-ring-picker button,.is-design .tile-board-context select{scroll-margin-top:10px}}
+
+.design-inspector .orientation-presets button,.design-inspector .edit-scope button,.design-inspector .edit-layer-strip button{border-color:#d9dde3;box-shadow:none}.design-inspector .orientation-presets button[aria-pressed=true],.design-inspector .edit-scope button[aria-pressed=true],.design-inspector .edit-layer-strip button[aria-pressed=true]{border-color:#0071e3}
+.tile-board-context select{min-height:44px}.design-inspector .edit-layer-strip span{white-space:nowrap}
+
+@media(min-width:900px) and (max-width:1100px){.graph-workspace{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr)}}

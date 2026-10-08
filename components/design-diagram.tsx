@@ -6,7 +6,8 @@ import {useMRIModel} from "@/lib/mri-context";
 import {useLanguage,directionEnglish} from "@/lib/language-context";
 import {directionNames,ringName,type Magnet} from "@/lib/mri";
 import {selectionTargets,type EditScope} from "@/lib/design";
-export type DiagramView="section"|"radial";
+import TileBoard from "./tile-board";
+export type DiagramView="tiles"|"section"|"radial";
 interface Props{ring:number;selected:string|null;scope:EditScope;mode:DiagramView;onMode:(mode:DiagramView)=>void;onSelect:(id:string)=>void;onRing:(ring:number)=>void;reset:number;}
 export default function DesignDiagram({ring,selected,scope,mode,onMode,onSelect,onRing,reset}:Props){
  const model=useMRIModel(),{t}=useLanguage(),marker=useId().replace(/:/g,"");
@@ -27,15 +28,17 @@ export default function DesignDiagram({ring,selected,scope,mode,onMode,onSelect,
  function zoom(factor:number){setBox(b=>{const width=Math.max(65,Math.min(1600,b[2]*factor)),height=width*b[3]/b[2];return [b[0]+(b[2]-width)/2,b[1]+(b[3]-height)/2,width,height];});}
  function location(m:Magnet){return mode==="radial"?[m.radius*Math.cos(m.theta)*u,m.radius*Math.sin(m.theta)*u]:[(m.sector===1?m.radius:-m.radius)*u,-model.ringY(m.ring)*u];}
  function components(m:Magnet){return mode==="radial"?[m.normal[0],m.normal[2],m.normal[1]]:[m.normal[0]*Math.cos(angle)+m.normal[2]*Math.sin(angle),-m.normal[1],-m.normal[0]*Math.sin(angle)+m.normal[2]*Math.cos(angle)];}
+ if(mode==="tiles")return <TileBoard ring={ring} selected={selected} scope={scope} onSelect={onSelect} onMode={onMode}/>;
  return <section className="design-diagram" aria-label={t("点选磁铁排布","Select magnets in the layout")}>
-  <div className="graph-pane-heading"><strong>{t("1 · 点选磁铁","1 · Select a magnet")}</strong>
+  <div className="graph-pane-heading"><strong>{t("磁铁排布","Magnet layout")}</strong>
    <div className="diagram-mode" role="group" aria-label={t("编辑图类型","Editor diagram type")}>
-    <Button variant="ghost" aria-pressed={mode==="section"} onClick={()=>onMode("section")}>{t("剖面图","Section")}</Button>
-    <Button variant="ghost" aria-pressed={mode==="radial"} onClick={()=>onMode("radial")}>{t("径向图","Radial")}</Button>
+    <Button variant="ghost" aria-pressed={false} onClick={()=>onMode("tiles")}>{t("大格","Blocks")}</Button>
+    <Button variant="ghost" aria-pressed={mode==="section"} onClick={()=>onMode("section")}>{t("剖面","Section")}</Button>
+    <Button variant="ghost" aria-pressed={mode==="radial"} onClick={()=>onMode("radial")}>{t("径向","Radial")}</Button>
    </div>
   </div>
   {mode==="radial"&&<div className="diagram-rings" role="group" aria-label={t("径向图磁环","Radial diagram ring")}>{model.rings.map(r=><Button key={r.id} variant="ghost" aria-pressed={ring===r.id} onClick={()=>onRing(r.id)}>{ringName(r.id)}</Button>)}</div>}
-  <p className="diagram-context">{mode==="section"?t("完整 14 环 · A01 与对置列 · R01 在上","All 14 rings · A01 and opposite column · R01 above"):ringName(ring)+t(" · 从 R01 端看 · "," · Viewed from R01 · ")+model.repeats+t(" 列"," columns")}</p>
+  <p className="diagram-context">{mode==="section"?t("14 环 · A01 与对置列","14 rings · A01 and opposite column"):ringName(ring)+t(" · 从 R01 端看 · "," · Viewed from R01 · ")+model.repeats+t(" 列"," columns")}</p>
   <div className="diagram-canvas">
    <svg data-testid="design-diagram" data-mode={mode} viewBox={box.join(" ")} aria-label={mode==="section"?t("可点选的 14 环轴向剖面","Selectable 14-ring longitudinal section"):t("可点选的磁环径向排布","Selectable radial magnet layout")}
     style={{touchAction:panning?"none":"pan-y",cursor:panning?"grab":"default"}}
@@ -86,7 +89,7 @@ export default function DesignDiagram({ring,selected,scope,mode,onMode,onSelect,
    <Button variant="ghost" onClick={()=>setPanning(v=>!v)} aria-pressed={panning}><Move size={15}/>{t("平移","Pan")}</Button>
    <Button variant="ghost" onClick={()=>{setBox(initial);setPanning(false);}} aria-label={t("复位编辑图","Fit editor diagram")}><RotateCcw size={15}/>{t("适合窗口","Fit")}</Button>
   </div>
-  <p className="diagram-legend"><span><i className="north-swatch"/>N</span><span><i className="south-swatch"/>S</span><span>⊙ {t("出图面","out of plane")} · ⊗ {t("入图面","into plane")}</span></p>
-  <p className="diagram-note">{t("点选只定位；右侧按钮改变方向。小磁块可放大或使用排布条。","Selecting only locates a magnet. Use direction buttons to edit. Zoom or use the layer strip for small blocks.")}{!model.repeatsConfirmed&&t(" 圆周次数待确认。"," Column count is provisional.")}</p>
+  <p className="diagram-legend"><span><i className="north-swatch"/>N</span><span><i className="south-swatch"/>S</span><span>⊙ {t("出图面","out")} · ⊗ {t("入图面","in")}</span></p>
+
  </section>;
 }
