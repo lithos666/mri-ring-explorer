@@ -1,5 +1,8 @@
 import {models,type MRIModel,type Magnet,type SchemeId} from "./mri.ts";
 export type Vec3=[number,number,number];
+// Under the prescribed uniform magnetization / recoil-mu≈1 model, J≈Br.
+// The analytical kernel stays in B/J; only permanent-magnet readouts use this scale.
+export function toMillitesla(b:Vec3,model:MRIModel):Vec3{return b.map(v=>v*model.remanenceT*1000) as Vec3;}
 export const dot=(a:Vec3,b:Vec3)=>a[0]*b[0]+a[1]*b[1]+a[2]*b[2];
 export const cross=(a:Vec3,b:Vec3):Vec3=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]];
 export function magnetBasis(m:Magnet):[Vec3,Vec3,Vec3]{

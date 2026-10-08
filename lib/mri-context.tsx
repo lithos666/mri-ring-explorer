@@ -64,7 +64,7 @@ export function MRIModelProvider({scheme,children}:{scheme:SchemeId;children:Rea
     const valid=validateDesign(text,baseline);
     dispatch({type:"replace",scheme,overrides:valid.overrides});
     dispatch({type:"saved",scheme,overrides:valid.overrides,at:valid.document.createdAt});
-    notice({type:"success",zh:"已加载此方案的保存版本，可撤销。",en:"Loaded the saved version of this configuration. You can undo this action."});
+    notice({type:"success",zh:valid.migrated?"旧版方向已按同编号载入 MATLAB 几何，请重新计算；可撤销。":"已加载此方案的保存版本，可撤销。",en:valid.migrated?"Legacy directions loaded by ID onto the MATLAB geometry. Recompute the field; undo is available.":"Loaded the saved version of this configuration. You can undo this action."});
    }catch(error){failure(error,"无法读取浏览器中的设计。","The saved design could not be read from this browser.");}
   },
   exportJSON(){return exportDesign(baseline,entry.overrides);},
@@ -72,7 +72,7 @@ export function MRIModelProvider({scheme,children}:{scheme:SchemeId;children:Rea
    try{
     const valid=validateDesign(text,baseline);
     dispatch({type:"replace",scheme,overrides:valid.overrides});
-    notice({type:"success",zh:"已导入当前方案的设计，可撤销。保存后会保留在此浏览器。",en:"Imported the design for this configuration. You can undo this action. Save to keep it in this browser."});
+    notice({type:"success",zh:valid.migrated?"旧版方向已映射到 MATLAB 几何，请重新计算；可撤销。":"已导入当前方案的设计，可撤销。保存后会保留在此浏览器。",en:valid.migrated?"Legacy directions mapped onto the MATLAB geometry. Recompute the field; undo is available.":"Imported the design for this configuration. You can undo this action. Save to keep it in this browser."});
     return true;
    }catch(error){failure(error,"无法导入设计文件。当前设计未改变。","The design file could not be imported. The current design was not changed.");return false;}
   },

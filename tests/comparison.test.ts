@@ -21,7 +21,7 @@ for(const model of Object.values(models)){
  const flipped=fieldAt([0,0,0],layoutSources("flip",model)),radial=fieldAt([0,0,0],sources.filter(s=>Math.abs(s.n[1])<.5));almost((base[1]+flipped[1])/2,radial[1]);
  const data=JSON.parse(fs.readFileSync("public/comparison-data-"+model.id+".json","utf8")) as ComparisonData;
  assert.equal(data.schemeId,model.id);assert.equal(data.count,magnets.length);
- const signature=createHash("sha256").update(JSON.stringify({sources:layouts.map(x=>layoutSources(x.id,model)),windings:["standard","compact","large"].map(x=>comparisonWindings(x as CoilSize,"gx"))})).digest("hex");assert.equal(data.signature,signature);
+ const signature=createHash("sha256").update(JSON.stringify({sources:layouts.map(x=>layoutSources(x.id,model)),windings:["standard","compact","large"].map(x=>comparisonWindings(x as CoilSize,"gx",model))})).digest("hex");assert.equal(data.signature,signature);
  for(const config of layouts){const result=data.layouts[config.id],items=layoutSources(config.id,model),center=fieldAt([0,0,0],items);almost(result.center,Math.hypot(...center));almost(result.centerRatio,Math.hypot(...center)/Math.hypot(...base));assert.equal(result.plane.length,961);assert.equal(result.profile.length,81);almost(result.plane[480],result.centerRatio);almost(result.profile[40],result.centerRatio);assert.ok(result.metrics.every(m=>m.samples===515&&Number.isFinite(m.spread)&&Number.isFinite(m.rms)));}almost(data.layouts.baseline.centerRatio,1);
 }
 for(const size of ["standard","compact","large"] as CoilSize[])for(const axis of ["gx","gy","gz"] as const){

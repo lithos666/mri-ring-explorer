@@ -7,7 +7,7 @@ export default function RZLayout({ring,selected,onSelect,twoSides=false}:Props){
  const {t}=useLanguage();
  const model=useMRIModel(),rings=model.rings;
  const modelTitle=t(model.title,model.id==="latest"?"New configuration":"Original configuration");
- const dimensionNote=t(model.dimensionNote,model.id==="latest"?"Bore radius: 110 mm; magnets occupy radii 120–192 mm. The approximately 12 mm blocks, 38 mm ring spacing, and center coordinates are still estimates from the image.":"The 0.8 block size, 1.2 ring spacing, and radial positions use schematic units. Actual dimensions and circumferential repetition count await confirmation.");
+ const dimensionNote=t(model.dimensionNote,model.dimensionNoteEn);
  const direction=(d:keyof typeof directionNames)=>t(directionNames[d],directionEnglish[d]);
  const latest=model.unitMM!==null,scale=latest?.82:29,offsetX=twoSides?0:-90;
  const radius=(r:typeof rings[number],i:number)=>latest?r.radiiMM[i]:r.radii[i];
@@ -34,7 +34,7 @@ export default function RZLayout({ring,selected,onSelect,twoSides=false}:Props){
   const m=model.magnetById.get(id)!,d=m.direction;
   const n=m.normal,nx=n[0]*Math.cos(model.angularOffset)+n[2]*Math.sin(model.angularOffset),up=-n[1],perp=-n[0]*Math.sin(model.angularOffset)+n[2]*Math.cos(model.angularOffset),planar=Math.hypot(nx,up),angle=planar>.1?Math.atan2(up,nx)*180/Math.PI:0;
   return <g key={id} tabIndex={0} role="button" aria-label={id+" "+direction(d)} onClick={()=>onSelect(id)} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onSelect(id);}}} className="rz-magnet">
-  <title>{id+" · "+direction(d)+" · R≈"+radius(r,i)+(latest?" mm":t(" 示意单位"," schematic units"))+" · Z≈"+axial(r)+(latest?" mm":t(" 示意单位"," schematic units"))}</title>
+  <title>{id+" · "+direction(d)+" · R="+radius(r,i)+(latest?" mm":t(" 示意单位"," schematic units"))+" · Z="+axial(r)+(latest?" mm":t(" 示意单位"," schematic units"))}</title>
   <g transform={"translate("+centerX+" "+centerY+") rotate("+angle+")"}>
   <rect x={-size/2} y={-size/2} width={size} height={size} rx=".6" fill="#fff" stroke={selected===id?"#ffe093":directionColors[d]} strokeWidth={selected===id?1.8:.7}/>
   {planar>.1?<><rect x={-size/2+.7} y={-size/2+.7} width={size*.18} height={size-1.4} fill="#0071e3"/>
@@ -45,7 +45,7 @@ export default function RZLayout({ring,selected,onSelect,twoSides=false}:Props){
  </g>)}
  <text x={twoSides?0:110} y="-228" fontSize="12" fill="#33383e" textAnchor="middle">{twoSides?t("中心轴剖面 · 列1 / "+opposite,"Longitudinal section · Columns 1 / "+opposite):t("R–Z · 由内圈到外圈","R–Z · Inner to outer")}</text>
  <text x={twoSides?(latest?-210:-276):-22} y="-225" fontSize="10" fill="#65707a">Z / {latest?"mm":t("示意","a.u.")}</text>
- <text x={twoSides?0:100} y="241" fontSize="11" fill="#65707a" textAnchor="middle">{twoSides?t("Z=0 参考面 · 显示实际列方向","Z=0 reference plane · Actual column directions"):(latest?t("R / mm · 中心坐标为估读","R / mm · Estimated centers"):t("R / 示意单位","R / schematic units"))}</text>
+ <text x={twoSides?0:100} y="241" fontSize="11" fill="#65707a" textAnchor="middle">{twoSides?t("Z=0 参考面 · 显示实际列方向","Z=0 reference plane · Actual column directions"):(latest?t("R / mm · MATLAB 中心坐标","R / mm · MATLAB centers"):t("R / 示意单位","R / schematic units"))}</text>
  </svg>
  <p className="rz-caption">{twoSides?t("左右两侧属于同一圆环，不额外翻倍。","Both sides belong to the same ring; they are not counted twice."):t("每层圆周 "+model.repeats+" 列"+(model.repeatsConfirmed?"（已确认）":"（暂定）")+"；共 "+model.radialPositionCount+" 个径向位置。",model.repeats+" circumferential columns per layer ("+(model.repeatsConfirmed?"confirmed":"provisional")+"); "+model.radialPositionCount+" radial positions in total.")} {dimensionNote} {t("⊙：N 指向截面外；⊗：N 指向截面内。","⊙: N points out of the slice; ⊗: N points into it.")}</p>
  </div>;

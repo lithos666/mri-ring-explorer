@@ -1,0 +1,800 @@
+{
+  "sourceWebCommit": "584a9a472c1ce10f69cdb9e5f5ffcff64ae2a22b",
+  "note": "Extracted from user MATLAB numeric declarations; geometry and Br adopted in web v15. MATLAB was not executed. Ideal uniform J approximately Br predictions, not measurements. Original comment results differ from independently recomputed values. hackathon_big outputs are a separate array.",
+  "models": [
+    {
+      "id": "original",
+      "source": "matlab/GenerateIORingHackathonSmall_32mT.m",
+      "sourceSha256": "d515ffaaaaf8b9e77f03fc2530270b90eb27bf5b47f027fb2487ceac67fae713",
+      "remanenceT": 1.43,
+      "dimensionsMM": [
+        10,
+        10,
+        10
+      ],
+      "azimuthCount": 14,
+      "seedCount": 27,
+      "ringCount": 14,
+      "magnetCount": 756,
+      "ringPitchMM": 26,
+      "matlabStartAzimuthDeg": -90,
+      "rings": [
+        {
+          "ring": 1,
+          "zMM": 169,
+          "positions": [
+            {
+              "radiusMM": 85,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 95,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 105,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 115,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 125,
+              "direction": "out"
+            }
+          ]
+        },
+        {
+          "ring": 2,
+          "zMM": 143,
+          "positions": [
+            {
+              "radiusMM": 85,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 95,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 105,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 115,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 125,
+              "direction": "out"
+            }
+          ]
+        },
+        {
+          "ring": 3,
+          "zMM": 117,
+          "positions": [
+            {
+              "radiusMM": 85,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 95,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 105,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 115,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 125,
+              "direction": "out"
+            }
+          ]
+        },
+        {
+          "ring": 4,
+          "zMM": 91,
+          "positions": [
+            {
+              "radiusMM": 85,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 95,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 105,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 125,
+              "direction": "axial"
+            }
+          ]
+        },
+        {
+          "ring": 5,
+          "zMM": 65,
+          "positions": [
+            {
+              "radiusMM": 86,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 105,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 125,
+              "direction": "out"
+            }
+          ]
+        },
+        {
+          "ring": 6,
+          "zMM": 39,
+          "positions": [
+            {
+              "radiusMM": 93,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 112,
+              "direction": "axial"
+            }
+          ]
+        },
+        {
+          "ring": 7,
+          "zMM": 13,
+          "positions": [
+            {
+              "radiusMM": 85,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 107,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 125,
+              "direction": "axial"
+            }
+          ]
+        },
+        {
+          "ring": 8,
+          "zMM": -13,
+          "positions": [
+            {
+              "radiusMM": 85,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 107,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 125,
+              "direction": "axial"
+            }
+          ]
+        },
+        {
+          "ring": 9,
+          "zMM": -39,
+          "positions": [
+            {
+              "radiusMM": 93,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 112,
+              "direction": "axial"
+            }
+          ]
+        },
+        {
+          "ring": 10,
+          "zMM": -65,
+          "positions": [
+            {
+              "radiusMM": 86,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 105,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 125,
+              "direction": "in"
+            }
+          ]
+        },
+        {
+          "ring": 11,
+          "zMM": -91,
+          "positions": [
+            {
+              "radiusMM": 85,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 95,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 105,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 125,
+              "direction": "axial"
+            }
+          ]
+        },
+        {
+          "ring": 12,
+          "zMM": -117,
+          "positions": [
+            {
+              "radiusMM": 85,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 95,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 105,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 115,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 125,
+              "direction": "in"
+            }
+          ]
+        },
+        {
+          "ring": 13,
+          "zMM": -143,
+          "positions": [
+            {
+              "radiusMM": 85,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 95,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 105,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 115,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 125,
+              "direction": "in"
+            }
+          ]
+        },
+        {
+          "ring": 14,
+          "zMM": -169,
+          "positions": [
+            {
+              "radiusMM": 85,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 95,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 105,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 115,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 125,
+              "direction": "in"
+            }
+          ]
+        }
+      ],
+      "differences": []
+    },
+    {
+      "id": "latest",
+      "source": "matlab/GenerateIORingHackathonBig_37mT.m",
+      "sourceSha256": "b9720c11f6b21a413fc11433f13e519d621103196caa48e38dcdad7b77c19b8c",
+      "remanenceT": 1.43,
+      "dimensionsMM": [
+        12,
+        12,
+        12
+      ],
+      "azimuthCount": 28,
+      "seedCount": 31,
+      "ringCount": 14,
+      "magnetCount": 1736,
+      "ringPitchMM": 38,
+      "matlabStartAzimuthDeg": -83.57142857142857,
+      "rings": [
+        {
+          "ring": 1,
+          "zMM": 247,
+          "positions": [
+            {
+              "radiusMM": 128,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 140,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 152,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 164,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 185,
+              "direction": "out"
+            }
+          ]
+        },
+        {
+          "ring": 2,
+          "zMM": 209,
+          "positions": [
+            {
+              "radiusMM": 126,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 138,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 150,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 162,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 174,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 186,
+              "direction": "out"
+            }
+          ]
+        },
+        {
+          "ring": 3,
+          "zMM": 171,
+          "positions": [
+            {
+              "radiusMM": 138,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 150,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 162,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 174,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 186,
+              "direction": "out"
+            }
+          ]
+        },
+        {
+          "ring": 4,
+          "zMM": 133,
+          "positions": [
+            {
+              "radiusMM": 126,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 138,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 150,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 162,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 174,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 186,
+              "direction": "out"
+            }
+          ]
+        },
+        {
+          "ring": 5,
+          "zMM": 95,
+          "positions": [
+            {
+              "radiusMM": 127,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 150,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 175,
+              "direction": "in"
+            }
+          ]
+        },
+        {
+          "ring": 6,
+          "zMM": 57,
+          "positions": [
+            {
+              "radiusMM": 132,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 156,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 186,
+              "direction": "axial"
+            }
+          ]
+        },
+        {
+          "ring": 7,
+          "zMM": 19,
+          "positions": [
+            {
+              "radiusMM": 127,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 162,
+              "direction": "out"
+            },
+            {
+              "radiusMM": 186,
+              "direction": "axial"
+            }
+          ]
+        },
+        {
+          "ring": 8,
+          "zMM": -19,
+          "positions": [
+            {
+              "radiusMM": 127,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 162,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 186,
+              "direction": "axial"
+            }
+          ]
+        },
+        {
+          "ring": 9,
+          "zMM": -57,
+          "positions": [
+            {
+              "radiusMM": 132,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 156,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 186,
+              "direction": "axial"
+            }
+          ]
+        },
+        {
+          "ring": 10,
+          "zMM": -95,
+          "positions": [
+            {
+              "radiusMM": 127,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 150,
+              "direction": "axial"
+            },
+            {
+              "radiusMM": 175,
+              "direction": "out"
+            }
+          ]
+        },
+        {
+          "ring": 11,
+          "zMM": -133,
+          "positions": [
+            {
+              "radiusMM": 126,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 138,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 150,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 162,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 174,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 186,
+              "direction": "in"
+            }
+          ]
+        },
+        {
+          "ring": 12,
+          "zMM": -171,
+          "positions": [
+            {
+              "radiusMM": 138,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 150,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 162,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 174,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 186,
+              "direction": "in"
+            }
+          ]
+        },
+        {
+          "ring": 13,
+          "zMM": -209,
+          "positions": [
+            {
+              "radiusMM": 126,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 138,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 150,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 162,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 174,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 186,
+              "direction": "in"
+            }
+          ]
+        },
+        {
+          "ring": 14,
+          "zMM": -247,
+          "positions": [
+            {
+              "radiusMM": 128,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 140,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 152,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 164,
+              "direction": "in"
+            },
+            {
+              "radiusMM": 185,
+              "direction": "in"
+            }
+          ]
+        }
+      ],
+      "differences": [
+        {
+          "ring": 1,
+          "type": "radiusMM",
+          "web": [
+            128,
+            140,
+            152,
+            164,
+            186
+          ],
+          "matlab": [
+            128,
+            140,
+            152,
+            164,
+            185
+          ]
+        },
+        {
+          "ring": 5,
+          "type": "radiusMM",
+          "web": [
+            126,
+            150,
+            174
+          ],
+          "matlab": [
+            127,
+            150,
+            175
+          ]
+        },
+        {
+          "ring": 6,
+          "type": "radiusMM",
+          "web": [
+            130,
+            155,
+            186
+          ],
+          "matlab": [
+            132,
+            156,
+            186
+          ]
+        },
+        {
+          "ring": 7,
+          "type": "radiusMM",
+          "web": [
+            126,
+            162,
+            186
+          ],
+          "matlab": [
+            127,
+            162,
+            186
+          ]
+        },
+        {
+          "ring": 8,
+          "type": "radiusMM",
+          "web": [
+            126,
+            162,
+            186
+          ],
+          "matlab": [
+            127,
+            162,
+            186
+          ]
+        },
+        {
+          "ring": 9,
+          "type": "radiusMM",
+          "web": [
+            130,
+            155,
+            186
+          ],
+          "matlab": [
+            132,
+            156,
+            186
+          ]
+        },
+        {
+          "ring": 10,
+          "type": "radiusMM",
+          "web": [
+            126,
+            150,
+            174
+          ],
+          "matlab": [
+            127,
+            150,
+            175
+          ]
+        },
+        {
+          "ring": 14,
+          "type": "radiusMM",
+          "web": [
+            128,
+            140,
+            152,
+            164,
+            186
+          ],
+          "matlab": [
+            128,
+            140,
+            152,
+            164,
+            185
+          ]
+        }
+      ]
+    }
+  ],
+  "adoptedWebVersion": "v15.0"
+}

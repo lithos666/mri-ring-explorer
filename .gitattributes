@@ -1,0 +1,2 @@
+# Preserve the supplied MATLAB program bytes and their recorded SHA-256.
+matlab/*.m -text

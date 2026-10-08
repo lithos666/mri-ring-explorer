@@ -2,7 +2,7 @@ import fs from "node:fs";
 import {createHash} from "node:crypto";
 import {fieldAt as fullField,nearMagnet as nearSources,sourcesFor,type Vec3,type FieldData} from "../lib/field.ts";
 import {models} from "../lib/mri.ts";
-const generationSignature=createHash("sha256").update(["scripts/generate-field.ts","lib/field.ts","lib/mri.ts"].map(p=>fs.readFileSync(p,"utf8")).join("\n")).digest("hex");
+const generationSignature=createHash("sha256").update(["scripts/generate-field.ts","lib/field.ts","lib/mri.ts","lib/matlab-geometry.ts"].map(p=>fs.readFileSync(p,"utf8")).join("\n")).digest("hex");
 for(const model of Object.values(models)){
  const magnets=model.magnets,sources=sourcesFor(model),angle=model.angularOffset;
  const destination="public/field-data-"+model.id+".json",signature=createHash("sha256").update(JSON.stringify(sources)).digest("hex");

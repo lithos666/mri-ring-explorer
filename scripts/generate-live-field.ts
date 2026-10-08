@@ -7,7 +7,7 @@ import {sourcesFor} from "../lib/field.ts";
 import {generateBaseline,encodeBaseline,decodeBaseline,sourceSignature,solveLiveField,DEFAULT_VOLUME,DEFAULT_PLANE,type Baseline} from "../lib/live-field.ts";
 import {encodeInitialField,decodeInitialField} from "../lib/initial-field.ts";
 const output=process.argv[2]??path.resolve("public");
-const generationSignature=createHash("sha256").update(["scripts/generate-live-field.ts","lib/live-field.ts","lib/field.ts","lib/mri.ts","lib/initial-field.ts"].map(p=>fs.readFileSync(p,"utf8")).join("\n")).digest("hex");
+const generationSignature=createHash("sha256").update(["scripts/generate-live-field.ts","lib/live-field.ts","lib/field.ts","lib/mri.ts","lib/matlab-geometry.ts","lib/initial-field.ts"].map(p=>fs.readFileSync(p,"utf8")).join("\n")).digest("hex");
 fs.mkdirSync(output,{recursive:true});
 for(const model of Object.values(models)){
  const sources=sourcesFor(model),signature=await sourceSignature(sources),destination=path.join(output,"live-field-baseline-"+model.id+".bin");

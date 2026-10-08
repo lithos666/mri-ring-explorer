@@ -5,7 +5,7 @@ export type LayoutId="baseline"|"radial"|"flip"|"spread";
 export type CoilSize="standard"|"compact"|"large";
 export type RFDesign="birdcage"|"saddle"|"array"|"solenoid";
 export function layoutsFor(model:MRIModel){
- const spacing=model.unitMM?("约 "+model.pitchMM+" mm"):model.pitch+" 示意单位";
+ const spacing=model.pitchMM+" mm";
  return [
  {id:"baseline" as const,title:model.title+" · 14 环基准",short:"基准",text:"保留所选方案的磁化顺序、径向位置及 "+spacing+" 的环中心间距。"},
  {id:"radial" as const,title:"全径向对照",short:"全径向",text:"仅将 "+model.totals.axial+" 块轴向磁铁改为径向：上半部朝外、下半部朝内。总数保持 "+model.magnets.length+" 块。"},
@@ -26,8 +26,8 @@ export function layoutSources(id:LayoutId,model:MRIModel=models.latest):Source[]
  return {...s,center,n,u,v:cross(u,n)};
 });}
 export const coilScales:Record<CoilSize,number>={standard:1,compact:.8,large:1.2};
-export function comparisonWindings(size:CoilSize,axis:Exclude<GradientAxis,"all">):Winding[]{
- const scale=coilScales[size];return gradientWindings().filter(w=>w.axis===axis).map(w=>({...w,points:w.points.map(p=>p.map(v=>v*scale) as Vec3)}));
+export function comparisonWindings(size:CoilSize,axis:Exclude<GradientAxis,"all">,model:MRIModel=models.latest):Winding[]{
+ const scale=coilScales[size];return gradientWindings(model.coilScale).filter(w=>w.axis===axis).map(w=>({...w,points:w.points.map(p=>p.map(v=>v*scale) as Vec3)}));
 }
 export interface ROIMetric {radius:number;samples:number;spread:number;rms:number;}
 export interface LayoutResult {center:number;centerRatio:number;direction:number;metrics:ROIMetric[];profile:number[];plane:number[];}

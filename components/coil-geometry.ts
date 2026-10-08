@@ -1,7 +1,7 @@
 import * as THREE from "three";
 import {gradientWindings,coilColors,COIL_DIMENSIONS as D,rfDirection,type GradientAxis,type SystemLayers} from "@/lib/coils";
-export function createCoilGeometry(){
- const root=new THREE.Group(),gradients=new THREE.Group(),rf=new THREE.Group(),orientation=new THREE.Group();root.add(gradients,rf,orientation);
+export function createCoilGeometry(scale=1){
+ const root=new THREE.Group(),gradients=new THREE.Group(),rf=new THREE.Group(),orientation=new THREE.Group();root.add(gradients,rf,orientation);root.scale.setScalar(scale);
  const geoms:THREE.BufferGeometry[]=[],mats:THREE.Material[]=[];
  const channels:Record<string,THREE.Group>={};for(const name of ["gx","gy","gz"]){channels[name]=new THREE.Group();gradients.add(channels[name]);}
  function material(color:string){const m=new THREE.MeshStandardMaterial({color,metalness:.35,roughness:.34,emissive:color,emissiveIntensity:.25});mats.push(m);return m;}

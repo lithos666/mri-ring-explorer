@@ -1,3 +1,4 @@
+import {MATLAB_GEOMETRY} from "./matlab-geometry.ts";
 export type Direction="out"|"in"|"axial"|"axialUp"|"tangent"|"tangentNeg";
 export const DIRECTIONS:Direction[]=["out","in","axial","axialUp","tangent","tangentNeg"];
 export type Grade="Weak"|"Normal"|"Strong"|"Unspecified";
@@ -12,9 +13,9 @@ export interface Magnet{id:string;ring:number;radial:number;sector:number;radius
 export const ringName=(id:number)=>"R"+String(id).padStart(2,"0");
 export function countDirections(items:Magnet[]){return items.reduce((s,m)=>{s[m.direction]++;return s;},{out:0,in:0,axial:0,axialUp:0,tangent:0,tangentNeg:0});}
 export interface MRIModel{
- id:SchemeId;title:string;repeats:number;repeatsConfirmed:boolean;unitMM:number|null;blockSize:number;blockSizeMM:number|null;pitch:number;pitchMM:number|null;angularOffset:number;
+ id:SchemeId;title:string;repeats:number;repeatsConfirmed:boolean;unitMM:number|null;blockSize:number;blockSizeMM:number|null;pitch:number;pitchMM:number|null;angularOffset:number;remanenceT:number;coilScale:number;parameterSource:string;
  rings:Ring[];magnets:Magnet[];magnetById:Map<string,Magnet>;radialPositionCount:number;totals:ReturnType<typeof countDirections>;gradeTotals:Record<Grade,number>;
- ringY:(id:number,expansion?:number)=>number;position:(m:Magnet,expansion?:number)=>[number,number,number];assumption:string;dimensionNote:string;
+ ringY:(id:number,expansion?:number)=>number;position:(m:Magnet,expansion?:number)=>[number,number,number];assumption:string;assumptionEn:string;dimensionNote:string;dimensionNoteEn:string;
  dimensions:{boreRadiusMM:number;acrylicInnerMM:number;acrylicOuterMM:number;magnetInnerMM:number;magnetOuterMM:number;supportInnerMM:number;supportOuterMM:number}|null;
 }
 const originalSpec:[Grade,Direction[]][]=[
@@ -23,45 +24,46 @@ const originalSpec:[Grade,Direction[]][]=[
  ["Normal",["axial","axial","axial"]],["Normal",["axial","axial"]],["Normal",["axial","axial","in"]],["Normal",["in","in","in","axial"]],
  ["Strong",["in","in","in","in","in"]],["Strong",["in","in","in","in","in"]],["Weak",["in","in","in","in","in"]]
 ];
-const latestSpec:[Direction[],number[]][]=[
- [["out","out","out","out","out"],[128,140,152,164,186]],
- [["out","out","out","out","out","out"],[126,138,150,162,174,186]],
- [["out","out","out","out","out"],[138,150,162,174,186]],
- [["out","out","out","out","out","out"],[126,138,150,162,174,186]],
- [["axial","axial","in"],[126,150,174]],
- [["axial","out","axial"],[130,155,186]],
- [["axial","out","axial"],[126,162,186]],
- [["axial","in","axial"],[126,162,186]],
- [["axial","in","axial"],[130,155,186]],
- [["axial","axial","out"],[126,150,174]],
- [["in","in","in","in","in","in"],[126,138,150,162,174,186]],
- [["in","in","in","in","in"],[138,150,162,174,186]],
- [["in","in","in","in","in","in"],[126,138,150,162,174,186]],
- [["in","in","in","in","in"],[128,140,152,164,186]]
+const latestDirections:Direction[][]=[
+ ["out","out","out","out","out"],
+ ["out","out","out","out","out","out"],
+ ["out","out","out","out","out"],
+ ["out","out","out","out","out","out"],
+ ["axial","axial","in"],
+ ["axial","out","axial"],
+ ["axial","out","axial"],
+ ["axial","in","axial"],
+ ["axial","in","axial"],
+ ["axial","axial","out"],
+ ["in","in","in","in","in","in"],
+ ["in","in","in","in","in"],
+ ["in","in","in","in","in","in"],
+ ["in","in","in","in","in"]
 ];
-// New image confirms occupied radial bounds, not cube center positions.
-// Centers remain estimates; near-boundary estimates are aligned inside 120–192 mm.
+// The MATLAB declarations now supply both schemes' dimensions and center radii.
+// The existing displayed azimuth frame and column IDs are retained; this is a
+// rigid 90-degree view rotation relative to the MATLAB physical XY axes.
 export function normalFor(theta:number,direction:Direction):[number,number,number]{
  if(direction==="axial")return [0,-1,0];if(direction==="axialUp")return [0,1,0];
  if(direction==="tangent"||direction==="tangentNeg"){const sign=direction==="tangent"?1:-1;return [-sign*Math.sin(theta),0,sign*Math.cos(theta)];}
  const sign=direction==="in"?-1:1;return [sign*Math.cos(theta),0,sign*Math.sin(theta)];
 }
 export function createMRIModel(id:SchemeId):MRIModel{
- const latest=id==="latest",repeats=latest?28:14,unitMM=latest?25:null,blockSize=latest?12/25:.8,pitch=latest?38/25:1.2,angularOffset=latest?Math.PI/28:0;
- const oldRadii:Record<number,number[]>={2:[4,8],3:[4,6,8],4:[4,5,6,8],5:[4,5,6,7,8]};
- const rings:Ring[]=latest?latestSpec.map(([directions,radiiMM],i)=>({id:i+1,grade:"Unspecified",directions:[...directions],radiiMM:[...radiiMM],radii:radiiMM.map(r=>r/25),zMM:(6.5-i)*38})):
- originalSpec.map(([grade,directions],i)=>({id:i+1,grade,directions:[...directions],radii:[...oldRadii[directions.length]],radiiMM:[],zMM:NaN}));
+ const latest=id==="latest",parameters=MATLAB_GEOMETRY[id],repeats=latest?28:14,unitMM=25,blockSize=parameters.edgeMM/unitMM,pitch=parameters.pitchMM/unitMM,angularOffset=latest?Math.PI/28:0;
+ const rings:Ring[]=parameters.radiiMM.map((radiiMM,i)=>({id:i+1,grade:latest?"Unspecified":originalSpec[i][0],directions:[...(latest?latestDirections[i]:originalSpec[i][1])],radiiMM:[...radiiMM],radii:radiiMM.map(r=>r/unitMM),zMM:(6.5-i)*parameters.pitchMM}));
  const ringY=(ring:number,expansion=0)=>(7.5-ring)*(pitch+expansion*.035);
  const position=(m:Magnet,expansion=0):[number,number,number]=>[m.radius*Math.cos(m.theta),ringY(m.ring,expansion),m.radius*Math.sin(m.theta)];
  const magnets:Magnet[]=rings.flatMap(r=>r.directions.flatMap((direction,radial)=>Array.from({length:repeats},(_,a)=>{
   const theta=angularOffset+a*Math.PI*2/repeats;
   return {id:ringName(r.id)+"-L"+(radial+1)+"-A"+String(a+1).padStart(2,"0"),ring:r.id,radial:radial+1,sector:a+1,radius:r.radii[radial],theta,direction,grade:r.grade,normal:normalFor(theta,direction)};
  })));
- return {id,title:latest?"新版方案":"原方案",repeats,repeatsConfirmed:latest,unitMM,blockSize,blockSizeMM:latest?12:null,pitch,pitchMM:latest?38:null,angularOffset,
+ return {id,title:latest?"新版方案":"原方案",repeats,repeatsConfirmed:true,unitMM,blockSize,blockSizeMM:parameters.edgeMM,pitch,pitchMM:parameters.pitchMM,angularOffset,remanenceT:parameters.remanenceT,coilScale:latest?1:.65,parameterSource:parameters.source,
  rings,magnets,magnetById:new Map(magnets.map(m=>[m.id,m])),radialPositionCount:rings.reduce((n,r)=>n+r.directions.length,0),totals:countDirections(magnets),
  gradeTotals:Object.fromEntries((["Weak","Normal","Strong","Unspecified"] as Grade[]).map(g=>[g,magnets.filter(m=>m.grade===g).length])) as Record<Grade,number>,ringY,position,
- assumption:latest?"新版方案 · 每层圆周 28 列已确认 · 14 环共 1,736 块":"原方案 · 圆周暂按 14 次重复 · 756 块为推算值",
- dimensionNote:latest?"孔半径 110 mm；磁铁占据半径 120–192 mm。约 12 mm 方块、38 mm 环距和中心坐标仍为读图估计。":"磁铁边长 0.8、环距 1.2 和径向位置均为无单位示意；实际尺寸与圆周次数待确认。",
+ assumption:latest?"新版方案 · 28 列 · 1,736 块 · MATLAB 参数":"原方案 · 14 列 · 756 块 · MATLAB 参数",
+ assumptionEn:(latest?"New configuration · 28 columns · 1,736 magnets":"Original configuration · 14 columns · 756 magnets")+" · MATLAB inputs",
+ dimensionNote:parameters.edgeMM+" mm 方块；"+parameters.pitchMM+" mm 环距；Br = "+parameters.remanenceT+" T。磁体中心坐标来自 MATLAB；场强为理想计算值。",
+ dimensionNoteEn:parameters.edgeMM+" mm cubes; "+parameters.pitchMM+" mm ring spacing; Br = "+parameters.remanenceT+" T. Magnet centers come from MATLAB; field values are ideal predictions.",
  dimensions:latest?{boreRadiusMM:110,acrylicInnerMM:115,acrylicOuterMM:200,magnetInnerMM:120,magnetOuterMM:192,supportInnerMM:110,supportOuterMM:205}:null};
 }
 export const models:Record<SchemeId,MRIModel>={original:createMRIModel("original"),latest:createMRIModel("latest")};

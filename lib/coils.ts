@@ -17,7 +17,7 @@ function saddle(r:number,phi:number,side:number):V3[]{
  for(let i=1;i<=30;i++)p.push(cyl(r,phi-a,side*(far-(far-near)*i/30)));
  return p;
 }
-export function gradientWindings():Winding[]{
+export function gradientWindings(scale=1):Winding[]{
  const out:Winding[]=[];
  for(const axis of ["gx","gy"] as const)for(const side of [-1,1])for(let half=0;half<2;half++){
   out.push({id:axis+"-"+side+"-"+half,axis,current:half?-1:1,points:saddle(COIL_DIMENSIONS[axis],(axis==="gy"?Math.PI/2:0)+half*Math.PI,side)});
@@ -29,7 +29,7 @@ export function gradientWindings():Winding[]{
   const subset=out.filter(w=>w.axis===axis),p:V3=axis==="gx"?[.01,0,0]:[0,.01,0];
   if(wireField(toWorld(p),subset)[1]<0)for(const w of subset)w.current*=-1;
  }
- return out;
+ return scale===1?out:out.map(w=>({...w,points:w.points.map(p=>p.map(v=>v*scale) as V3)}));
 }
 // Midpoint Biot-Savart, shared path used only for topology checks; dimensionless mu0/(4 pi) omitted.
 export function wireField(p:V3,windings:Winding[]):V3{

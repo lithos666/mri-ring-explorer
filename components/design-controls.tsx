@@ -59,7 +59,7 @@ export default function DesignControls({selectedRing,selected,onSelect,scope,onS
     <Button variant="outline" aria-pressed={scope==="layer"} onClick={()=>onScope("layer")}>{t("整层","Entire layer")} · {model.repeats}</Button>
     <Button variant="outline" aria-pressed={scope==="magnet"} onClick={()=>onScope("magnet")}>{t("单块","Single magnet")}</Button>
    </div>
-   <div className="selected-target"><strong>{id}</strong><span>{model.unitMM?"R ≈ "+Math.round(magnet.radius*model.unitMM)+" mm":"R = "+magnet.radius}</span></div>
+   <div className="selected-target"><strong>{id}</strong><span>{"R = "+Math.round(magnet.radius*model.unitMM!)+" mm"}</span></div>
    <div className="layer-strip-heading"><span>{t("内圈 → 外圈","Inner → outer")}</span><span>{ringName(ring)}</span></div>
    <div className="edit-layer-strip" role="group" aria-label={t("放大的径向排布条","Enlarged radial layer strip")}>{model.rings[ring-1].directions.map((_,i)=>{
     const members=ringMagnets.filter(m=>m.radial===i+1),same=members.every(m=>m.direction===members[0].direction),shown=scope==="layer"?(same?stripCopy(members[0].direction):t("混合","Mixed")):stripCopy(members.find(m=>m.sector===sector)!.direction);

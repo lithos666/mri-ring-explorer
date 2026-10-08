@@ -27,28 +27,28 @@ This copy has no binding or credentials for the original Sites project. The live
 保存设计使用当前浏览器的本地存储，访问者之间不会同步。需要合作编辑时，请下载设计 JSON 并交给同事导入。
 Saved designs remain in each browser. Use the JSON download/import controls to exchange designs with colleagues.
 
-磁场为归一化有限磁块的理想计算模型；并非实测场、工程验收或临床设备认证。完整数据、模型假设、验证及文献说明见下文与网页资料面板。
-The field is an ideal normalized finite-cuboid model, not measured device performance or clinical certification. Model assumptions, verification and references are documented below and in the app.
+磁场采用 MATLAB 几何与 Br＝1.43 T 的理想有限磁块计算模型；并非实测场、工程验收或临床设备认证。完整数据、模型假设、验证及文献说明见下文与网页资料面板。
+The field uses supplied MATLAB geometry and Br = 1.43 T in an ideal finite-cuboid model, not measured device performance or clinical certification. Model assumptions, verification and references are documented below and in the app.
 
 ---
 
 # 磁环实验台 · 两套 14 环 IO MRI 方案
 
-中文交互式 MRI 原理与结构查看器。React、TypeScript、Three.js；Sites Worker 部署。当前版本 v10。
+中文交互式 MRI 原理与结构查看器。React、TypeScript、Three.js；Sites Worker 部署。当前版本 v15，中英双语。
 
 ## 方案与数据
 
 界面顶部可选择“原方案”或“新版方案”。两套数据使用稳定的 MRIModel 实例与 React Context；切换时重建三维实例化网格、点击索引、选择状态及场数据读取，禁止修改共享模块级模型。
 
-- 原方案：最初用户提供的 14 环径向顺序，54 个径向位置，圆周暂按 14 次重复，推算 756 块；朝外266、朝内266、轴向224。Weak140、Normal336、Strong280。边长0.8、间距1.2、径向4–8均为无单位示意。
+- 原方案：最初用户提供的 14 环径向顺序，54 个径向位置，MATLAB 确认圆周 14 次重复，共 756 块；朝外266、朝内266、轴向224。Weak140、Normal336、Strong280。采用 Small 脚本的 10 mm 方块、26 mm 轴向间距与逐环中心半径。
 - 新版方案：用户 R–Z 图的 14 环径向顺序，62 个径向位置；本次圆环图已确认每层28列，合计1736块；朝外700、朝内700、轴向336。强度未标注，不沿用原方案类别。
 - 新版第2/4/11/13环各6层，R05–R10为轴/轴/内、轴/外/轴、轴/外/轴、轴/内/轴、轴/内/轴、轴/轴/外。
 - 全部轴向 N 极沿 −Z（绘图 −Y）指向 R01→R14。上下镜像时径向方向相反，轴向箭头仍向下。
-- 首列按图相位约6.43°，28列等角度排列，使四条支架轴线位于列间；精确角度尚待工程图确认。
+- 首列相位6.428571°，28列等角度排列，使四条支架轴线位于列间；网页相对 MATLAB 原始坐标整体绕 Z 轴旋转90°，保留既有编号。
 - 中心轴剖面的两侧属于同一整环：原方案108个位置，新版124个位置，不额外翻倍。
 - 新图明确孔半径110mm、亚克力径向115–200mm、磁铁占据半径120–192mm、Lego支撑110–205mm。
-- 120–192mm是占据范围而非中心位置。约12mm方块、38mm环距、Z±247mm和各径向中心仍为读图估计；边缘中心约126–186mm。MODEL_UNIT_MM=25仅作等比例渲染换算。
-- 原方案不显示毫米坐标；梯度/RF继续为独立示意，不从图片猜测绕组工程参数。
+- 120–192mm是占据范围而非中心位置。12mm方块、38mm环距、Z±247mm和各径向中心采用 Big MATLAB 数值声明；此前估读坐标已替换。MODEL_UNIT_MM=25只作等比例渲染换算。
+- 两套方案均显示毫米坐标；梯度/RF继续为独立示意，Small 示意绕组按0.65比例缩小以适配孔径。
 
 ## 交互与视觉
 
@@ -62,13 +62,13 @@ The field is an ideal normalized finite-cuboid model, not measured device perfor
 
 ## 参考场与对照
 
-有限均匀磁化方块的解析极面积分；所有磁块使用相同归一化磁化幅值，强度类别没有转换为虚构剩磁数值。
+有限均匀磁化方块的解析极面积分；所有磁块使用脚本的 Br=1.43T；强度类别不额外改变幅值。在固定均匀磁化、回线磁导率约1下采用J≈Br，中心和探针转换为mT。
 sourcesFor(model)按不可变模型对象缓存独立源，修改后的源不会复用旧场；layoutSources(layout,model)从同一基准派生全径向、轴向反转和环距+15%对照。
 每套模型生成 field-data-original/latest.json 和 comparison-data-original/latest.json，包含schemeId、块数和几何签名。
 场截面穿过当前首列；新版相位6.43°对应的场矢量与取点坐标作一致旋转。v8 使用完整三维网格与 RK4 积分；独立方向修改不再施加阵列对称性。
 构建缓存另核对生成脚本与物理源码签名；任何相关几何或计算修改都触发重算。默认兼容数据文件指向新版。
 客户端仅接收当前schemeId/count匹配的数据，卸载后的异步响应被忽略。按方案重建视图可避免旧实例容量和旧场混用。
-仅显示相对场与理想控制变量结果；材料退磁、铁轭、装配公差、温漂及实测性能未建模，没有临床合格结论。
+热图保留固定初始中心场的相对色标，中心与探针显示理想mT计算值；材料退磁、铁轭、装配公差、温漂及实测性能未建模，没有临床合格结论。
 
 ## 开发与校验
 
@@ -86,7 +86,7 @@ sourcesFor(model)按不可变模型对象缓存独立源，修改后的源不会
 领域检查覆盖756/1736计数、对置配对、镜像与轴向符号、圆周相位、单位隔离、独立数值积分、远场极限、Maxwell空气区域、离散旋转对称、两套数据签名及轨迹方向、控制变量与成像公式。
 浏览器检查包括两套方案全部视图与快速切换、真实三维点击/旋转、独立线圈开关、白色表面、390/320触屏布局、无WebGL降级及生产Worker读取。
 
-开发默认localhost:5173；生产输出dist/server和dist/client。GitHub 副本的 .openai/hosting.json 不含项目 ID；测试截图、工具状态与凭据不纳入源码。
+开发默认localhost:5173；生产输出dist/server和dist/client。部署身份保留在.openai/hosting.json，测试截图/工具与凭据不纳入源码。
 
 ## 依据
 
@@ -119,9 +119,6 @@ B轨迹用完整三维矢量插值与RK4积分，并逐段按解析场检查，�
 ## v9：同屏编辑工作台
 桌面工作台左侧保持3D/剖面预览与当前磁场反馈，右侧放置独立磁铁的位置、六方向、撤销/重做/重置/保存。文件操作、线圈控制、磁铁详情和统计改为展开区。手机在正常页面滚动时保留有高度上限的固定预览；短横屏退回正常流以保证内容可达。点击模型更新旁边的编辑器，不自动弹出遮挡操作的详情窗。物理计算、基准场、设计文件格式、两套方案的历史与保存规则不变。
 
-## v10：编辑与辅助信息分区
-右侧只保留磁铁方向修改和文件与设计说明。显示与线圈、当前磁铁与磁环、14 环排布位于工作区下方，可按需展开；桌面编辑与实时预览仍在同一屏幕。
-
 ## v11 · 在图上快速编辑 / Graph editing
 
 默认排布编辑页提供可点选的14环剖面及所选环的14/28列正面径向图。点选、缩放、平移、环切换仅改变视图。右侧默认修改所选环和半径的整层圆周磁铁，可切换单块；方向状态与混合统计均来自实际数据。六方向按每块自己的圆周角生成磁化矢量，位置、数量和方块体积保持不变。
@@ -130,7 +127,7 @@ setDirections 批量修改原子提交；一次修改形成一个历史步骤，
 
 编辑图和全14环中心轴场截面同时显示。中心解析读数立即更新；网格与三维轨迹由 Worker 重算。色标与初始场参考固定。重算期间保留上一份完整场结果及其模型，明确标为上一结果并禁用旧图取点；完成后整体替换。方案切换不显示上一方案结果，过期 Worker 回复被丢弃。手机固定场预览，编辑图与控制在下方操作。
 
-Physics is unchanged: analytical finite-cuboid superposition, equal fixed magnetization, full 3D vectors and trajectory checks. These are ideal relative-field experiments, not measured or clinically validated scanner performance. Original dimensions and repeat count remain provisional; new cube centers and ring spacing remain image estimates.
+Physics is unchanged: analytical finite-cuboid superposition, equal fixed magnetization, full 3D vectors and trajectory checks. These are ideal relative-field experiments, not measured or clinically validated scanner performance. In v15, both geometries and repeat counts use MATLAB declarations, and main-field readouts use Br=1.43T under J≈Br.
 
 Verification includes atomic group counts 14/28, all six local directions and opposite signs, geometry preservation, mixed edits and one-step undo/redo, no-op history, invalid batches, exact full-sum versus batch deltas, rotational covariance, Worker group/single edits, unchanged baseline reset, stale results, keyboard/touch, four viewport sizes and legacy file compatibility.
 
@@ -161,9 +158,16 @@ Both schemes load their precomputed full initial 3D field without a Compute clic
 
     node --experimental-strip-types tests/initial-field.test.ts
 
+## 2026-10-08 · 主磁场公式核查
 
-## 2026-10-08 · 主磁場公式核查 / Magnetic-field audit
+修复磁极面半个 M 项的边界取值、很小非零面距及共面延长线极限。初始场和基准网格升级为记录内核版本的 v2 空气域缓存：材料节点屏蔽，增量更新必须保持相同占据几何。热图和色标透明度一致，近零截面外分量不显示虚假方向，虚线投影说明保持可见。
 
-修复磁极面上的半个 M 项、近极面取值和共面延长线的 log 极限。两套初始场重新生成，使用记录内核版本的 v2 空气域缓存；磁体节点屏蔽，增量更新要求磁块占据几何不变。热图与色标透明度一致，近零截面外分量不显示虚假方向，虚线明确标为三维轨迹投影。
+两套完整阵列与独立 Magpylib 5.2.3 求和、单磁块表面积分、极面连续性和空气区 Maxwell 检查通过；缓存对照误差符合 Float32 存储精度。完整方法、数值证据及尚未验证的范围见 [physics-validation.md](docs/physics-validation.md)。v15 已采用 MATLAB 几何与 Br=1.43T 给出理想mT预测，仍需材料回线与实测场图验证。
 
-修复后，单磁块、两套阵列及非对称编辑结果通过独立 Magpylib 5.2.3 对照，另有数值表面积分、极面连续性、Maxwell 空气区和批量差场检查。详细模型、误差与验证范围见 [physics-validation.md](docs/physics-validation.md)。当前仍为理想相对场，绝对 T/mT 待真实材料与几何参数校准。首屏初始场自动载入，修改后仍需明确点击计算。
+## v15 · MATLAB 参数 / MATLAB calibration
+
+网页源码在根目录；7个原MATLAB程序在 `matlab/`。用户的 `matlab/hackathon_big/` 优化数据仅保留本地，不与两套14层方案混用。Small与Big初始中心分别32.263526452mT、37.343568936mT，均沿设备+Z。原始注释中的均匀性数值与当前声明重算结果不一致，保留注释并记录差异。详见 [matlab-parameters.md](docs/matlab-parameters.md)。
+
+Web source is at the root; MATLAB programs are in `matlab/`. Geometries and Br are taken from the supplied declarations. Center and probe readouts show ideal mT predictions. Old schema-v1 orientation files migrate by stable magnet ID with an explicit geometry notice; new exports use the current signature. Initial fields load automatically; editing still requires Compute.
+
+    node --experimental-strip-types tests/calibration.test.ts

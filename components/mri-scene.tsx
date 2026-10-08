@@ -44,7 +44,7 @@ export default function MRIScene(props:Props){
   const key=new THREE.DirectionalLight(0xffffff,2.6);key.position.set(16,30,24);scene.add(key);
   const fill=new THREE.DirectionalLight(0xffffff,1.0);fill.position.set(-20,3,-13);scene.add(fill);
   const root=new THREE.Group();scene.add(root);
-  const coils=createCoilGeometry();scene.add(coils.root);
+  const coils=createCoilGeometry(model.coilScale);scene.add(coils.root);
   const geoms:THREE.BufferGeometry[]=[];
   const mats:THREE.Material[]=[];
   function inst(g:THREE.BufferGeometry,color:number,metalness=.2){

@@ -1,10 +1,14 @@
 import assert from "node:assert/strict";
 import {models,type Magnet} from "../lib/mri.ts";
+import {MATLAB_GEOMETRY} from "../lib/matlab-geometry.ts";
 for(const model of Object.values(models)){
  const latest=model.id==="latest",expected=latest?1736:756;
  assert.equal(model.rings.length,14);assert.equal(model.magnets.length,expected);assert.equal(model.magnetById.size,expected);
  assert.equal(model.radialPositionCount,latest?62:54);
- assert.equal(model.repeats,latest?28:14);assert.equal(model.repeatsConfirmed,latest);
+ assert.equal(model.repeats,latest?28:14);assert.equal(model.repeatsConfirmed,true);
+ assert.equal(model.unitMM,25);assert.equal(model.blockSizeMM,latest?12:10);assert.equal(model.pitchMM,latest?38:26);assert.equal(model.remanenceT,1.43);
+ assert.deepEqual(model.rings.map(r=>r.radiiMM),MATLAB_GEOMETRY[model.id].radiiMM);
+ for(const r of model.rings)assert.ok(Math.abs(r.zMM-model.ringY(r.id)*25)<1e-10);
  assert.deepEqual(model.totals,latest?{out:700,in:700,axial:336,axialUp:0,tangent:0,tangentNeg:0}:{out:266,in:266,axial:224,axialUp:0,tangent:0,tangentNeg:0});
  assert.deepEqual(model.rings.map(r=>r.directions.length*model.repeats),latest?[140,168,140,168,84,84,84,84,84,84,168,140,168,140]:[70,70,70,56,42,28,42,42,28,42,56,70,70,70]);
  assert.deepEqual(model.gradeTotals,latest?{Weak:0,Normal:0,Strong:0,Unspecified:1736}:{Weak:140,Normal:336,Strong:280,Unspecified:0});
@@ -33,6 +37,6 @@ for(const model of Object.values(models)){
   assert.equal(model.dimensions!.boreRadiusMM,110);assert.equal(model.dimensions!.magnetInnerMM,120);assert.equal(model.dimensions!.magnetOuterMM,192);
   for(const r of model.rings)for(const radius of r.radiiMM){assert.ok(radius-6>=120&&radius+6<=192);}
   assert.deepEqual(model.rings.slice(4,10).map(r=>r.directions),[["axial","axial","in"],["axial","out","axial"],["axial","out","axial"],["axial","in","axial"],["axial","in","axial"],["axial","axial","out"]]);
- }else{assert.equal(model.unitMM,null);assert.equal(model.dimensions,null);}
+ }else{assert.equal(model.dimensions,null);assert.ok(Math.abs(model.rings[0].zMM-169)<1e-10);}
 }
-console.log("PASS: independent original/latest models; 756/1736 counts; grades; 14/28 columns; opposite pairs and section count; mirror magnetization; half-column angular phase; known radial bounds and illustrative old units.");
+console.log("PASS: MATLAB geometry, Br, physical units, 756/1736 counts, 14/28 columns, opposite pairs, mirrored magnetization and preserved column phase.");

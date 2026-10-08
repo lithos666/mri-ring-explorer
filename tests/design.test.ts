@@ -79,6 +79,15 @@ for(const scheme of ["original","latest"] as SchemeId[]){
   const withNoOp=exportDesign(base,{...overrides,[base.magnets[0].id]:base.magnets[0].direction});
   assert.deepEqual(validateDesign(withNoOp,base).overrides,overrides);
  });
+ test(scheme+": known pre-calibration files migrate orientations by ID and re-export the new geometry",()=>{
+  const legacy=scheme==="original"?"mri-geometry-v1-5dcf4af15e147bc7":"mri-geometry-v1-54bb73676fa86225";
+  const overrides:DirectionOverrides={};
+  DIRECTIONS.forEach((direction,i)=>{const m=base.magnets[base.magnets.length-1-i];if(direction!==m.direction)overrides[m.id]=direction;});
+  const doc=JSON.parse(exportDesign(base,overrides));doc.geometrySignature=legacy;
+  const valid=validateDesign(JSON.stringify(doc),base);assert.equal(valid.migrated,true);assert.deepEqual(valid.overrides,overrides);assert.equal(valid.document.geometrySignature,geometrySignature(base));
+  const next=validateDesign(exportDesign(base,valid.overrides),base);assert.equal(next.migrated,false);assert.deepEqual(next.overrides,overrides);
+  assert.throws(()=>validateDesign(JSON.stringify(doc),{...base,blockSize:base.blockSize*1.01}));
+ });
  test(scheme+": incompatible or malformed import cannot alter state or baseline",()=>{
   const exported=JSON.parse(exportDesign(base,{[target.id]:"tangent"})),before=JSON.stringify(base.magnets);
   const invalidCases:Array<(doc:any)=>void>=[

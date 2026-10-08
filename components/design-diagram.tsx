@@ -57,7 +57,7 @@ export default function DesignDiagram({ring,selected,scope,mode,onMode,onSelect,
    >
     <defs><marker id={marker} markerWidth="4" markerHeight="4" refX="3.5" refY="2" orient="auto"><path d="M0 0L4 2L0 4Z" fill="#1d1d1f"/></marker></defs>
     {mode==="radial"?<>
-     {[110,200].map(r=><circle key={r} r={model.unitMM?r: r===110?85:210} fill="none" stroke="#d8dde4" strokeWidth="1"/>)}
+     {(model.dimensions?[model.dimensions.boreRadiusMM,model.dimensions.acrylicOuterMM]:[Math.min(...model.rings.flatMap(r=>r.radiiMM))-model.blockSizeMM!/2,Math.max(...model.rings.flatMap(r=>r.radiiMM))+model.blockSizeMM!/2]).map(r=><circle key={r} r={r} fill="none" stroke="#d8dde4" strokeWidth="1"/>)}
      <line x1="-208" x2="208" stroke="#e4e7eb" strokeDasharray="3 5"/><line y1="-208" y2="208" stroke="#e4e7eb" strokeDasharray="3 5"/>
      <text y="-4" textAnchor="middle" fill="#6e6e73" fontSize="12">{ringName(ring)}</text><text y="13" textAnchor="middle" fill="#6e6e73" fontSize="11">{t("通孔","Bore")}</text>
     </>:<>

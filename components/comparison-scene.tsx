@@ -40,7 +40,7 @@ export default function ComparisonScene({topic,layout,size,axis,rf,roi}:{topic:C
    const sg=new THREE.SphereGeometry(roi,24,16);geoms.push(sg);const roiMat=material("#488c69",.32);roiMat.depthTest=false;const roiMesh=new THREE.Mesh(sg,roiMat);roiMesh.renderOrder=4;root.add(roiMesh);
    arrow(new THREE.Vector3(0,1,0),new THREE.Vector3(0,-2,0),4,"#488c69");
   }else if(topic==="gradient"){
-   for(const w of comparisonWindings(size,axis)){const pts=w.points.map(p=>new THREE.Vector3(...p));path(pts,coilColors[axis]);const k=15;arrow(pts[k+1].clone().sub(pts[k]).normalize().multiplyScalar(w.current),pts[k],.45,coilColors[axis]);}
+   for(const w of comparisonWindings(size,axis,model)){const pts=w.points.map(p=>new THREE.Vector3(...p));path(pts,coilColors[axis]);const k=15;arrow(pts[k+1].clone().sub(pts[k]).normalize().multiplyScalar(w.current),pts[k],.45,coilColors[axis]);}
    const sg=new THREE.SphereGeometry(1.5,20,14);geoms.push(sg);root.add(new THREE.Mesh(sg,material("#a7bac4",.08)));
    arrow(new THREE.Vector3(0,1,0),new THREE.Vector3(0,-2,0),4,"#55616c");
   }else{
@@ -64,6 +64,7 @@ export default function ComparisonScene({topic,layout,size,axis,rf,roi}:{topic:C
    arrow(new THREE.Vector3(0,1,0),new THREE.Vector3(-.5,-2.8,0),5.6,"#55616c");
    arrow(rf==="solenoid"?new THREE.Vector3(0,1,0):new THREE.Vector3(1,0,0),new THREE.Vector3(0,0,0),2,purple);
   }
+  if(topic==="rf")root.scale.setScalar(model.coilScale);
   function resize(){const w=el!.clientWidth,h=el!.clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();const sphere=new THREE.Box3().setFromObject(root).getBoundingSphere(new THREE.Sphere());const half=Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*Math.min(1,camera.aspect));camera.position.set(.7,.62,1).normalize().multiplyScalar(sphere.radius/Math.sin(half)*1.05);controls.target.set(0,0,0);controls.update();}
   const obs=new ResizeObserver(resize);obs.observe(el);resize();let frame=0;
   const animate=()=>{frame=requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);};animate();
@@ -71,5 +72,5 @@ export default function ComparisonScene({topic,layout,size,axis,rf,roi}:{topic:C
   return()=>{cancelAnimationFrame(frame);obs.disconnect();controls.dispose();root.traverse(o=>{if(o instanceof THREE.ArrowHelper){o.dispose();}if(o instanceof THREE.InstancedMesh)o.dispose();});geoms.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();delete el.dataset.ready;};
  },[topic,layout,size,axis,rf,roi,model]);
  useEffect(()=>{host.current?.querySelector("canvas")?.setAttribute("aria-label",t("当前对照方案三维结构，可拖动旋转","3D structure of the current comparison design. Drag to rotate."));},[language,t]);
- return <div ref={host} className="compare-scene" data-language={language} data-scheme={model.id} data-magnet-count={model.magnets.length} data-topic={topic} data-layout={layout} data-size={size} data-rf={rf}>{error&&<p>{t("此浏览器暂时无法显示 3D；下方计算图与方案说明仍可使用。","This browser cannot display 3D. The calculated plots and design explanations below remain available.")}</p>}<span className="compare-scene-hint">{t("拖动旋转 · 滚轮缩放 · ","Drag to rotate · Scroll to zoom · ")}{topic==="magnet"?(model.unitMM?t("磁体尺寸为读图估计","Magnet dimensions estimated from the drawing"):t("原方案尺寸为示意","Original design dimensions are schematic")):t("线圈结构为示意","Coil structures are schematic")}</span></div>;
+ return <div ref={host} className="compare-scene" data-language={language} data-scheme={model.id} data-magnet-count={model.magnets.length} data-topic={topic} data-layout={layout} data-size={size} data-rf={rf}>{error&&<p>{t("此浏览器暂时无法显示 3D；下方计算图与方案说明仍可使用。","This browser cannot display 3D. The calculated plots and design explanations below remain available.")}</p>}<span className="compare-scene-hint">{t("拖动旋转 · 滚轮缩放 · ","Drag to rotate · Scroll to zoom · ")}{topic==="magnet"?t("磁体尺寸来自 MATLAB","Magnet dimensions from MATLAB"):t("线圈结构为示意","Coil structures are schematic")}</span></div>;
 }

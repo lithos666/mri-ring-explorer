@@ -78,14 +78,16 @@ export function exportDesign(base:MRIModel,overrides:DirectionOverrides,createdA
  };
  return JSON.stringify(document,null,2);
 }
-export function validateDesign(text:string,base:MRIModel):{document:DesignDocument;overrides:DirectionOverrides}{
+const LEGACY_GEOMETRY:Record<SchemeId,string>={original:"mri-geometry-v1-5dcf4af15e147bc7",latest:"mri-geometry-v1-54bb73676fa86225"};
+export function validateDesign(text:string,base:MRIModel):{document:DesignDocument;overrides:DirectionOverrides;migrated:boolean}{
  if(typeof text!=="string"||text.length>MAX_IMPORT_BYTES)reject("设计文件过大，最大为 512 KB。","The design file is too large; the maximum size is 512 KB.");
  let parsed:unknown;try{parsed=JSON.parse(text);}catch{reject("设计文件不是有效的 JSON。","The design file is not valid JSON.");}
  if(!record(parsed)||!exactKeys(parsed,["schemaVersion","schemeId","geometrySignature","createdAt","overrides"]))
   reject("设计文件结构不正确，或包含未支持的字段。","The design file has an invalid structure or unsupported fields.");
  if(parsed.schemaVersion!==DESIGN_SCHEMA_VERSION)reject("设计文件版本不支持。","This design-file version is not supported.");
  if(parsed.schemeId!==base.id)reject("设计文件属于另一套方案，请先切换对应方案。","This file belongs to the other configuration. Select that configuration before importing.");
- if(parsed.geometrySignature!==geometrySignature(base))reject("设计文件的几何参数与当前版本不一致，未进行导入。","The file geometry does not match the current version. Nothing was imported.");
+ const signature=geometrySignature(base),migrated=parsed.geometrySignature===LEGACY_GEOMETRY[base.id]&&signature===geometrySignature(models[base.id]);
+ if(parsed.geometrySignature!==signature&&!migrated)reject("设计文件的几何参数与当前版本不一致，未进行导入。","The file geometry does not match the current version. Nothing was imported.");
  if(typeof parsed.createdAt!=="string"||parsed.createdAt.length>40||!Number.isFinite(Date.parse(parsed.createdAt)))
   reject("设计文件保存时间无效。","The design file has an invalid save timestamp.");
  if(!Array.isArray(parsed.overrides)||parsed.overrides.length>base.magnets.length)
@@ -101,7 +103,7 @@ export function validateDesign(text:string,base:MRIModel):{document:DesignDocume
    reject("设计包含不支持的方向。","The design contains an unsupported direction.");
   overrides[item.id]=item.direction as Direction;
  }
- return {document:parsed as unknown as DesignDocument,overrides:normalizeOverrides(base,overrides)};
+ return {document:{...parsed,geometrySignature:signature} as unknown as DesignDocument,overrides:normalizeOverrides(base,overrides),migrated};
 }
 function emptyEntry():DesignEntry{return {overrides:{},past:[],future:[],savedOverrides:null,savedAt:null};}
 export function initialDesignState():DesignState{return {original:emptyEntry(),latest:emptyEntry()};}
