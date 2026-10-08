@@ -1,16 +1,24 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import {models} from "../lib/mri.ts";
-import {sourcesFor,fieldAt,type Vec3} from "../lib/field.ts";
+import {sourcesFor,fieldAt,nearMagnet,FIELD_KERNEL_VERSION,type Vec3} from "../lib/field.ts";
 import {sourceSignature,decodeBaseline,planePoint} from "../lib/live-field.ts";
 import {decodeInitialField,encodeInitialField} from "../lib/initial-field.ts";
 for(const model of Object.values(models)){
  const sources=sourcesFor(model),signature=await sourceSignature(sources),raw=JSON.parse(fs.readFileSync("public/live-field-initial-"+model.id+".json","utf8"));
  const expected={schemeId:model.id,signature,count:sources.length,angle:model.angularOffset},result=decodeInitialField(raw,expected);
  assert.equal(result.revision,0);assert.equal(result.changedCount,0);
+ assert.equal(result.fieldKernelVersion,FIELD_KERNEL_VERSION);
  assert.ok(result.plane.values instanceof Float32Array);assert.ok(result.plane.mask instanceof Uint8Array);
  assert.deepEqual(result.center,fieldAt([0,0,0],sources));assert.deepEqual(result.center,result.baselineCenter);assert.equal(result.centerRatio,1);
  const bytes=fs.readFileSync("public/live-field-baseline-"+model.id+".bin"),base=decodeBaseline(bytes.buffer.slice(bytes.byteOffset,bytes.byteOffset+bytes.byteLength));
+ assert.equal(base.header.version,2);assert.equal(base.header.domain,"air");assert.equal(base.header.fieldKernelVersion,FIELD_KERNEL_VERSION);
+ let materialNodes=0;
+ for(let row=0;row<result.plane.n;row++)for(let col=0;col<result.plane.n;col++){
+  const i=row*result.plane.n+col,p=planePoint(-result.plane.bound+col*result.plane.step,-result.plane.bound+row*result.plane.step,result.plane.angle);
+  if(nearMagnet(p,0,sources)){materialNodes++;assert.equal(result.plane.mask[i],1);assert.deepEqual(Array.from(result.plane.values.slice(i*3,i*3+3)),[0,0,0]);}
+ }
+ assert.ok(materialNodes>0,"Air-grid placeholders must be masked, never displayed as material B");
  assert.deepEqual(result.plane.values,base.plane);
  const roundTrip=decodeInitialField(JSON.parse(JSON.stringify(encodeInitialField(result,signature,sources.length,raw.generationSignature))),expected);
  assert.deepEqual(roundTrip,result);
@@ -27,5 +35,7 @@ for(const model of Object.values(models)){
  assert.throws(()=>decodeInitialField(raw,{...expected,signature:"wrong"}));
  assert.throws(()=>decodeInitialField(raw,{...expected,count:expected.count-1}));
  assert.throws(()=>decodeInitialField(raw,{...expected,schemeId:model.id==="latest"?"original":"latest"}));
+ assert.throws(()=>decodeInitialField({...raw,version:1},expected));
+ assert.throws(()=>decodeInitialField({...raw,result:{...raw.result,fieldKernelVersion:"old-kernel"}},expected));
  console.log("PASS initial field",model.id,"exact center/grid, lossless typed-array roundtrip, 3D alignment, provenance rejection");
 }

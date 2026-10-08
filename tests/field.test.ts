@@ -8,6 +8,16 @@ const cube:Source={center:[0,0,0],u:[1,0,0],v:[0,1,0],n:[0,0,1],half:.4};
 near(cuboidField([0,0,0],cube)[2],2/3);
 assert.ok(cuboidField([0,0,2],cube)[2]>0);
 assert.ok(cuboidField([2,0,0],cube)[2]<0);
+// Independent solid-angle limit: B is continuous at the interior of a pole face.
+const poleField=.5-Math.atan(1/(2*Math.sqrt(6)))/Math.PI;
+for(const normal of [[1,0,0],[-1,0,0],[0,1,0],[0,-1,0],[0,0,1],[0,0,-1]] as Vec3[]){
+ const u:Vec3=Math.abs(normal[0])===1?[0,1,0]:[1,0,0],v=cross(normal,u);
+ const source:Source={...cube,u,v,n:normal};
+ for(const side of [-1,1])for(const offset of [0,-1e-16,1e-16,-1e-12,1e-12,-1e-8,1e-8]){
+  const p=normal.map(value=>value*(side*.4+offset)) as Vec3,b=cuboidField(p,source);
+  b.forEach((value,k)=>near(value,normal[k]*poleField,1e-7));
+ }
+}
 // Independent midpoint surface quadrature, off symmetry axes.
 function quadrature(p:Vec3):Vec3{
  const b:Vec3=[0,0,0],n=400,h=.8/n;
@@ -16,7 +26,7 @@ function quadrature(p:Vec3):Vec3{
  const f=face*h*h/(4*Math.PI*Math.hypot(...r)**3);for(let k=0;k<3;k++)b[k]+=r[k]*f;
  }return b;
 }
-for(const p of [[1.1,.7,.8],[-.9,1.2,-.6],[.15,.11,1.3]] as Vec3[]){
+for(const p of [[1.1,.7,.8],[-.9,1.2,-.6],[.15,.11,1.3],[.4,1.1,.4],[1.1,.4,-.4]] as Vec3[]){
  const a=cuboidField(p,cube),b=quadrature(p);
  a.forEach((v,i)=>near(v,b[i],2e-7));
 }
@@ -48,4 +58,4 @@ for(const model of Object.values(models)){
  assert.ok(minimumAlignment>.96,"Traced arrows must follow exact B in the selected-column plane");
  console.log(JSON.stringify({scheme:model.id,fieldSignature:"PASS",sourceCount:sources.length,traceSamples:checked,minimumAlignment}));
 }
-console.log("PASS: independent surface quadrature, dipole limit, source-free Maxwell checks, per-model rotational covariance and rotated field planes.");
+console.log("PASS: pole-face continuity and six rotated normals, coplanar log limits, independent surface quadrature, dipole limit, source-free Maxwell checks, rotational covariance and rotated field planes.");

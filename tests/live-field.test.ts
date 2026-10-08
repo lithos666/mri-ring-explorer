@@ -10,6 +10,8 @@ for(const model of Object.values(models)){
  const baseSources=sourcesFor(model);assert.equal(baseline.header.signature,await sourceSignature(baseSources));assert.equal(baseline.header.count,model.magnets.length);
  const id="R07-L1-A"+String(model.repeats).padStart(2,"0"),edited=applyOverrides(model,{[id]:"tangent"}),items=sourcesFor(edited);
  const request:LiveFieldRequest={type:"solve",revision:1,schemeId:model.id,baseline:baseSources,current:items,angle:model.angularOffset};
+ const moved=items.map((s,i)=>i===0?{...s,center:[s.center[0]+.01,s.center[1],s.center[2]] as Vec3}:s);
+ await assert.rejects(solveLiveField({...request,current:moved},baseline,{cancelled:()=>false}),/unchanged occupied cube geometry/);
  const result=await solveLiveField(request,baseline,{cancelled:()=>false});
  assert.equal(result.changedCount,1);assert.deepEqual(result.center,fieldAt([0,0,0],items));assert.ok(Math.abs(result.centerRatio-norm(result.center)/norm(baseline.header.center))<1e-12);
  assert.ok(result.lines3D.length>0);let alignment=1;

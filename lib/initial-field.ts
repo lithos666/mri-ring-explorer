@@ -1,17 +1,18 @@
+import {FIELD_KERNEL_VERSION} from "./field.ts";
 import {DEFAULT_VOLUME,DEFAULT_PLANE,type LiveFieldResult} from "./live-field.ts";
 export interface InitialFieldAsset{
- version:1;signature:string;count:number;generationSignature:string;
+ version:2;signature:string;count:number;generationSignature:string;
  result:Omit<LiveFieldResult,"plane">&{plane:Omit<LiveFieldResult["plane"],"values"|"mask">&{values:number[];mask:number[]}};
 }
 interface ExpectedInitialField{schemeId:string;signature:string;count:number;angle:number;generationSignature?:string;}
 const finiteVector=(value:unknown):boolean=>Array.isArray(value)&&value.length===3&&value.every(Number.isFinite);
 export function encodeInitialField(result:LiveFieldResult,signature:string,count:number,generationSignature:string):InitialFieldAsset{
- return {version:1,signature,count,generationSignature,result:{...result,plane:{...result.plane,values:Array.from(result.plane.values),mask:Array.from(result.plane.mask)}}};
+ return {version:2,signature,count,generationSignature,result:{...result,plane:{...result.plane,values:Array.from(result.plane.values),mask:Array.from(result.plane.mask)}}};
 }
 export function decodeInitialField(raw:unknown,expected:ExpectedInitialField):LiveFieldResult{
  if(!raw||typeof raw!=="object")throw new Error("Invalid initial field asset.");
  const a=raw as InitialFieldAsset,r=a.result;
- if(a.version!==1||a.signature!==expected.signature||a.count!==expected.count||!a.generationSignature||(expected.generationSignature&&a.generationSignature!==expected.generationSignature)||!r||r.type!=="result"||r.schemeId!==expected.schemeId||r.revision!==0||r.changedCount!==0)throw new Error("Initial field does not match this configuration.");
+ if(a.version!==2||a.signature!==expected.signature||a.count!==expected.count||!a.generationSignature||(expected.generationSignature&&a.generationSignature!==expected.generationSignature)||!r||r.fieldKernelVersion!==FIELD_KERNEL_VERSION||r.type!=="result"||r.schemeId!==expected.schemeId||r.revision!==0||r.changedCount!==0)throw new Error("Initial field does not match this configuration.");
  const plane=r.plane,volume=r.volume;
  if(!plane||!volume||volume.n!==DEFAULT_VOLUME.n||volume.bound!==DEFAULT_VOLUME.bound||volume.step!==2*volume.bound/(volume.n-1)||plane.n!==DEFAULT_PLANE.n||plane.bound!==DEFAULT_PLANE.bound||plane.step!==2*plane.bound/(plane.n-1)||Math.abs(plane.angle-expected.angle)>1e-12||!Number.isFinite(plane.angle))throw new Error("Initial field grid does not match.");
  if(!Array.isArray(plane.values)||plane.values.length!==plane.n**2*3||!plane.values.every(Number.isFinite)||!Array.isArray(plane.mask)||plane.mask.length!==plane.n**2||!plane.mask.every(v=>v===0||v===1))throw new Error("Invalid initial field grid.");

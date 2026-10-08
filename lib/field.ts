@@ -18,14 +18,24 @@ function local(p:Vec3,s:Source):Vec3{const d:Vec3=[p[0]-s.center[0],p[1]-s.cente
 export function nearMagnet(p:Vec3,margin=.12,items=sources){return items.some(s=>local(p,s).every(c=>Math.abs(c)<=s.half+margin));}
 // Closed-form surface integral of (r-r')/|r-r'|^3 for a uniformly charged rectangle.
 // This is an independently implemented magnetic scalar-potential model, not a MagTetris port.
+// B is normalized by the common prescribed polarization J = mu0*M.
+// Changes to this kernel also invalidate the precomputed field grids.
+export const FIELD_KERNEL_VERSION="uniform-cube-poles-v2";
+function asinhDifference(upper:number,lower:number,h:number){
+ if(h>0)return Math.asinh(upper/h)-Math.asinh(lower/h);
+ // Exact coplanar face extensions have finite log limits. Charged edges
+ // straddling zero are singular in the ideal sharp-edged uniform model.
+ if(upper>0&&lower>0)return Math.log(upper/lower);
+ if(upper<0&&lower<0)return Math.log(lower/upper);
+ return Infinity;
+}
 function panel(x:number,y:number,z:number,a:number):Vec3{
- let bx=0,by=0,bz=0;
+ const bx=asinhDifference(y+a,y-a,Math.hypot(x-a,z))-asinhDifference(y+a,y-a,Math.hypot(x+a,z));
+ const by=asinhDifference(x+a,x-a,Math.hypot(y-a,z))-asinhDifference(x+a,x-a,Math.hypot(y+a,z));
+ let bz=0;
  for(let i=0;i<2;i++)for(let j=0;j<2;j++){
-  const u=x+(i?1:-1)*a,v=y+(j?1:-1)*a;
-  const r=Math.hypot(u,v,z),sign=(i===j?1:-1);
-  bx-=sign*Math.asinh(v/Math.max(Math.hypot(u,z),1e-14));
-  by-=sign*Math.asinh(u/Math.max(Math.hypot(v,z),1e-14));
-  if(Math.abs(z)>1e-14)bz+=sign*Math.atan(u*v/(z*r));
+  const u=x+(i?1:-1)*a,v=y+(j?1:-1)*a,r=Math.hypot(u,v,z),sign=(i===j?1:-1);
+  if(z!==0)bz+=sign*Math.atan(u*v/(z*r));
  }
  return [bx,by,bz];
 }
@@ -34,7 +44,10 @@ export function cuboidField(p:Vec3,s:Source):Vec3{
  const plus=panel(x,y,z-a,a),minus=panel(x,y,z+a,a);
  const b:Vec3=plus.map((v,i)=>(v-minus[i])/(4*Math.PI)) as Vec3;
  // B = mu0(H+M) within a prescribed uniformly magnetized body.
- if(Math.abs(x)<a&&Math.abs(y)<a&&Math.abs(z)<a)b[2]+=1;
+ if(Math.abs(x)<a&&Math.abs(y)<a){
+  if(Math.abs(z)<a)b[2]+=1;
+  else if(Math.abs(z)===a)b[2]+=.5; // Smooth polarized face: continuous B, average H + half M.
+ }
  return [s.u[0]*b[0]+s.v[0]*b[1]+s.n[0]*b[2],s.u[1]*b[0]+s.v[1]*b[1]+s.n[1]*b[2],s.u[2]*b[0]+s.v[2]*b[1]+s.n[2]*b[2]];
 }
 export function fieldAt(p:Vec3,items=sources):Vec3{

@@ -15,6 +15,8 @@ export function FieldSection({data,onSelect,compact=false,displayModel,readOnly=
  const angle=model.angularOffset,scale=16,size=model.blockSize*scale,units=model.unitMM??1;
  const world=planePoint(point[0],point[1],angle),b=useMemo(()=>data?fieldAt(world,sources):[0,0,0] as Vec3,[data,sources,point[0],point[1],angle]),baseB=useMemo(()=>data?fieldAt(world,baseSources):[0,0,0] as Vec3,[data,baseSources,point[0],point[1],angle]);
  const projected=planeComponents(b,angle),length=magnitude(b),reference=data?.referenceMagnitude??1;
+ const planarLength=Math.hypot(projected[0],projected[1]),directionThreshold=reference*1e-8;
+ const perpendicularSymbol=Math.abs(projected[2])>directionThreshold?(projected[2]>0?"⊙":"⊗"):"≈0";
  const relative=length/reference,delta=magnitude([b[0]-baseB[0],b[1]-baseB[1],b[2]-baseB[2]])/reference*100;
  const perpendicular=length>reference*1e-8?Math.abs(projected[2])/length*100:0;
  const section=model.magnets.filter(m=>m.sector===1||m.sector===model.repeats/2+1);
@@ -50,12 +52,13 @@ export function FieldSection({data,onSelect,compact=false,displayModel,readOnly=
    {planar>.1?<><rect x={-size/2} y={-size/2} width={size*.2} height={size} fill="#0071e3"/><rect x={size*.3} y={-size/2} width={size*.2} height={size} fill="#e03d34"/><line x1={-size*.2} x2={size*.25} y1="0" y2="0" stroke="#1d1d1f" strokeWidth=".6" markerEnd="url(#live-probe-arrow)"/></>:<text x="0" y={size*.28} fontSize={size*.85} fill="#fff" textAnchor="middle">{n[2]>0?"⊙":"⊗"}</text>}
   </g>;
  })}
- <g pointerEvents="none"><circle cx={px} cy={py} r="5" fill="#fff" stroke="#1d1d1f" strokeWidth="1.5"/>{length>reference*1e-8&&<line x1={px} y1={py} x2={px+projected[0]/length*25} y2={py-projected[1]/length*25} stroke="#1d1d1f" strokeWidth="1.4" markerEnd="url(#live-probe-arrow)"/>}</g>
+ <g pointerEvents="none"><circle cx={px} cy={py} r="5" fill="#fff" stroke="#1d1d1f" strokeWidth="1.5"/>{planarLength>directionThreshold&&<line x1={px} y1={py} x2={px+projected[0]/length*25} y2={py-projected[1]/length*25} stroke="#1d1d1f" strokeWidth="1.4" markerEnd="url(#live-probe-arrow)"/>}</g>
  <text x="0" y="226" fill="#59636f" fontSize="12" textAnchor="middle">X′ / {model.unitMM?t("mm（估读）","mm (estimated)"):t("示意单位","schematic units")} · {t("R14 端在下","R14 end below")}</text>
  </svg>
  <div className="field-map-legend"><span>0</span><i/><span>1</span><i/><span>≥ 2 · |B| / |Bref|</span></div>
+ <div className="field-trace-key"><i/>{t("虚线：三维轨迹投影","Dashed: 3D path projection")}</div>
  <div className="probe-readout" aria-live="polite" data-probe-vector={JSON.stringify(b)}>
- <div><span>{t("取点","Probe")} · X′ {(point[0]*units).toFixed(1)} / Z {(point[1]*units).toFixed(1)}</span><strong>|B| / |Bref| = {relative.toFixed(6)}</strong><small>{t("截面外分量占 |B|：","Out-of-plane component / |B|: ")}{perpendicular.toFixed(3)}% · {projected[2]>=0?"⊙":"⊗"}</small><details className="probe-components"><summary>{t("探针分量","Probe components")}</summary><small>{t("相对初始场的矢量变化：","Vector change from initial field: ")}{delta.toFixed(4)}%</small><small>(Bx, By, Bz) / |Bref| = ({[b[0],-b[2],b[1]].map(v=>(v/reference).toFixed(6)).join(", ")})</small></details>{length<=reference*1e-8&&<small>{t("近零场：方向未定义","Near-zero field: direction undefined")}</small>}</div>
+ <div><span>{t("取点","Probe")} · X′ {(point[0]*units).toFixed(1)} / Z {(point[1]*units).toFixed(1)}</span><strong>|B| / |Bref| = {relative.toFixed(6)}</strong><small>{t("截面外分量占 |B|：","Out-of-plane component / |B|: ")}{perpendicular.toFixed(3)}% · {perpendicularSymbol}</small><details className="probe-components"><summary>{t("探针分量","Probe components")}</summary><small>{t("相对初始场的矢量变化：","Vector change from initial field: ")}{delta.toFixed(4)}%</small><small>(Bx, By, Bz) / |Bref| = ({[b[0],-b[2],b[1]].map(v=>(v/reference).toFixed(6)).join(", ")})</small></details>{length<=reference*1e-8&&<small>{t("近零场：方向未定义","Near-zero field: direction undefined")}</small>}</div>
  <div className="probe-buttons"><Button variant="ghost" disabled={readOnly} onClick={()=>probe([0,0])}>{t("中心","Center")}</Button><Button variant="ghost" disabled={readOnly} onClick={()=>probe([0,6])}>{t("轴上","On axis")}</Button><Button variant="ghost" disabled={readOnly} onClick={()=>probe([2.5,0])}>{t("孔内侧","Inside bore")}</Button></div>
  {surface&&<p>{t("此处靠近磁体表面，请在通孔或外部空气中取点。","This point is near a magnet surface. Probe in the bore or surrounding air.")}</p>}
  </div>

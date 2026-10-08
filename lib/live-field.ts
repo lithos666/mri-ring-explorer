@@ -1,12 +1,12 @@
 // Analytical vector-grid updates and fully three-dimensional field tracing.
-import {fieldAt,cuboidField,type Source,type Vec3,type FieldData} from "./field.ts";
+import {fieldAt,cuboidField,FIELD_KERNEL_VERSION,type Source,type Vec3,type FieldData} from "./field.ts";
 
 export interface VolumeSpec {bound:number;n:number}
 export interface PlaneSpec {bound:number;n:number;angle:number}
 export const DEFAULT_VOLUME:VolumeSpec={bound:12,n:31}; // 0.8 model-unit spacing
 export const DEFAULT_PLANE={bound:12,n:61}; // 0.4 model-unit spacing
 export interface BaselineHeader {
- version:1;signature:string;count:number;volume:VolumeSpec;plane:PlaneSpec;center:Vec3;
+ version:2;fieldKernelVersion:string;domain:"air";signature:string;count:number;volume:VolumeSpec;plane:PlaneSpec;center:Vec3;
 }
 export interface Baseline {header:BaselineHeader;volume:Float32Array;plane:Float32Array}
 interface WorkingState {sources:Source[];volume:Float64Array;plane:Float64Array}
@@ -20,7 +20,7 @@ export interface LiveFieldRequest {
 }
 export interface LiveFieldProgress {type:"progress";revision:number;stage:"baseline"|"delta"|"trace";done:number;total:number}
 export interface LiveFieldResult {
- type:"result";revision:number;schemeId:string;changedCount:number;center:Vec3;baselineCenter:Vec3;
+ type:"result";fieldKernelVersion:string;revision:number;schemeId:string;changedCount:number;center:Vec3;baselineCenter:Vec3;
  referenceMagnitude:number;centerRatio:number;centerAngleDegrees:number|null;
  volume:{bound:number;n:number;step:number};
  plane:{bound:number;n:number;step:number;angle:number;values:Float32Array;mask:Uint8Array};
@@ -68,14 +68,17 @@ export async function generateBaseline(
 ):Promise<Baseline>{
  const signature=await sourceSignature(sources),vol=new Float32Array(volume.n**3*3),map=new Float32Array(plane.n**2*3);
  const total=vol.length/3+map.length/3,clock={at:performance.now()};
+ const material=new SourceIndex(sources,0);
  const arrays=[{values:vol,point:(i:number)=>gridPoint(i,volume)},{values:map,point:(i:number)=>planeGridPoint(i,plane)}];
  let done=0;
  for(const {values,point} of arrays)for(let i=0;i<values.length/3;i++){
-  const b=fieldAt(point(i),sources);values.set(b,i*3);done++;
+  const p=point(i);
+  // Material nodes are placeholders, always excluded by the plotting/interpolation masks.
+  if(!material.near(p,0))values.set(fieldAt(p,sources),i*3);done++;
   if(i%16===0){scheduler.progress?.({stage:"baseline",done,total});await yieldIfNeeded(scheduler,clock);}
  }
  checkpoint(scheduler);
- return {header:{version:1,signature,count:sources.length,volume,plane,center:fieldAt([0,0,0],sources)},volume:vol,plane:map};
+ return {header:{version:2,fieldKernelVersion:FIELD_KERNEL_VERSION,domain:"air",signature,count:sources.length,volume,plane,center:fieldAt([0,0,0],sources)},volume:vol,plane:map};
 }
 export function encodeBaseline(data:Baseline):Uint8Array{
  const header=new TextEncoder().encode(JSON.stringify(data.header)),size=(header.length+3)&~3;
@@ -90,7 +93,7 @@ export function decodeBaseline(buffer:ArrayBuffer):Baseline{
  if(size>buffer.byteLength-4||size%4!==0)throw new Error("Invalid baseline header.");
  const json=new TextDecoder().decode(new Uint8Array(buffer,4,size)).replace(/\u0000+$/,"");
  const header=JSON.parse(json) as BaselineHeader;
- if(header.version!==1||header.volume.n<3||header.volume.n>101||header.plane.n<3||header.plane.n>161||header.volume.bound<=0||header.plane.bound<=0)throw new Error("Unsupported baseline specification.");
+ if(header.version!==2||header.fieldKernelVersion!==FIELD_KERNEL_VERSION||header.domain!=="air"||header.volume.n<3||header.volume.n>101||header.plane.n<3||header.plane.n>161||header.volume.bound<=0||header.plane.bound<=0)throw new Error("Unsupported baseline specification.");
  const a=header.volume.n**3*3,b=header.plane.n**2*3;
  if(buffer.byteLength!==4+size+(a+b)*4)throw new Error("Baseline payload length mismatch.");
  const floats=new Float32Array(buffer,4+size);
@@ -98,7 +101,7 @@ export function decodeBaseline(buffer:ArrayBuffer):Baseline{
  return {header,volume:floats.subarray(0,a),plane:floats.subarray(a)};
 }
 function assertBaseline(data:Baseline,request:LiveFieldRequest,signature:string){
- if(data.header.signature!==signature||data.header.count!==request.baseline.length||Math.abs(data.header.plane.angle-request.angle)>1e-12)throw new Error("Baseline does not match the selected geometry and source frame.");
+ if(data.header.fieldKernelVersion!==FIELD_KERNEL_VERSION||data.header.domain!=="air"||data.header.signature!==signature||data.header.count!==request.baseline.length||Math.abs(data.header.plane.angle-request.angle)>1e-12)throw new Error("Baseline does not match the selected geometry and source frame.");
 }
 // Small broad-phase index avoids testing every magnet on every RK4 sub-step.
 export class SourceIndex {
@@ -138,11 +141,14 @@ async function applyDelta(base:Baseline,delta:ReturnType<typeof changedSources>,
  const volume=new Float64Array(previous?.volume??base.volume),plane=new Float64Array(previous?.plane??base.plane),clock={at:performance.now()};
  const total=volume.length/3+plane.length/3;let done=0;
  if(!delta.length)return {volume,plane};
+ const material=new SourceIndex(delta.flatMap(d=>[d.previous,d.next]),0);
  for(const {values,point} of [
   {values:volume,point:(i:number)=>gridPoint(i,base.header.volume)},
   {values:plane,point:(i:number)=>planeGridPoint(i,base.header.plane)}
  ])for(let i=0;i<values.length/3;i++){
-  const p=point(i);let bx=0,by=0,bz=0;
+  const p=point(i);
+  if(material.near(p,0)){done++;continue;} // Same occupied cubes; these nodes remain masked.
+  let bx=0,by=0,bz=0;
   for(const d of delta){const before=cuboidField(p,d.previous),after=cuboidField(p,d.next);bx+=after[0]-before[0];by+=after[1]-before[1];bz+=after[2]-before[2];}
   values[i*3]+=bx;values[i*3+1]+=by;values[i*3+2]+=bz;done++;
   if(i%(delta.length>32?1:64)===0){scheduler.progress?.({stage:"delta",done,total});await yieldIfNeeded(scheduler,clock);}
@@ -208,6 +214,10 @@ export async function traceVolume(values:Float32Array|Float64Array,spec:VolumeSp
 export async function solveLiveField(request:LiveFieldRequest,base:Baseline,scheduler:Scheduler):Promise<LiveFieldResult>{
  const signature=await sourceSignature(request.baseline);assertBaseline(base,request,signature);checkpoint(scheduler);
  const totalDelta=changedSources(request.baseline,request.current);
+ for(const {previous:old,next} of totalDelta){
+  const axes=[next.u,next.v,next.n];
+  if(old.half!==next.half||old.center.some((v,i)=>v!==next.center[i])||![old.u,old.v,old.n].every(axis=>axes.some(candidate=>Math.abs(dot3(axis,candidate))>1-1e-12)))throw new Error("Air-grid updates require unchanged occupied cube geometry.");
+ }
  // Returning to the immutable baseline is a direct restore, never an accumulated undo.
  const previous=totalDelta.length?workingCache.get(base):undefined;
  const delta=previous?changedSources(previous.sources,request.current):totalDelta;
@@ -222,8 +232,8 @@ export async function solveLiveField(request:LiveFieldRequest,base:Baseline,sche
  checkpoint(scheduler);
  // No awaited work after committing. A cancelled revision never replaces completed state.
  workingCache.set(base,{sources:snapshotSources(request.current),volume:updated.volume,plane:updated.plane});
- return {type:"result",revision:request.revision,schemeId:request.schemeId,changedCount:totalDelta.length,center,baselineCenter,referenceMagnitude:reference,centerRatio:length/reference,centerAngleDegrees,
+ return {type:"result",fieldKernelVersion:FIELD_KERNEL_VERSION,revision:request.revision,schemeId:request.schemeId,changedCount:totalDelta.length,center,baselineCenter,referenceMagnitude:reference,centerRatio:length/reference,centerAngleDegrees,
   volume:{...base.header.volume,step:2*base.header.volume.bound/(base.header.volume.n-1)},
   plane:{...base.header.plane,step:2*base.header.plane.bound/(base.header.plane.n-1),values:new Float32Array(updated.plane),mask},
-  lines3D:trace.lines,profile,probes,quality:{method:"exact uniform-cuboid superposition; full 3D trilinear interpolation and normalized RK4 tracing",traceStep:trace.step,lineCount:trace.lines.length,nearMagnetMargin:trace.clipMargin,interpolationResolution:2*base.header.volume.bound/(base.header.volume.n-1),exactCheckMinimumAlignment:trace.alignment}};
+  lines3D:trace.lines,profile,probes,quality:{method:"exact uniform-cuboid superposition in air; material nodes masked; full 3D trilinear interpolation and normalized RK4 tracing",traceStep:trace.step,lineCount:trace.lines.length,nearMagnetMargin:trace.clipMargin,interpolationResolution:2*base.header.volume.bound/(base.header.volume.n-1),exactCheckMinimumAlignment:trace.alignment}};
 }

@@ -160,3 +160,10 @@ Both schemes load their precomputed full initial 3D field without a Compute clic
 验证包括初始载入无Worker求解、切换两套方案、载入前编辑、载入与手动计算竞态、失败后按钮重试、结果来源核对、数组无损还原、完整解析中心场与网格一致，以及电脑端双语界面。
 
     node --experimental-strip-types tests/initial-field.test.ts
+
+
+## 2026-10-08 · 主磁場公式核查 / Magnetic-field audit
+
+修复磁极面上的半个 M 项、近极面取值和共面延长线的 log 极限。两套初始场重新生成，使用记录内核版本的 v2 空气域缓存；磁体节点屏蔽，增量更新要求磁块占据几何不变。热图与色标透明度一致，近零截面外分量不显示虚假方向，虚线明确标为三维轨迹投影。
+
+修复后，单磁块、两套阵列及非对称编辑结果通过独立 Magpylib 5.2.3 对照，另有数值表面积分、极面连续性、Maxwell 空气区和批量差场检查。详细模型、误差与验证范围见 [physics-validation.md](docs/physics-validation.md)。当前仍为理想相对场，绝对 T/mT 待真实材料与几何参数校准。首屏初始场自动载入，修改后仍需明确点击计算。
