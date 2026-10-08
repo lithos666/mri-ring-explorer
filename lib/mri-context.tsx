@@ -3,14 +3,14 @@ import {createContext,useContext,useEffect,useMemo,useReducer,useState} from "re
 import {models,type SchemeId,type MRIModel,type Direction} from "./mri";
 import {
  applyOverrides,designReducer,initialDesignState,sameOverrides,exportDesign,validateDesign,DesignValidationError,
- type DirectionOverrides
+ type DirectionOverrides,type DirectionUpdate
 } from "./design";
 
 export interface DesignNotice{type:"success"|"error";zh:string;en:string;}
 export interface MRIDesignContext{
  scheme:SchemeId;overrides:DirectionOverrides;modifiedCount:number;canUndo:boolean;canRedo:boolean;
  isSaved:boolean;savedAt:string|null;hasSaved:boolean;storageReady:boolean;notice:DesignNotice|null;
- setDirection:(id:string,direction:Direction)=>void;undo:()=>void;redo:()=>void;reset:()=>void;
+ setDirection:(id:string,direction:Direction)=>void;setDirections:(updates:readonly DirectionUpdate[])=>void;undo:()=>void;redo:()=>void;reset:()=>void;
  save:()=>void;restore:()=>void;exportJSON:()=>string;importJSON:(text:string)=>boolean;clearNotice:()=>void;
 }
 const MRIContext=createContext<MRIModel>(models.latest);
@@ -45,6 +45,7 @@ export function MRIModelProvider({scheme,children}:{scheme:SchemeId;children:Rea
   isSaved:entry.savedOverrides!==null?sameOverrides(entry.overrides,entry.savedOverrides):Object.keys(entry.overrides).length===0,
   savedAt:entry.savedAt,hasSaved:entry.savedAt!==null,storageReady,notice:notices[scheme],
   setDirection(id,direction){dispatch({type:"edit",scheme,id,direction});notice(null);},
+  setDirections(updates){dispatch({type:"batch",scheme,updates});notice(null);},
   undo(){dispatch({type:"undo",scheme});notice(null);},
   redo(){dispatch({type:"redo",scheme});notice(null);},
   reset(){dispatch({type:"reset",scheme});notice({type:"success",zh:"已恢复此方案的初始方向，可撤销。",en:"The initial orientations for this configuration were restored. You can undo this action."});},

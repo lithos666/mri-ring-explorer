@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import {models,normalFor,DIRECTIONS,type Direction,type SchemeId,type MRIModel} from "../lib/mri.ts";
 import {
- applyOverrides,designReducer,initialDesignState,normalizeOverrides,sameOverrides,
+ selectionTargets,applyOverrides,designReducer,initialDesignState,normalizeOverrides,sameOverrides,
  geometrySignature,exportDesign,validateDesign,MAX_HISTORY,MAX_IMPORT_BYTES,
  type DirectionOverrides,type DesignState
 } from "../lib/design.ts";
@@ -146,3 +146,54 @@ test("history is bounded and an edit after undo invalidates redo",()=>{
  state=designReducer(state,{type:"edit",scheme:"latest",id,direction:"tangent"});assert.equal(state.latest.future.length,0);
 });
 console.log(JSON.stringify({result:"PASS",tests:passed,schemes:2,sourceCacheAndAnalyticalDelta:true,individualAndGlobalPolarityReversal:true,perSchemeHistory:true,atomicImportValidation:true}));
+
+for(const scheme of ["original","latest"] as SchemeId[]){
+ const base=models[scheme],group=selectionTargets(base,"R03-L2-A02","layer"),id="R03-L2-A02",outside="R09-L1-A01";
+ test(scheme+": group targets, local angles, and geometry",()=>{
+  assert.equal(group.length,base.repeats);assert.deepEqual(selectionTargets(base,id,"magnet").map(m=>m.id),[id]);assert.deepEqual(selectionTargets(base,"unknown","layer"),[]);
+  for(const direction of DIRECTIONS){
+   const state=designReducer(initialDesignState(),{type:"batch",scheme,updates:group.map(m=>({id:m.id,direction}))});
+   const edited=applyOverrides(base,state[scheme].overrides);
+   for(let i=0;i<base.magnets.length;i++){
+    const m=edited.magnets[i],old=base.magnets[i];assert.equal(m.id,old.id);assert.deepEqual(edited.position(m),base.position(old));
+    if(m.ring===3&&m.radial===2){assert.equal(m.direction,direction);vectorClose(m.normal,normalFor(m.theta,direction));}
+    else assert.equal(m,old);
+   }
+   const a=edited.magnetById.get("R03-L2-A01")!,b=edited.magnetById.get("R03-L2-A"+String(base.repeats/2+1).padStart(2,"0"))!;
+   vectorClose(b.normal,direction==="axial"||direction==="axialUp"?a.normal:a.normal.map(v=>-v) as Vec3);
+  }
+ });
+ test(scheme+": atomic batch, mixed edits, single undo and redo",()=>{
+  let state=designReducer(initialDesignState(),{type:"edit",scheme,id,direction:"axialUp"});
+  state=designReducer(state,{type:"edit",scheme,id:outside,direction:"tangentNeg"});
+  const before=state,updates=group.map(m=>({id:m.id,direction:"in" as Direction}));
+  state=designReducer(state,{type:"batch",scheme,updates});const after=state;
+  assert.equal(state[scheme].past.length,before[scheme].past.length+1);
+  assert.equal(state[scheme].overrides[outside],"tangentNeg");assert.equal(Object.keys(state[scheme].overrides).length,base.repeats+1);
+  assert.equal(designReducer(after,{type:"batch",scheme,updates}),after);
+  state=designReducer(state,{type:"undo",scheme});assert.deepEqual(state[scheme].overrides,before[scheme].overrides);
+  const current=applyOverrides(base,state[scheme].overrides);
+  assert.equal(designReducer(state,{type:"batch",scheme,updates:group.map(m=>({id:m.id,direction:current.magnetById.get(m.id)!.direction}))}),state);
+  state=designReducer(state,{type:"redo",scheme});assert.deepEqual(state[scheme].overrides,after[scheme].overrides);
+  assert.deepEqual(designReducer(after,{type:"batch",scheme,updates:group.map(m=>({id:m.id,direction:"out"}))})[scheme].overrides,{[outside]:"tangentNeg"});
+  for(const invalid of [
+   [{id,direction:"out" as Direction},{id:"unknown",direction:"in" as Direction}],
+   [{id,direction:"out" as Direction},{id,direction:"in" as Direction}],
+   [{id,direction:"out" as Direction},{id:group[0].id,direction:"invalid" as Direction}]
+  ])assert.equal(designReducer(after,{type:"batch",scheme,updates:invalid}),after);
+ });
+ test(scheme+": group field equals exact delta and is rotationally covariant",()=>{
+  const state=designReducer(initialDesignState(),{type:"batch",scheme,updates:group.map(m=>({id:m.id,direction:"in"}))});
+  const edited=applyOverrides(base,state[scheme].overrides),old=sourcesFor(base),next=sourcesFor(edited);
+  for(const p of [probe,[0,0,0]] as Vec3[]){
+   const expected=fieldAt(p,old);
+   for(let i=0;i<base.magnets.length;i++)if(base.magnets[i].ring===3&&base.magnets[i].radial===2){
+    const a=cuboidField(p,old[i]),b=cuboidField(p,next[i]);for(let k=0;k<3;k++)expected[k]+=b[k]-a[k];
+   }
+   vectorClose(fieldAt(p,next),expected,2e-11);
+  }
+  const angle=2*Math.PI/base.repeats,rotate=(v:Vec3):Vec3=>[v[0]*Math.cos(angle)-v[2]*Math.sin(angle),v[1],v[0]*Math.sin(angle)+v[2]*Math.cos(angle)];
+  vectorClose(fieldAt(rotate(probe),next),rotate(fieldAt(probe,next)),2e-11);
+ });
+}
+console.log("Grouped editing checks passed for both configurations.");

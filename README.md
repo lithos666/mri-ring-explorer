@@ -121,3 +121,18 @@ B轨迹用完整三维矢量插值与RK4积分，并逐段按解析场检查，�
 
 ## v10：编辑与辅助信息分区
 右侧只保留磁铁方向修改和文件与设计说明。显示与线圈、当前磁铁与磁环、14 环排布位于工作区下方，可按需展开；桌面编辑与实时预览仍在同一屏幕。
+
+## v11 · 在图上快速编辑 / Graph editing
+
+默认排布编辑页提供可点选的14环剖面及所选环的14/28列正面径向图。点选、缩放、平移、环切换仅改变视图。右侧默认修改所选环和半径的整层圆周磁铁，可切换单块；方向状态与混合统计均来自实际数据。六方向按每块自己的圆周角生成磁化矢量，位置、数量和方块体积保持不变。
+
+setDirections 批量修改原子提交；一次修改形成一个历史步骤，无变化不新增历史。统一方向覆盖该层差异，一次撤销恢复，范围外修改保留。旧 schemaVersion=1 JSON 与现有保存方式继续兼容。原有3D、对比、线圈及下方资料仍保留。
+
+编辑图和全14环中心轴场截面同时显示。中心解析读数立即更新；网格与三维轨迹由 Worker 重算。色标与初始场参考固定。重算期间保留上一份完整场结果及其模型，明确标为上一结果并禁用旧图取点；完成后整体替换。方案切换不显示上一方案结果，过期 Worker 回复被丢弃。手机固定场预览，编辑图与控制在下方操作。
+
+Physics is unchanged: analytical finite-cuboid superposition, equal fixed magnetization, full 3D vectors and trajectory checks. These are ideal relative-field experiments, not measured or clinically validated scanner performance. Original dimensions and repeat count remain provisional; new cube centers and ring spacing remain image estimates.
+
+Verification includes atomic group counts 14/28, all six local directions and opposite signs, geometry preservation, mixed edits and one-step undo/redo, no-op history, invalid batches, exact full-sum versus batch deltas, rotational covariance, Worker group/single edits, unchanged baseline reset, stale results, keyboard/touch, four viewport sizes and legacy file compatibility.
+
+    node --experimental-strip-types tests/design.test.ts
+    node --experimental-strip-types tests/live-field.test.ts

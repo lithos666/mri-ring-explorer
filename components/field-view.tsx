@@ -1,15 +1,15 @@
 "use client";
 import {useMemo,useState} from "react";
 import {Button} from "@/components/ui/button";
-import {directionNames,type ViewMode} from "@/lib/mri";
+import {directionNames,type ViewMode,type MRIModel} from "@/lib/mri";
 import {useMRIModel,useBaselineMRIModel} from "@/lib/mri-context";
 import {useLanguage,directionEnglish} from "@/lib/language-context";
 import {fieldAt,nearMagnet,sourcesFor,type Vec3} from "@/lib/field";
 import {planePoint,planeComponents,type LiveFieldResult} from "@/lib/live-field";
 const magnitude=(b:Vec3)=>Math.hypot(...b);
 function heatColor(r:number){const v=Math.max(0,Math.min(2,r));return v<1?"rgb("+Math.round(43+202*v)+","+Math.round(113+132*v)+",245)":"rgb(245,"+Math.round(245-164*(v-1))+","+Math.round(245-172*(v-1))+")";}
-export function FieldSection({data,onSelect,compact=false}:{data:LiveFieldResult|null;onSelect:(id:string)=>void;compact?:boolean}){
- const {t}=useLanguage(),model=useMRIModel(),baseline=useBaselineMRIModel();
+export function FieldSection({data,onSelect,compact=false,displayModel,readOnly=false}:{data:LiveFieldResult|null;onSelect:(id:string)=>void;compact?:boolean;displayModel?:MRIModel;readOnly?:boolean}){
+ const {t}=useLanguage(),contextModel=useMRIModel(),baseline=useBaselineMRIModel(); const model=displayModel??contextModel;
  const [point,setPoint]=useState<[number,number]>([0,0]),[surface,setSurface]=useState(false);
  const sources=useMemo(()=>sourcesFor(model),[model]),baseSources=useMemo(()=>sourcesFor(baseline),[baseline]);
  const angle=model.angularOffset,scale=16,size=model.blockSize*scale,units=model.unitMM??1;
@@ -35,7 +35,7 @@ export function FieldSection({data,onSelect,compact=false}:{data:LiveFieldResult
  const px=point[0]*scale,py=-point[1]*scale;
  return <div className={"field-section"+(compact?" field-compact":"")}>
  <div className="field-projection-note">{t("截面场强与 B 矢量投影 · 虚线为三维轨迹投影，不是平面磁感线","Slice magnitude and projected B vectors · Dashed curves are projections of 3D paths, not planar field lines")}</div>
- <svg viewBox="-215 -218 430 450" aria-label={t("当前设计的磁场截面。点击空气区域，读取三维磁场及截面外分量。","Field slice of the current design. Click an air region to read the 3D field and its out-of-plane component.")} onClick={e=>{const svg=e.currentTarget,p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const matrix=svg.getScreenCTM();if(!matrix)return;const c=p.matrixTransform(matrix.inverse());if(Math.abs(c.x)<=192&&Math.abs(c.y)<=192)probe([c.x/scale,-c.y/scale]);}}>
+ <svg viewBox="-215 -218 430 450" aria-label={t("当前设计的磁场截面。点击空气区域，读取三维磁场及截面外分量。","Field slice of the current design. Click an air region to read the 3D field and its out-of-plane component.")} onClick={e=>{if(readOnly)return;const svg=e.currentTarget,p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const matrix=svg.getScreenCTM();if(!matrix)return;const c=p.matrixTransform(matrix.inverse());if(Math.abs(c.x)<=192&&Math.abs(c.y)<=192)probe([c.x/scale,-c.y/scale]);}}>
  <defs><marker id="live-b-arrow" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0 0L5 2.5L0 5" fill="#255a44"/></marker><marker id="live-probe-arrow" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0 0L5 2.5L0 5" fill="#1d1d1f"/></marker><clipPath id="live-map-clip"><rect x="-192" y="-192" width="384" height="384"/></clipPath></defs>
  <rect x="-192" y="-192" width="384" height="384" fill="#fff" stroke="#d2d8de"/>
  <g clipPath="url(#live-map-clip)">{pixels}
@@ -45,7 +45,7 @@ export function FieldSection({data,onSelect,compact=false}:{data:LiveFieldResult
  <text x="-184" y="-201" fill="#59636f" fontSize="12">{t("R01 端 ↑ · 设备 Z 轴 ↑","R01 end ↑ · Device Z axis ↑")}</text>
  {section.map(m=>{
   const x=(m.sector===1?m.radius:-m.radius)*scale,y=-model.ringY(m.ring)*scale,n=planeComponents(m.normal,angle),planar=Math.hypot(n[0],n[1]),rotation=Math.atan2(-n[1],n[0])*180/Math.PI,label=m.id+" · "+t(directionNames[m.direction],directionEnglish[m.direction]);
-  return <g key={m.id} className="field-magnet" role="button" tabIndex={0} aria-label={label} onClick={e=>{e.stopPropagation();onSelect(m.id);}} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();onSelect(m.id);}}} transform={"translate("+x+" "+y+") rotate("+(planar>.1?rotation:0)+")"}><title>{label}</title>
+  return <g key={m.id} className="field-magnet" role="button" tabIndex={readOnly?-1:0} aria-disabled={readOnly} aria-label={label} onClick={e=>{e.stopPropagation();if(!readOnly)onSelect(m.id);}} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();if(!readOnly)onSelect(m.id);}}} transform={"translate("+x+" "+y+") rotate("+(planar>.1?rotation:0)+")"}><title>{label}</title>
    <rect x={-size/2} y={-size/2} width={size} height={size} fill={planar>.1?"#fff":n[2]>0?"#e03d34":"#0071e3"} stroke="#505761" strokeWidth=".5"/>
    {planar>.1?<><rect x={-size/2} y={-size/2} width={size*.2} height={size} fill="#0071e3"/><rect x={size*.3} y={-size/2} width={size*.2} height={size} fill="#e03d34"/><line x1={-size*.2} x2={size*.25} y1="0" y2="0" stroke="#1d1d1f" strokeWidth=".6" markerEnd="url(#live-probe-arrow)"/></>:<text x="0" y={size*.28} fontSize={size*.85} fill="#fff" textAnchor="middle">{n[2]>0?"⊙":"⊗"}</text>}
   </g>;
@@ -56,7 +56,7 @@ export function FieldSection({data,onSelect,compact=false}:{data:LiveFieldResult
  <div className="field-map-legend"><span>0</span><i/><span>1</span><i/><span>≥ 2 · |B| / |Bref|</span></div>
  <div className="probe-readout" aria-live="polite" data-probe-vector={JSON.stringify(b)}>
  <div><span>{t("取点","Probe")} · X′ {(point[0]*units).toFixed(1)} / Z {(point[1]*units).toFixed(1)}</span><strong>|B| / |Bref| = {relative.toFixed(6)}</strong><small>{t("截面外分量占 |B|：","Out-of-plane component / |B|: ")}{perpendicular.toFixed(3)}% · {projected[2]>=0?"⊙":"⊗"}</small><details className="probe-components"><summary>{t("探针分量","Probe components")}</summary><small>{t("相对初始场的矢量变化：","Vector change from initial field: ")}{delta.toFixed(4)}%</small><small>(Bx, By, Bz) / |Bref| = ({[b[0],-b[2],b[1]].map(v=>(v/reference).toFixed(6)).join(", ")})</small></details>{length<=reference*1e-8&&<small>{t("近零场：方向未定义","Near-zero field: direction undefined")}</small>}</div>
- <div className="probe-buttons"><Button variant="ghost" onClick={()=>probe([0,0])}>{t("中心","Center")}</Button><Button variant="ghost" onClick={()=>probe([0,6])}>{t("轴上","On axis")}</Button><Button variant="ghost" onClick={()=>probe([2.5,0])}>{t("孔内侧","Inside bore")}</Button></div>
+ <div className="probe-buttons"><Button variant="ghost" disabled={readOnly} onClick={()=>probe([0,0])}>{t("中心","Center")}</Button><Button variant="ghost" disabled={readOnly} onClick={()=>probe([0,6])}>{t("轴上","On axis")}</Button><Button variant="ghost" disabled={readOnly} onClick={()=>probe([2.5,0])}>{t("孔内侧","Inside bore")}</Button></div>
  {surface&&<p>{t("此处靠近磁体表面，请在通孔或外部空气中取点。","This point is near a magnet surface. Probe in the bore or surrounding air.")}</p>}
  </div>
  <p className="field-projection-note">{t("⊙ 表示指向截面外，⊗ 表示指向截面内。探针使用全部磁铁的解析场；热图是网格采样，色标固定以便比较修改前后。","⊙ points out of the slice; ⊗ points into it. Probes use the analytical field from all magnets. The heatmap is sampled on a grid, with a fixed scale for comparison.")}</p>

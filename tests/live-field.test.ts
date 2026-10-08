@@ -23,6 +23,18 @@ for(const model of Object.values(models)){
   const p=planePoint(-result.plane.bound+col*result.plane.step,-result.plane.bound+row*result.plane.step,result.plane.angle),exact=fieldAt(p,items);
   exact.forEach((v,k)=>assert.ok(Math.abs(v-result.plane.values[i*3+k])<1e-8));
  }
+ const grouped=applyOverrides(model,Object.fromEntries(model.magnets.filter(m=>m.ring===3&&m.radial===2).map(m=>[m.id,"in"])));
+ const mixed=applyOverrides(model,{...Object.fromEntries(grouped.magnets.filter(m=>m.ring===3&&m.radial===2).map(m=>[m.id,m.direction])),["R03-L2-A02"]:"axialUp"});
+ for(const current of [sourcesFor(grouped),sourcesFor(mixed)]){
+  const batch=await solveLiveField({...request,revision:4,current},baseline,{cancelled:()=>false});
+  assert.deepEqual(batch.center,fieldAt([0,0,0],current));
+  for(const [col,row] of [[30,30],[32,26],[20,35]]){
+   const i=row*batch.plane.n+col;if(batch.plane.mask[i])continue;
+   const exact=fieldAt(planePoint(-batch.plane.bound+col*batch.plane.step,-batch.plane.bound+row*batch.plane.step,batch.plane.angle),current);
+   exact.forEach((v,k)=>assert.ok(Math.abs(v-batch.plane.values[i*3+k])<1e-8));
+  }
+  assert.equal(batch.changedCount,model.repeats);
+ }
  const reset=await solveLiveField({...request,revision:2,current:baseSources},baseline,{cancelled:()=>false});
  assert.equal(reset.changedCount,0);assert.equal(reset.centerRatio,1);assert.deepEqual(reset.plane.values,baseline.plane);
  let cancel=false;const timer=setTimeout(()=>{cancel=true},40);

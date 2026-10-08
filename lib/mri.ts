@@ -1,7 +1,7 @@
 export type Direction="out"|"in"|"axial"|"axialUp"|"tangent"|"tangentNeg";
 export const DIRECTIONS:Direction[]=["out","in","axial","axialUp","tangent","tangentNeg"];
 export type Grade="Weak"|"Normal"|"Strong"|"Unspecified";
-export type ViewMode="assembly"|"single"|"section"|"rz"|"field";
+export type ViewMode="design"|"assembly"|"single"|"section"|"rz"|"field";
 export type SchemeId="original"|"latest";
 export const directionNames:Record<Direction,string>={out:"径向朝外",in:"径向朝内",axial:"轴向朝下（−Z）",axialUp:"轴向朝上（+Z）",tangent:"切向 +θ",tangentNeg:"切向 −θ"};
 export const directionShort:Record<Direction,string>={out:"外",in:"内",axial:"轴",axialUp:"轴↑",tangent:"切+",tangentNeg:"切−"};

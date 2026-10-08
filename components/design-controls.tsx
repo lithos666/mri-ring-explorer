@@ -5,14 +5,14 @@ import {Button} from "@/components/ui/button";
 import {useMRIModel,useBaselineMRIModel,useMRIDesign} from "@/lib/mri-context";
 import {useLanguage} from "@/lib/language-context";
 import {ringName,type Direction} from "@/lib/mri";
-import {EDIT_DIRECTIONS,MAX_IMPORT_BYTES} from "@/lib/design";
-interface Props{selectedRing:number;selected:string|null;onSelect:(id:string)=>void;}
+import {EDIT_DIRECTIONS,MAX_IMPORT_BYTES,selectionTargets,type EditScope} from "@/lib/design";
+interface Props{selectedRing:number;selected:string|null;onSelect:(id:string)=>void;scope:EditScope;onScope:(scope:EditScope)=>void;}
 const orientationCopy:Record<Direction,[string,string]>={
  out:["径向朝外","Radially outward"],in:["径向朝内","Radially inward"],
  axial:["轴向朝下 · −Z","Axial down · −Z"],axialUp:["轴向朝上 · +Z","Axial up · +Z"],
  tangent:["切向 · +θ","Tangential · +θ"],tangentNeg:["切向 · −θ","Tangential · −θ"]
 };
-export default function DesignControls({selectedRing,selected,onSelect}:Props){
+export default function DesignControls({selectedRing,selected,onSelect,scope,onScope}:Props){
  const {t,language}=useLanguage(),model=useMRIModel(),baseline=useBaselineMRIModel(),design=useMRIDesign();
  const fileInput=useRef<HTMLInputElement>(null);
  const [fileError,setFileError]=useState<[string,string]|null>(null);
@@ -20,6 +20,8 @@ export default function DesignControls({selectedRing,selected,onSelect}:Props){
  const ring=selectedMagnet?.ring??selectedRing,radial=selectedMagnet?.radial??1,sector=selectedMagnet?.sector??1;
  const id=ringName(ring)+"-L"+radial+"-A"+String(sector).padStart(2,"0"),magnet=model.magnetById.get(id)!;
  const original=baseline.magnetById.get(id)!;
+ const targets=selectionTargets(model,id,scope),counts=EDIT_DIRECTIONS.map(d=>({direction:d,count:targets.filter(m=>m.direction===d).length})).filter(c=>c.count);
+ const uniform=counts.length===1?counts[0].direction:null;
  const ringMagnets=model.magnets.filter(m=>m.ring===ring);
  const ringEdits=ringMagnets.filter(m=>design.overrides[m.id]!==undefined).length;
  const mixedLayers=model.rings[ring-1].directions.map((_,i)=>{
@@ -49,19 +51,27 @@ export default function DesignControls({selectedRing,selected,onSelect}:Props){
    </span>
   </div>
   <div className="magnet-design-editor">
-   <div className="magnet-locator">
-    <label>{t("磁环","Ring")}<select aria-label={t("编辑磁环","Editing ring")} value={ring} onChange={e=>choose(Number(e.target.value),radial,sector)}>{model.rings.map(r=><option key={r.id} value={r.id}>{ringName(r.id)}</option>)}</select></label>
-    <label>{t("径向层","Layer")}<select aria-label={t("编辑径向位置","Editing radial position")} value={radial} onChange={e=>choose(ring,Number(e.target.value),sector)}>{model.rings[ring-1].directions.map((_,i)=><option key={i} value={i+1}>L{i+1}</option>)}</select></label>
-    <label>{t("圆周列","Column")}<select aria-label={t("编辑圆周列","Editing circumferential column")} value={sector} onChange={e=>choose(ring,radial,Number(e.target.value))}>{Array.from({length:model.repeats},(_,i)=><option key={i} value={i+1}>A{String(i+1).padStart(2,"0")}</option>)}</select></label>
+   <p className="selection-instruction">{t("2 · 选择 N 极方向","2 · Choose the N-pole direction")}</p>
+   <div className="edit-scope" role="group" aria-label={t("修改范围","Edit scope")}>
+    <Button variant="outline" aria-pressed={scope==="layer"} onClick={()=>onScope("layer")}>{t("整层","Entire layer")} · {model.repeats}</Button>
+    <Button variant="outline" aria-pressed={scope==="magnet"} onClick={()=>onScope("magnet")}>{t("单块","Single magnet")}</Button>
    </div>
+   <div className="selected-target"><strong>{id}</strong><span>{scope==="layer"?ringName(ring)+" · L"+radial: t("仅选中这一块","This magnet only")}</span></div>
+   <div className="layer-strip-heading"><span>{t("内圈 → 外圈","Inner → outer")}</span><span>{ringName(ring)}</span></div>
+   <div className="edit-layer-strip" role="group" aria-label={t("放大的径向排布条","Enlarged radial layer strip")}>{model.rings[ring-1].directions.map((_,i)=>{
+    const members=ringMagnets.filter(m=>m.radial===i+1),same=members.every(m=>m.direction===members[0].direction),shown=scope==="layer"?(same?copy(members[0].direction):t("混合","Mixed")):copy(members.find(m=>m.sector===sector)!.direction);
+    return <Button key={i} variant="outline" aria-pressed={radial===i+1} onClick={()=>choose(ring,i+1,sector)}><b>L{i+1}</b><span>{shown}</span></Button>;
+   })}</div>
+   <p className="target-summary" data-target-count={targets.length} aria-live="polite">{t("将修改 ","Will change ")}<strong>{targets.length}</strong>{t(" 块"," magnets")} · {uniform?copy(uniform):t("混合方向","Mixed orientations")}</p>
+   {!uniform&&<ul className="mixed-direction-counts" aria-label={t("当前方向数量","Current orientation counts")}>{counts.map(c=><li key={c.direction}>{copy(c.direction)} <b>{c.count}</b></li>)}</ul>}
    <div className="orientation-editor">
-    <div className="orientation-editor-title"><strong>{magnet.id}</strong><span>{t("N 极方向","N-pole direction")}</span></div>
+    <div className="orientation-editor-title"><strong>{t("N 极方向","N-pole direction")}</strong><span>{t("S → N","S → N")}</span></div>
     <div className="orientation-presets" role="group" aria-label={t("选中磁铁的 N 极方向","Selected magnet N-pole orientation")}>
-     {EDIT_DIRECTIONS.map(direction=><Button key={direction} variant="outline" aria-pressed={magnet.direction===direction} onClick={()=>{onSelect(magnet.id);design.setDirection(magnet.id,direction);setFileError(null);}}>{copy(direction)}</Button>)}
+     {EDIT_DIRECTIONS.map(direction=><Button key={direction} variant="outline" aria-pressed={uniform===direction} onClick={()=>{onSelect(magnet.id);design.setDirections(targets.map(m=>({id:m.id,direction})));setFileError(null);}}>{copy(direction)}</Button>)}
     </div>
    </div>
   </div>
-  <p className="design-edit-hint">{t("只改变选中磁铁，预览和读数同步更新。","Changes affect only this magnet. Preview and readings update together.")}</p>
+  <p className="design-edit-hint">{scope==="layer"?t("同层所有圆周磁铁将统一为该方向，覆盖已有差异。一次撤销完整恢复。","All columns in this layer will use this direction, replacing any differences. One undo restores the whole layer."):t("只修改这一块；其他磁铁保持原状态。","Only this magnet changes; all others keep their orientations.")}</p>
   <div className="magnet-design-toolbar" role="group" aria-label={t("设计历史与保存","Design history and saving")}>
    <Button variant="outline" disabled={!design.canUndo} onClick={action(design.undo)} aria-label={t("撤销","Undo")} title={t("撤销","Undo")}><Undo2 size={15}/>{t("撤销","Undo")}</Button>
    <Button variant="outline" disabled={!design.canRedo} onClick={action(design.redo)} aria-label={t("重做","Redo")} title={t("重做","Redo")}><Redo2 size={15}/>{t("重做","Redo")}</Button>

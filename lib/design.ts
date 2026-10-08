@@ -5,6 +5,9 @@ export const MAX_IMPORT_BYTES=512*1024;
 export const MAX_HISTORY=100;
 export const EDIT_DIRECTIONS:readonly Direction[]=["out","in","axial","axialUp","tangent","tangentNeg"];
 export type DirectionOverrides=Record<string,Direction>;
+export type EditScope="layer"|"magnet";
+export interface DirectionUpdate{id:string;direction:Direction;}
+export function selectionTargets(model:MRIModel,id:string,scope:EditScope){const selected=model.magnetById.get(id);return !selected?[]:scope==="magnet"?[selected]:model.magnets.filter(m=>m.ring===selected.ring&&m.radial===selected.radial);}
 export interface DesignDocument{
  schemaVersion:typeof DESIGN_SCHEMA_VERSION;schemeId:SchemeId;geometrySignature:string;createdAt:string;
  overrides:{id:string;direction:Direction}[];
@@ -16,6 +19,7 @@ export interface DesignEntry{
 export type DesignState=Record<SchemeId,DesignEntry>;
 export type DesignAction=
  |{type:"edit";scheme:SchemeId;id:string;direction:Direction}
+ |{type:"batch";scheme:SchemeId;updates:readonly DirectionUpdate[]}
  |{type:"replace";scheme:SchemeId;overrides:DirectionOverrides}
  |{type:"undo"|"redo"|"reset";scheme:SchemeId}
  |{type:"saved";scheme:SchemeId;overrides:DirectionOverrides;at:string};
@@ -110,6 +114,12 @@ export function designReducer(state:DesignState,action:DesignAction):DesignState
  if(action.type==="edit"){
   const original=base.magnetById.get(action.id);if(!original||!EDIT_DIRECTIONS.includes(action.direction))return state;
   const overrides={...entry.overrides};if(action.direction===original.direction)delete overrides[action.id];else overrides[action.id]=action.direction;
+  next=commit(entry,overrides);
+ }else if(action.type==="batch"){
+  const seen=new Set<string>();
+  for(const update of action.updates){if(!base.magnetById.has(update.id)||!EDIT_DIRECTIONS.includes(update.direction)||seen.has(update.id))return state;seen.add(update.id);}
+  const overrides={...entry.overrides};
+  for(const update of action.updates){if(update.direction===base.magnetById.get(update.id)!.direction)delete overrides[update.id];else overrides[update.id]=update.direction;}
   next=commit(entry,overrides);
  }else if(action.type==="replace"){
   next=commit(entry,normalizeOverrides(base,action.overrides));
