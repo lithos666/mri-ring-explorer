@@ -34,7 +34,7 @@ The field uses supplied MATLAB geometry and Br = 1.43 T in an ideal finite-cuboi
 
 # 磁环实验台 · 两套 14 环 IO MRI 方案
 
-中文交互式 MRI 原理与结构查看器。React、TypeScript、Three.js；Sites Worker 部署。当前版本 v15，中英双语。
+中文交互式 MRI 原理与结构查看器。React、TypeScript、Three.js；Sites Worker 部署。当前版本 v16，中英双语。
 
 ## 方案与数据
 
@@ -171,3 +171,13 @@ Both schemes load their precomputed full initial 3D field without a Compute clic
 Web source is at the root; MATLAB programs are in `matlab/`. Geometries and Br are taken from the supplied declarations. Center and probe readouts show ideal mT predictions. Old schema-v1 orientation files migrate by stable magnet ID with an explicit geometry notice; new exports use the current signature. Initial fields load automatically; editing still requires Compute.
 
     node --experimental-strip-types tests/calibration.test.ts
+
+## v16 · 磁铁边缘尺寸图 / Magnet surface dimensions
+
+新版方案的工作区下方增加双语尺寸图，随页首语言按钮切换。可打开大图，或下载当前语言的 PNG / SVG。图中标注磁铁径向面的半径、径向面间净距及轴向端面坐标，不标注中心距离。尺寸来自 `matlab/GenerateIORingHackathonBig_37mT.m` 的当前数值声明；源 SHA-256 为 `b9720c11f6b21a413fc11433f13e519d621103196caa48e38dcdad7b77c19b8c`。
+
+14 个轴向层、每层 28 圆周列、62 个径向位置，共 1,736 块；磁块名义尺寸 12×12×12 mm。相邻层磁铁端面净距 26 mm，最外两端面距离 506 mm。径向面包络 120–192 mm；包含切向角点的实际最大圆柱半径约 192.094 mm。径向净距为 0 的位置表示磁铁贴面，不能解释为已留隔墙。
+
+图上的磁化箭头显示 MATLAB 初始方向；方向编辑保持尺寸和位置不变。图片是名义磁铁几何，不含槽加工余量、公差、胶层和隔墙设计。旧方案有独立尺寸，因此不显示本新版尺寸图。资产在 `public/diagrams/mri-14-layer-edge-dimensions-{zh,en}.{svg,png}`。
+
+The new configuration includes a bilingual surface-dimension diagram below the workbench. The language switch also changes the drawing and its full-size / PNG / SVG links. Labels show radial face positions, face-to-face gaps, and axial end-face coordinates. The 12 mm cubes repeat in 28 columns across 14 axial layers, totaling 1,736 magnets; adjacent axial faces are 26 mm apart and the overall axial extent is 506 mm. Zero radial gaps mean touching faces. Arrows show the initial MATLAB orientations; direction edits do not move or resize magnets. Slot clearance, tolerances and separating walls are not specified. This diagram is not shown for the original configuration.

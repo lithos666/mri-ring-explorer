@@ -1,0 +1,454 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="710" viewBox="0 0 1800 710">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:"Microsoft YaHei","Segoe UI",sans-serif;fill:#1d1d1f}.small{font-size:13px}.label{font-size:15px}.muted{fill:#777}.edge{font-size:13px;fill:#333}.gap{font-size:14px;fill:#536575}</style>
+<text x="40" y="40" font-size="29" font-weight="600">Magnet Surface Dimensions · 14 Axial Layers</text>
+<text x="40" y="73" class="label muted">R–Z section · Magnet faces and clear gaps · Dimensions in mm · 28 magnets per radial position</text>
+<text x="40" y="105" class="label">12×12×12 blocks · ↑ N outward  ↓ N inward  → N toward −Z  |  Left: radial face positions  Right: clear gaps</text>
+<line x1="130" y1="410" x2="1648" y2="410" stroke="#e5e7eb"/>
+<text x="82" y="414" class="small muted" text-anchor="end">110</text>
+<line x1="130" y1="380" x2="1648" y2="380" stroke="#e5e7eb"/>
+<text x="82" y="384" class="small muted" text-anchor="end">120</text>
+<line x1="130" y1="320" x2="1648" y2="320" stroke="#e5e7eb"/>
+<text x="82" y="324" class="small muted" text-anchor="end">140</text>
+<line x1="130" y1="260" x2="1648" y2="260" stroke="#e5e7eb"/>
+<text x="82" y="264" class="small muted" text-anchor="end">160</text>
+<line x1="130" y1="200" x2="1648" y2="200" stroke="#e5e7eb"/>
+<text x="82" y="204" class="small muted" text-anchor="end">180</text>
+<line x1="130" y1="164" x2="1648" y2="164" stroke="#e5e7eb"/>
+<text x="82" y="168" class="small muted" text-anchor="end">192</text>
+<line x1="130" y1="140" x2="1648" y2="140" stroke="#e5e7eb"/>
+<text x="82" y="144" class="small muted" text-anchor="end">200</text>
+<text x="38" y="125" class="small muted">R / mm</text>
+<rect data-kind="magnet" data-ring="R01" x="130" y="338" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 148 364 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R01" x="130" y="302" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 148 328 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R01" x="130" y="266" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 148 292 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R01" x="130" y="230" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 148 256 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R01" x="130" y="167" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 148 193 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="124" y1="374" x2="130" y2="374" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R01" data-mm="122" x="121" y="378.5" text-anchor="end" class="edge">122</text>
+<line x1="124" y1="338" x2="130" y2="338" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R01" data-mm="134" x="121" y="342.5" text-anchor="end" class="edge">134</text>
+<line x1="124" y1="302" x2="130" y2="302" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R01" data-mm="146" x="121" y="306.5" text-anchor="end" class="edge">146</text>
+<line x1="124" y1="266" x2="130" y2="266" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R01" data-mm="158" x="121" y="270.5" text-anchor="end" class="edge">158</text>
+<line x1="124" y1="230" x2="130" y2="230" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R01" data-mm="170" x="121" y="234.5" text-anchor="end" class="edge">170</text>
+<line x1="124" y1="203" x2="130" y2="203" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R01" data-mm="179" x="121" y="207.5" text-anchor="end" class="edge">179</text>
+<line x1="124" y1="167" x2="130" y2="167" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R01" data-mm="191" x="121" y="171.5" text-anchor="end" class="edge">191</text>
+<path d="M 166 230 H 181 M 166 203 H 181 M 178 230 V 203" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R01" data-mm="9" x="183" y="221.5" class="gap">9</text>
+<text x="148" y="473" text-anchor="middle" font-size="18" font-weight="600">R01</text>
+<text data-kind="axial-edges" data-ring="R01" x="148" y="500" text-anchor="middle" class="small">Z 241–253</text>
+<text x="148" y="524" text-anchor="middle" class="small muted">140 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R01" x="148" y="583" text-anchor="middle" class="small">0 / 0 / 0 / 9</text>
+<rect data-kind="magnet" data-ring="R02" x="244" y="344" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 262 370 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R02" x="244" y="308" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 262 334 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R02" x="244" y="272" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 262 298 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R02" x="244" y="236" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 262 262 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R02" x="244" y="200" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 262 226 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R02" x="244" y="164" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 262 190 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="238" y1="380" x2="244" y2="380" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R02" data-mm="120" x="235" y="384.5" text-anchor="end" class="edge">120</text>
+<line x1="238" y1="344" x2="244" y2="344" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R02" data-mm="132" x="235" y="348.5" text-anchor="end" class="edge">132</text>
+<line x1="238" y1="308" x2="244" y2="308" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R02" data-mm="144" x="235" y="312.5" text-anchor="end" class="edge">144</text>
+<line x1="238" y1="272" x2="244" y2="272" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R02" data-mm="156" x="235" y="276.5" text-anchor="end" class="edge">156</text>
+<line x1="238" y1="236" x2="244" y2="236" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R02" data-mm="168" x="235" y="240.5" text-anchor="end" class="edge">168</text>
+<line x1="238" y1="200" x2="244" y2="200" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R02" data-mm="180" x="235" y="204.5" text-anchor="end" class="edge">180</text>
+<line x1="238" y1="164" x2="244" y2="164" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R02" data-mm="192" x="235" y="168.5" text-anchor="end" class="edge">192</text>
+<text x="262" y="473" text-anchor="middle" font-size="18" font-weight="600">R02</text>
+<text data-kind="axial-edges" data-ring="R02" x="262" y="500" text-anchor="middle" class="small">Z 203–215</text>
+<text x="262" y="524" text-anchor="middle" class="small muted">168 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R02" x="262" y="583" text-anchor="middle" class="small">0 / 0 / 0 / 0 / 0</text>
+<rect data-kind="magnet" data-ring="R03" x="358" y="308" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 376 334 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R03" x="358" y="272" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 376 298 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R03" x="358" y="236" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 376 262 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R03" x="358" y="200" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 376 226 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R03" x="358" y="164" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 376 190 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="352" y1="344" x2="358" y2="344" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R03" data-mm="132" x="349" y="348.5" text-anchor="end" class="edge">132</text>
+<line x1="352" y1="308" x2="358" y2="308" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R03" data-mm="144" x="349" y="312.5" text-anchor="end" class="edge">144</text>
+<line x1="352" y1="272" x2="358" y2="272" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R03" data-mm="156" x="349" y="276.5" text-anchor="end" class="edge">156</text>
+<line x1="352" y1="236" x2="358" y2="236" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R03" data-mm="168" x="349" y="240.5" text-anchor="end" class="edge">168</text>
+<line x1="352" y1="200" x2="358" y2="200" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R03" data-mm="180" x="349" y="204.5" text-anchor="end" class="edge">180</text>
+<line x1="352" y1="164" x2="358" y2="164" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R03" data-mm="192" x="349" y="168.5" text-anchor="end" class="edge">192</text>
+<text x="376" y="473" text-anchor="middle" font-size="18" font-weight="600">R03</text>
+<text data-kind="axial-edges" data-ring="R03" x="376" y="500" text-anchor="middle" class="small">Z 165–177</text>
+<text x="376" y="524" text-anchor="middle" class="small muted">140 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R03" x="376" y="583" text-anchor="middle" class="small">0 / 0 / 0 / 0</text>
+<rect data-kind="magnet" data-ring="R04" x="472" y="344" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 490 370 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R04" x="472" y="308" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 490 334 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R04" x="472" y="272" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 490 298 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R04" x="472" y="236" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 490 262 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R04" x="472" y="200" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 490 226 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R04" x="472" y="164" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 490 190 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="466" y1="380" x2="472" y2="380" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R04" data-mm="120" x="463" y="384.5" text-anchor="end" class="edge">120</text>
+<line x1="466" y1="344" x2="472" y2="344" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R04" data-mm="132" x="463" y="348.5" text-anchor="end" class="edge">132</text>
+<line x1="466" y1="308" x2="472" y2="308" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R04" data-mm="144" x="463" y="312.5" text-anchor="end" class="edge">144</text>
+<line x1="466" y1="272" x2="472" y2="272" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R04" data-mm="156" x="463" y="276.5" text-anchor="end" class="edge">156</text>
+<line x1="466" y1="236" x2="472" y2="236" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R04" data-mm="168" x="463" y="240.5" text-anchor="end" class="edge">168</text>
+<line x1="466" y1="200" x2="472" y2="200" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R04" data-mm="180" x="463" y="204.5" text-anchor="end" class="edge">180</text>
+<line x1="466" y1="164" x2="472" y2="164" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R04" data-mm="192" x="463" y="168.5" text-anchor="end" class="edge">192</text>
+<text x="490" y="473" text-anchor="middle" font-size="18" font-weight="600">R04</text>
+<text data-kind="axial-edges" data-ring="R04" x="490" y="500" text-anchor="middle" class="small">Z 127–139</text>
+<text x="490" y="524" text-anchor="middle" class="small muted">168 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R04" x="490" y="583" text-anchor="middle" class="small">0 / 0 / 0 / 0 / 0</text>
+<rect data-kind="magnet" data-ring="R05" x="586" y="341" width="36" height="36" fill="#976426" stroke="white" stroke-width="0.9"/>
+<path d="M 596 359 h 16 m -4 -4 l 4 4 l -4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R05" x="586" y="272" width="36" height="36" fill="#976426" stroke="white" stroke-width="0.9"/>
+<path d="M 596 290 h 16 m -4 -4 l 4 4 l -4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R05" x="586" y="197" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 604 207 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="580" y1="377" x2="586" y2="377" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R05" data-mm="121" x="577" y="381.5" text-anchor="end" class="edge">121</text>
+<line x1="580" y1="341" x2="586" y2="341" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R05" data-mm="133" x="577" y="345.5" text-anchor="end" class="edge">133</text>
+<line x1="580" y1="308" x2="586" y2="308" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R05" data-mm="144" x="577" y="312.5" text-anchor="end" class="edge">144</text>
+<line x1="580" y1="272" x2="586" y2="272" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R05" data-mm="156" x="577" y="276.5" text-anchor="end" class="edge">156</text>
+<line x1="580" y1="233" x2="586" y2="233" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R05" data-mm="169" x="577" y="237.5" text-anchor="end" class="edge">169</text>
+<line x1="580" y1="197" x2="586" y2="197" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R05" data-mm="181" x="577" y="201.5" text-anchor="end" class="edge">181</text>
+<path d="M 622 341 H 637 M 622 308 H 637 M 634 341 V 308" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R05" data-mm="11" x="639" y="329.5" class="gap">11</text>
+<path d="M 622 272 H 637 M 622 233 H 637 M 634 272 V 233" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R05" data-mm="13" x="639" y="257.5" class="gap">13</text>
+<text x="604" y="473" text-anchor="middle" font-size="18" font-weight="600">R05</text>
+<text data-kind="axial-edges" data-ring="R05" x="604" y="500" text-anchor="middle" class="small">Z 89–101</text>
+<text x="604" y="524" text-anchor="middle" class="small muted">84 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R05" x="604" y="583" text-anchor="middle" class="small">11 / 13</text>
+<rect data-kind="magnet" data-ring="R06" x="700" y="326" width="36" height="36" fill="#976426" stroke="white" stroke-width="0.9"/>
+<path d="M 710 344 h 16 m -4 -4 l 4 4 l -4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R06" x="700" y="254" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 718 280 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R06" x="700" y="164" width="36" height="36" fill="#976426" stroke="white" stroke-width="0.9"/>
+<path d="M 710 182 h 16 m -4 -4 l 4 4 l -4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="694" y1="362" x2="700" y2="362" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R06" data-mm="126" x="691" y="366.5" text-anchor="end" class="edge">126</text>
+<line x1="694" y1="326" x2="700" y2="326" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R06" data-mm="138" x="691" y="330.5" text-anchor="end" class="edge">138</text>
+<line x1="694" y1="290" x2="700" y2="290" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R06" data-mm="150" x="691" y="294.5" text-anchor="end" class="edge">150</text>
+<line x1="694" y1="254" x2="700" y2="254" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R06" data-mm="162" x="691" y="258.5" text-anchor="end" class="edge">162</text>
+<line x1="694" y1="200" x2="700" y2="200" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R06" data-mm="180" x="691" y="204.5" text-anchor="end" class="edge">180</text>
+<line x1="694" y1="164" x2="700" y2="164" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R06" data-mm="192" x="691" y="168.5" text-anchor="end" class="edge">192</text>
+<path d="M 736 326 H 751 M 736 290 H 751 M 748 326 V 290" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R06" data-mm="12" x="753" y="313" class="gap">12</text>
+<path d="M 736 254 H 751 M 736 200 H 751 M 748 254 V 200" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R06" data-mm="18" x="753" y="232" class="gap">18</text>
+<text x="718" y="473" text-anchor="middle" font-size="18" font-weight="600">R06</text>
+<text data-kind="axial-edges" data-ring="R06" x="718" y="500" text-anchor="middle" class="small">Z 51–63</text>
+<text x="718" y="524" text-anchor="middle" class="small muted">84 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R06" x="718" y="583" text-anchor="middle" class="small">12 / 18</text>
+<rect data-kind="magnet" data-ring="R07" x="814" y="341" width="36" height="36" fill="#976426" stroke="white" stroke-width="0.9"/>
+<path d="M 824 359 h 16 m -4 -4 l 4 4 l -4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R07" x="814" y="236" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 832 262 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R07" x="814" y="164" width="36" height="36" fill="#976426" stroke="white" stroke-width="0.9"/>
+<path d="M 824 182 h 16 m -4 -4 l 4 4 l -4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="808" y1="377" x2="814" y2="377" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R07" data-mm="121" x="805" y="381.5" text-anchor="end" class="edge">121</text>
+<line x1="808" y1="341" x2="814" y2="341" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R07" data-mm="133" x="805" y="345.5" text-anchor="end" class="edge">133</text>
+<line x1="808" y1="272" x2="814" y2="272" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R07" data-mm="156" x="805" y="276.5" text-anchor="end" class="edge">156</text>
+<line x1="808" y1="236" x2="814" y2="236" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R07" data-mm="168" x="805" y="240.5" text-anchor="end" class="edge">168</text>
+<line x1="808" y1="200" x2="814" y2="200" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R07" data-mm="180" x="805" y="204.5" text-anchor="end" class="edge">180</text>
+<line x1="808" y1="164" x2="814" y2="164" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R07" data-mm="192" x="805" y="168.5" text-anchor="end" class="edge">192</text>
+<path d="M 850 341 H 865 M 850 272 H 865 M 862 341 V 272" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R07" data-mm="23" x="867" y="311.5" class="gap">23</text>
+<path d="M 850 236 H 865 M 850 200 H 865 M 862 236 V 200" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R07" data-mm="12" x="867" y="223" class="gap">12</text>
+<text x="832" y="473" text-anchor="middle" font-size="18" font-weight="600">R07</text>
+<text data-kind="axial-edges" data-ring="R07" x="832" y="500" text-anchor="middle" class="small">Z 13–25</text>
+<text x="832" y="524" text-anchor="middle" class="small muted">84 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R07" x="832" y="583" text-anchor="middle" class="small">23 / 12</text>
+<rect data-kind="magnet" data-ring="R08" x="928" y="341" width="36" height="36" fill="#976426" stroke="white" stroke-width="0.9"/>
+<path d="M 938 359 h 16 m -4 -4 l 4 4 l -4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R08" x="928" y="236" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 946 246 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R08" x="928" y="164" width="36" height="36" fill="#976426" stroke="white" stroke-width="0.9"/>
+<path d="M 938 182 h 16 m -4 -4 l 4 4 l -4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="922" y1="377" x2="928" y2="377" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R08" data-mm="121" x="919" y="381.5" text-anchor="end" class="edge">121</text>
+<line x1="922" y1="341" x2="928" y2="341" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R08" data-mm="133" x="919" y="345.5" text-anchor="end" class="edge">133</text>
+<line x1="922" y1="272" x2="928" y2="272" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R08" data-mm="156" x="919" y="276.5" text-anchor="end" class="edge">156</text>
+<line x1="922" y1="236" x2="928" y2="236" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R08" data-mm="168" x="919" y="240.5" text-anchor="end" class="edge">168</text>
+<line x1="922" y1="200" x2="928" y2="200" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R08" data-mm="180" x="919" y="204.5" text-anchor="end" class="edge">180</text>
+<line x1="922" y1="164" x2="928" y2="164" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R08" data-mm="192" x="919" y="168.5" text-anchor="end" class="edge">192</text>
+<path d="M 964 341 H 979 M 964 272 H 979 M 976 341 V 272" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R08" data-mm="23" x="981" y="311.5" class="gap">23</text>
+<path d="M 964 236 H 979 M 964 200 H 979 M 976 236 V 200" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R08" data-mm="12" x="981" y="223" class="gap">12</text>
+<text x="946" y="473" text-anchor="middle" font-size="18" font-weight="600">R08</text>
+<text data-kind="axial-edges" data-ring="R08" x="946" y="500" text-anchor="middle" class="small">Z −25–−13</text>
+<text x="946" y="524" text-anchor="middle" class="small muted">84 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R08" x="946" y="583" text-anchor="middle" class="small">23 / 12</text>
+<rect data-kind="magnet" data-ring="R09" x="1042" y="326" width="36" height="36" fill="#976426" stroke="white" stroke-width="0.9"/>
+<path d="M 1052 344 h 16 m -4 -4 l 4 4 l -4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R09" x="1042" y="254" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1060 264 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R09" x="1042" y="164" width="36" height="36" fill="#976426" stroke="white" stroke-width="0.9"/>
+<path d="M 1052 182 h 16 m -4 -4 l 4 4 l -4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="1036" y1="362" x2="1042" y2="362" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R09" data-mm="126" x="1033" y="366.5" text-anchor="end" class="edge">126</text>
+<line x1="1036" y1="326" x2="1042" y2="326" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R09" data-mm="138" x="1033" y="330.5" text-anchor="end" class="edge">138</text>
+<line x1="1036" y1="290" x2="1042" y2="290" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R09" data-mm="150" x="1033" y="294.5" text-anchor="end" class="edge">150</text>
+<line x1="1036" y1="254" x2="1042" y2="254" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R09" data-mm="162" x="1033" y="258.5" text-anchor="end" class="edge">162</text>
+<line x1="1036" y1="200" x2="1042" y2="200" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R09" data-mm="180" x="1033" y="204.5" text-anchor="end" class="edge">180</text>
+<line x1="1036" y1="164" x2="1042" y2="164" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R09" data-mm="192" x="1033" y="168.5" text-anchor="end" class="edge">192</text>
+<path d="M 1078 326 H 1093 M 1078 290 H 1093 M 1090 326 V 290" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R09" data-mm="12" x="1095" y="313" class="gap">12</text>
+<path d="M 1078 254 H 1093 M 1078 200 H 1093 M 1090 254 V 200" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R09" data-mm="18" x="1095" y="232" class="gap">18</text>
+<text x="1060" y="473" text-anchor="middle" font-size="18" font-weight="600">R09</text>
+<text data-kind="axial-edges" data-ring="R09" x="1060" y="500" text-anchor="middle" class="small">Z −63–−51</text>
+<text x="1060" y="524" text-anchor="middle" class="small muted">84 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R09" x="1060" y="583" text-anchor="middle" class="small">12 / 18</text>
+<rect data-kind="magnet" data-ring="R10" x="1156" y="341" width="36" height="36" fill="#976426" stroke="white" stroke-width="0.9"/>
+<path d="M 1166 359 h 16 m -4 -4 l 4 4 l -4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R10" x="1156" y="272" width="36" height="36" fill="#976426" stroke="white" stroke-width="0.9"/>
+<path d="M 1166 290 h 16 m -4 -4 l 4 4 l -4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R10" x="1156" y="197" width="36" height="36" fill="#a12c30" stroke="white" stroke-width="0.9"/>
+<path d="M 1174 223 v -16 m -4 4 l 4 -4 l 4 4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="1150" y1="377" x2="1156" y2="377" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R10" data-mm="121" x="1147" y="381.5" text-anchor="end" class="edge">121</text>
+<line x1="1150" y1="341" x2="1156" y2="341" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R10" data-mm="133" x="1147" y="345.5" text-anchor="end" class="edge">133</text>
+<line x1="1150" y1="308" x2="1156" y2="308" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R10" data-mm="144" x="1147" y="312.5" text-anchor="end" class="edge">144</text>
+<line x1="1150" y1="272" x2="1156" y2="272" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R10" data-mm="156" x="1147" y="276.5" text-anchor="end" class="edge">156</text>
+<line x1="1150" y1="233" x2="1156" y2="233" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R10" data-mm="169" x="1147" y="237.5" text-anchor="end" class="edge">169</text>
+<line x1="1150" y1="197" x2="1156" y2="197" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R10" data-mm="181" x="1147" y="201.5" text-anchor="end" class="edge">181</text>
+<path d="M 1192 341 H 1207 M 1192 308 H 1207 M 1204 341 V 308" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R10" data-mm="11" x="1209" y="329.5" class="gap">11</text>
+<path d="M 1192 272 H 1207 M 1192 233 H 1207 M 1204 272 V 233" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R10" data-mm="13" x="1209" y="257.5" class="gap">13</text>
+<text x="1174" y="473" text-anchor="middle" font-size="18" font-weight="600">R10</text>
+<text data-kind="axial-edges" data-ring="R10" x="1174" y="500" text-anchor="middle" class="small">Z −101–−89</text>
+<text x="1174" y="524" text-anchor="middle" class="small muted">84 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R10" x="1174" y="583" text-anchor="middle" class="small">11 / 13</text>
+<rect data-kind="magnet" data-ring="R11" x="1270" y="344" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1288 354 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R11" x="1270" y="308" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1288 318 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R11" x="1270" y="272" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1288 282 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R11" x="1270" y="236" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1288 246 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R11" x="1270" y="200" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1288 210 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R11" x="1270" y="164" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1288 174 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="1264" y1="380" x2="1270" y2="380" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R11" data-mm="120" x="1261" y="384.5" text-anchor="end" class="edge">120</text>
+<line x1="1264" y1="344" x2="1270" y2="344" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R11" data-mm="132" x="1261" y="348.5" text-anchor="end" class="edge">132</text>
+<line x1="1264" y1="308" x2="1270" y2="308" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R11" data-mm="144" x="1261" y="312.5" text-anchor="end" class="edge">144</text>
+<line x1="1264" y1="272" x2="1270" y2="272" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R11" data-mm="156" x="1261" y="276.5" text-anchor="end" class="edge">156</text>
+<line x1="1264" y1="236" x2="1270" y2="236" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R11" data-mm="168" x="1261" y="240.5" text-anchor="end" class="edge">168</text>
+<line x1="1264" y1="200" x2="1270" y2="200" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R11" data-mm="180" x="1261" y="204.5" text-anchor="end" class="edge">180</text>
+<line x1="1264" y1="164" x2="1270" y2="164" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R11" data-mm="192" x="1261" y="168.5" text-anchor="end" class="edge">192</text>
+<text x="1288" y="473" text-anchor="middle" font-size="18" font-weight="600">R11</text>
+<text data-kind="axial-edges" data-ring="R11" x="1288" y="500" text-anchor="middle" class="small">Z −139–−127</text>
+<text x="1288" y="524" text-anchor="middle" class="small muted">168 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R11" x="1288" y="583" text-anchor="middle" class="small">0 / 0 / 0 / 0 / 0</text>
+<rect data-kind="magnet" data-ring="R12" x="1384" y="308" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1402 318 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R12" x="1384" y="272" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1402 282 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R12" x="1384" y="236" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1402 246 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R12" x="1384" y="200" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1402 210 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R12" x="1384" y="164" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1402 174 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="1378" y1="344" x2="1384" y2="344" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R12" data-mm="132" x="1375" y="348.5" text-anchor="end" class="edge">132</text>
+<line x1="1378" y1="308" x2="1384" y2="308" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R12" data-mm="144" x="1375" y="312.5" text-anchor="end" class="edge">144</text>
+<line x1="1378" y1="272" x2="1384" y2="272" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R12" data-mm="156" x="1375" y="276.5" text-anchor="end" class="edge">156</text>
+<line x1="1378" y1="236" x2="1384" y2="236" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R12" data-mm="168" x="1375" y="240.5" text-anchor="end" class="edge">168</text>
+<line x1="1378" y1="200" x2="1384" y2="200" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R12" data-mm="180" x="1375" y="204.5" text-anchor="end" class="edge">180</text>
+<line x1="1378" y1="164" x2="1384" y2="164" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R12" data-mm="192" x="1375" y="168.5" text-anchor="end" class="edge">192</text>
+<text x="1402" y="473" text-anchor="middle" font-size="18" font-weight="600">R12</text>
+<text data-kind="axial-edges" data-ring="R12" x="1402" y="500" text-anchor="middle" class="small">Z −177–−165</text>
+<text x="1402" y="524" text-anchor="middle" class="small muted">140 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R12" x="1402" y="583" text-anchor="middle" class="small">0 / 0 / 0 / 0</text>
+<rect data-kind="magnet" data-ring="R13" x="1498" y="344" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1516 354 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R13" x="1498" y="308" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1516 318 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R13" x="1498" y="272" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1516 282 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R13" x="1498" y="236" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1516 246 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R13" x="1498" y="200" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1516 210 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R13" x="1498" y="164" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1516 174 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="1492" y1="380" x2="1498" y2="380" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R13" data-mm="120" x="1489" y="384.5" text-anchor="end" class="edge">120</text>
+<line x1="1492" y1="344" x2="1498" y2="344" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R13" data-mm="132" x="1489" y="348.5" text-anchor="end" class="edge">132</text>
+<line x1="1492" y1="308" x2="1498" y2="308" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R13" data-mm="144" x="1489" y="312.5" text-anchor="end" class="edge">144</text>
+<line x1="1492" y1="272" x2="1498" y2="272" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R13" data-mm="156" x="1489" y="276.5" text-anchor="end" class="edge">156</text>
+<line x1="1492" y1="236" x2="1498" y2="236" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R13" data-mm="168" x="1489" y="240.5" text-anchor="end" class="edge">168</text>
+<line x1="1492" y1="200" x2="1498" y2="200" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R13" data-mm="180" x="1489" y="204.5" text-anchor="end" class="edge">180</text>
+<line x1="1492" y1="164" x2="1498" y2="164" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R13" data-mm="192" x="1489" y="168.5" text-anchor="end" class="edge">192</text>
+<text x="1516" y="473" text-anchor="middle" font-size="18" font-weight="600">R13</text>
+<text data-kind="axial-edges" data-ring="R13" x="1516" y="500" text-anchor="middle" class="small">Z −215–−203</text>
+<text x="1516" y="524" text-anchor="middle" class="small muted">168 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R13" x="1516" y="583" text-anchor="middle" class="small">0 / 0 / 0 / 0 / 0</text>
+<rect data-kind="magnet" data-ring="R14" x="1612" y="338" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1630 348 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R14" x="1612" y="302" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1630 312 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R14" x="1612" y="266" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1630 276 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R14" x="1612" y="230" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1630 240 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect data-kind="magnet" data-ring="R14" x="1612" y="167" width="36" height="36" fill="#174ea6" stroke="white" stroke-width="0.9"/>
+<path d="M 1630 177 v 16 m -4 -4 l 4 4 l 4 -4" fill="none" stroke="white" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="1606" y1="374" x2="1612" y2="374" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R14" data-mm="122" x="1603" y="378.5" text-anchor="end" class="edge">122</text>
+<line x1="1606" y1="338" x2="1612" y2="338" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R14" data-mm="134" x="1603" y="342.5" text-anchor="end" class="edge">134</text>
+<line x1="1606" y1="302" x2="1612" y2="302" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R14" data-mm="146" x="1603" y="306.5" text-anchor="end" class="edge">146</text>
+<line x1="1606" y1="266" x2="1612" y2="266" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R14" data-mm="158" x="1603" y="270.5" text-anchor="end" class="edge">158</text>
+<line x1="1606" y1="230" x2="1612" y2="230" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R14" data-mm="170" x="1603" y="234.5" text-anchor="end" class="edge">170</text>
+<line x1="1606" y1="203" x2="1612" y2="203" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R14" data-mm="179" x="1603" y="207.5" text-anchor="end" class="edge">179</text>
+<line x1="1606" y1="167" x2="1612" y2="167" stroke="#555" stroke-width="0.9"/>
+<text data-kind="radial-edge" data-ring="R14" data-mm="191" x="1603" y="171.5" text-anchor="end" class="edge">191</text>
+<path d="M 1648 230 H 1663 M 1648 203 H 1663 M 1660 230 V 203" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<text data-kind="radial-gap" data-ring="R14" data-mm="9" x="1665" y="221.5" class="gap">9</text>
+<text x="1630" y="473" text-anchor="middle" font-size="18" font-weight="600">R14</text>
+<text data-kind="axial-edges" data-ring="R14" x="1630" y="500" text-anchor="middle" class="small">Z −253–−241</text>
+<text x="1630" y="524" text-anchor="middle" class="small muted">140 magnets</text>
+<text data-kind="radial-gap-list" data-ring="R14" x="1630" y="583" text-anchor="middle" class="small">0 / 0 / 0 / 9</text>
+<path d="M 166 432 V 442 M 166 437 H 244 M 244 432 V 442" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<rect x="192" y="426" width="26" height="21" fill="white"/>
+<text data-kind="axial-gap" data-mm="26" x="205" y="441.5" class="gap" text-anchor="middle">26</text>
+<path d="M 280 432 V 442 M 280 437 H 358 M 358 432 V 442" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<rect x="306" y="426" width="26" height="21" fill="white"/>
+<text data-kind="axial-gap" data-mm="26" x="319" y="441.5" class="gap" text-anchor="middle">26</text>
+<path d="M 394 432 V 442 M 394 437 H 472 M 472 432 V 442" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<rect x="420" y="426" width="26" height="21" fill="white"/>
+<text data-kind="axial-gap" data-mm="26" x="433" y="441.5" class="gap" text-anchor="middle">26</text>
+<path d="M 508 432 V 442 M 508 437 H 586 M 586 432 V 442" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<rect x="534" y="426" width="26" height="21" fill="white"/>
+<text data-kind="axial-gap" data-mm="26" x="547" y="441.5" class="gap" text-anchor="middle">26</text>
+<path d="M 622 432 V 442 M 622 437 H 700 M 700 432 V 442" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<rect x="648" y="426" width="26" height="21" fill="white"/>
+<text data-kind="axial-gap" data-mm="26" x="661" y="441.5" class="gap" text-anchor="middle">26</text>
+<path d="M 736 432 V 442 M 736 437 H 814 M 814 432 V 442" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<rect x="762" y="426" width="26" height="21" fill="white"/>
+<text data-kind="axial-gap" data-mm="26" x="775" y="441.5" class="gap" text-anchor="middle">26</text>
+<path d="M 850 432 V 442 M 850 437 H 928 M 928 432 V 442" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<rect x="876" y="426" width="26" height="21" fill="white"/>
+<text data-kind="axial-gap" data-mm="26" x="889" y="441.5" class="gap" text-anchor="middle">26</text>
+<path d="M 964 432 V 442 M 964 437 H 1042 M 1042 432 V 442" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<rect x="990" y="426" width="26" height="21" fill="white"/>
+<text data-kind="axial-gap" data-mm="26" x="1003" y="441.5" class="gap" text-anchor="middle">26</text>
+<path d="M 1078 432 V 442 M 1078 437 H 1156 M 1156 432 V 442" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<rect x="1104" y="426" width="26" height="21" fill="white"/>
+<text data-kind="axial-gap" data-mm="26" x="1117" y="441.5" class="gap" text-anchor="middle">26</text>
+<path d="M 1192 432 V 442 M 1192 437 H 1270 M 1270 432 V 442" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<rect x="1218" y="426" width="26" height="21" fill="white"/>
+<text data-kind="axial-gap" data-mm="26" x="1231" y="441.5" class="gap" text-anchor="middle">26</text>
+<path d="M 1306 432 V 442 M 1306 437 H 1384 M 1384 432 V 442" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<rect x="1332" y="426" width="26" height="21" fill="white"/>
+<text data-kind="axial-gap" data-mm="26" x="1345" y="441.5" class="gap" text-anchor="middle">26</text>
+<path d="M 1420 432 V 442 M 1420 437 H 1498 M 1498 432 V 442" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<rect x="1446" y="426" width="26" height="21" fill="white"/>
+<text data-kind="axial-gap" data-mm="26" x="1459" y="441.5" class="gap" text-anchor="middle">26</text>
+<path d="M 1534 432 V 442 M 1534 437 H 1612 M 1612 432 V 442" fill="none" stroke="#8996a0" stroke-width="0.9"/>
+<rect x="1560" y="426" width="26" height="21" fill="white"/>
+<text data-kind="axial-gap" data-mm="26" x="1573" y="441.5" class="gap" text-anchor="middle">26</text>
+<text x="40" y="555" class="small muted">Radial gaps run from inner to outer; 0 = face contact. Z ranges show the two axial face coordinates.</text>
+<path d="M 130 608 V 624 M 130 616 H 1648 M 1648 608 V 624" fill="none" stroke="#777"/>
+<rect x="590" y="602" width="600" height="27" fill="white"/>
+<text x="890" y="623" text-anchor="middle" class="label">Overall axial length 506 · Axial face gap 26</text>
+<text x="40" y="662" class="label muted">Radial faces span 120–192; outer corner radius: 192.094. Slot allowances are specified separately.</text>
+</svg>

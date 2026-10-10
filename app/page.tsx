@@ -12,6 +12,7 @@ import {FieldSection,FieldExplanation} from "@/components/field-view";
 import {useLiveField} from "@/lib/use-live-field";
 import DesignControls from "@/components/design-controls";
 import GraphWorkbench from "@/components/graph-workbench";
+import MagnetDimensions from "@/components/magnet-dimensions";
 import type {DiagramView} from "@/components/design-diagram";
 import type {EditScope} from "@/lib/design";
 import DesignFieldStatus from "@/components/design-field-status";
@@ -118,7 +119,7 @@ function Explorer({onScheme,workspaceMode,setWorkspaceMode}:{onScheme:(id:Scheme
  },[selectRing,model,t]);
  return <main className="app-shell workbench-shell">
  <header className="app-header"><div className="brand"><div className="brand-mark"><Layers size={24}/></div><div><h1>{t("磁环实验台","MRI Ring Explorer")}<span>IO ARRAY</span></h1><p>{t(model.title,model.id==="latest"?"New configuration":"Original configuration")}{t(" · 14 环 / "," · 14 rings / ")}{REPEATS}{t(" 列 / "," columns / ")}{model.magnets.length.toLocaleString()}{t(" 块"," magnets")}</p></div></div>
- <div className="header-actions"><Button variant="ghost" className="header-button language-button" aria-label={language==="zh"?"Switch to English":"切换为中文"} onClick={()=>setLanguage(language==="zh"?"en":"zh")}><Languages size={16}/><span>{language==="zh"?"English":"中文"}</span></Button><span className="model-badge">{t("MRI 系统示意 ","MRI system illustration ")}<span>v15.0</span></span>
+ <div className="header-actions"><Button variant="ghost" className="header-button language-button" aria-label={language==="zh"?"Switch to English":"切换为中文"} onClick={()=>setLanguage(language==="zh"?"en":"zh")}><Languages size={16}/><span>{language==="zh"?"English":"中文"}</span></Button><span className="model-badge">{t("MRI 系统示意 ","MRI system illustration ")}<span>v16.0</span></span>
  <Sheet open={tableOpen} onOpenChange={setTableOpen}><SheetTrigger asChild><Button variant="ghost" className="header-button" aria-label={t("排布清单","Layout table")}><List size={16}/><span>{t("排布清单","Layout table")}</span></Button></SheetTrigger><SheetContent className="wide-sheet"><SheetHeader><SheetTitle>{t("14 环排布清单","14-ring layout table")}</SheetTitle><SheetDescription>{t("每行列出沿半径从内到外的磁铁顺序。","Each row lists the radial magnet sequence from inner to outer.")}</SheetDescription></SheetHeader><LayoutTable onSelect={id=>{selectRing(id);setTableOpen(false);}}/></SheetContent></Sheet>
  <Sheet><SheetTrigger asChild><Button variant="ghost" className="header-button" aria-label={t("资料与说明","References")}><BookOpen size={16}/><span>{t("资料与说明","References")}</span></Button></SheetTrigger><SheetContent className="wide-sheet"><SheetHeader><SheetTitle>{t("模型依据与假设","Model basis and assumptions")}</SheetTitle><SheetDescription>{t("已确认的排布，与仍待核实的参数。","Confirmed layout information and parameters awaiting verification.")}</SheetDescription></SheetHeader><ReferenceContent/></SheetContent></Sheet></div></header>
 
@@ -150,6 +151,7 @@ function Explorer({onScheme,workspaceMode,setWorkspaceMode}:{onScheme:(id:Scheme
     <details className="workbench-disclosure inspector-details"><summary>{t("当前磁铁与磁环","Selected magnet & ring")}</summary><Details ring={ring} selected={selected} onSelect={selectMagnet}/></details>
     <details className="workbench-disclosure inspector-rings"><summary>{t("14 环排布","14-ring sequence")}</summary><RingList selected={selectedRing} onSelect={selectRing}/></details>
   </section>
+  {model.id==="latest"&&<MagnetDimensions/>}
   <div className="workbench-more">
    <details className="workbench-disclosure"><summary>{t("全阵列统计","Full-array statistics")}</summary><section className="summary-strip" aria-label={t("全阵列统计","Full-array statistics")}><div className="summary-title"><span className="eyebrow">ARRAY OVERVIEW</span><strong>{t("全阵列概览","Array overview")}</strong></div><div className="summary-stat"><span>{t("轴向磁环","Axial rings")}</span><strong>14<small>{t("环"," rings")}</small></strong></div><div className="summary-stat total-stat"><span>{t("磁铁总数 ","Total magnets ")}{model.repeatsConfirmed?<em>{t("28 列","28 columns")}</em>:<em>{t("推算","Estimated")}</em>}</span><strong>{magnets.length}<small>{t("块"," magnets")}</small></strong></div>
  <div className="grade-summary"><div><span>{t("径向位置","Radial position")}</span><strong>{radialPositionCount}</strong></div><div><span>{t("强度类别","Strength classes")}</span><strong className="unspecified-text">{model.id==="latest"?t("未标注","Not specified"):t("3 类","3 classes")}</strong></div></div>
