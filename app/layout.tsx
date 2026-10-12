@@ -4,9 +4,10 @@ import {LanguageProvider} from "@/lib/language-context";
 import "./white-theme.css";
 import "./workbench.css";
 import "./graph-editor.css";
+import "./hackathon.css";
 export const metadata:Metadata={
- title:"磁环实验台 | 14环便携式 MRI",
- description:"交互查看14环IO阵列、梯度与RF线圈，对比排布和线圈改变对场分布及成像参数的影响。理想模型，尺寸待确认。",
+ title:"MRI 黑客松 | 从零件到磁体",
+ description:"MRI 黑客松双语教学：材料清单、CAD 分步装配、14 层磁体、磁场原理与交互实验、工程资料。",
  icons:{icon:"/favicon.svg",shortcut:"/favicon.svg"}
 };
 export default function RootLayout({children}:{children:React.ReactNode}){

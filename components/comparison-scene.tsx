@@ -1,5 +1,6 @@
 "use client";
 import {useEffect,useRef,useState} from "react";
+import {useSceneActivity} from "@/lib/scene-activity";
 import * as THREE from "three";
 import {OrbitControls} from "three/addons/controls/OrbitControls.js";
 import {layoutSources,comparisonWindings,type LayoutId,type CoilSize,type RFDesign} from "@/lib/comparison";
@@ -9,6 +10,7 @@ import {useLanguage} from "@/lib/language-context";
 export type CompareTopic="magnet"|"gradient"|"rf";
 export default function ComparisonScene({topic,layout,size,axis,rf,roi}:{topic:CompareTopic;layout:LayoutId;size:CoilSize;axis:"gx"|"gy"|"gz";rf:RFDesign;roi:number}){
  const {t,language}=useLanguage();
+ const active=useSceneActivity(),activityRef=useRef(active),setActivity=useRef<((value:boolean)=>void)|null>(null);activityRef.current=active;
  const model=useMRIModel(),BLOCK_SIZE=model.blockSize;
  const host=useRef<HTMLDivElement>(null),[error,setError]=useState(false);
  useEffect(()=>{
@@ -65,12 +67,13 @@ export default function ComparisonScene({topic,layout,size,axis,rf,roi}:{topic:C
    arrow(rf==="solenoid"?new THREE.Vector3(0,1,0):new THREE.Vector3(1,0,0),new THREE.Vector3(0,0,0),2,purple);
   }
   if(topic==="rf")root.scale.setScalar(model.coilScale);
-  function resize(){const w=el!.clientWidth,h=el!.clientHeight;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();const sphere=new THREE.Box3().setFromObject(root).getBoundingSphere(new THREE.Sphere());const half=Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*Math.min(1,camera.aspect));camera.position.set(.7,.62,1).normalize().multiplyScalar(sphere.radius/Math.sin(half)*1.05);controls.target.set(0,0,0);controls.update();}
+  function resize(){const w=el!.clientWidth,h=el!.clientHeight;if(!w||!h)return;renderer.setSize(w,h);camera.aspect=w/h;camera.updateProjectionMatrix();const sphere=new THREE.Box3().setFromObject(root).getBoundingSphere(new THREE.Sphere());const half=Math.atan(Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*Math.min(1,camera.aspect));camera.position.set(.7,.62,1).normalize().multiplyScalar(sphere.radius/Math.sin(half)*1.05);controls.target.set(0,0,0);controls.update();}
   const obs=new ResizeObserver(resize);obs.observe(el);resize();let frame=0;
-  const animate=()=>{frame=requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);};animate();
+  const animate=()=>{frame=0;if(!activityRef.current)return;frame=requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);};setActivity.current=(value)=>{controls.enabled=value;cancelAnimationFrame(frame);frame=0;if(value)animate();};animate();
   el.dataset.ready="true";
-  return()=>{cancelAnimationFrame(frame);obs.disconnect();controls.dispose();root.traverse(o=>{if(o instanceof THREE.ArrowHelper){o.dispose();}if(o instanceof THREE.InstancedMesh)o.dispose();});geoms.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();delete el.dataset.ready;};
+  return()=>{setActivity.current=null;cancelAnimationFrame(frame);obs.disconnect();controls.dispose();root.traverse(o=>{if(o instanceof THREE.ArrowHelper){o.dispose();}if(o instanceof THREE.InstancedMesh)o.dispose();});geoms.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();delete el.dataset.ready;};
  },[topic,layout,size,axis,rf,roi,model]);
  useEffect(()=>{host.current?.querySelector("canvas")?.setAttribute("aria-label",t("当前对照方案三维结构，可拖动旋转","3D structure of the current comparison design. Drag to rotate."));},[language,t]);
- return <div ref={host} className="compare-scene" data-language={language} data-scheme={model.id} data-magnet-count={model.magnets.length} data-topic={topic} data-layout={layout} data-size={size} data-rf={rf}>{error&&<p>{t("此浏览器暂时无法显示 3D；下方计算图与方案说明仍可使用。","This browser cannot display 3D. The calculated plots and design explanations below remain available.")}</p>}<span className="compare-scene-hint">{t("拖动旋转 · 滚轮缩放 · ","Drag to rotate · Scroll to zoom · ")}{topic==="magnet"?t("磁体尺寸来自 MATLAB","Magnet dimensions from MATLAB"):t("线圈结构为示意","Coil structures are schematic")}</span></div>;
+ useEffect(()=>{setActivity.current?.(active);},[active]);
+ return <div ref={host} className="compare-scene" data-render-active={active} data-language={language} data-scheme={model.id} data-magnet-count={model.magnets.length} data-topic={topic} data-layout={layout} data-size={size} data-rf={rf}>{error&&<p>{t("此浏览器暂时无法显示 3D；下方计算图与方案说明仍可使用。","This browser cannot display 3D. The calculated plots and design explanations below remain available.")}</p>}<span className="compare-scene-hint">{t("拖动旋转 · 滚轮缩放 · ","Drag to rotate · Scroll to zoom · ")}{topic==="magnet"?t("磁体尺寸来自 MATLAB","Magnet dimensions from MATLAB"):t("线圈结构为示意","Coil structures are schematic")}</span></div>;
 }

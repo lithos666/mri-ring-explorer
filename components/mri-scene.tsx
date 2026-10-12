@@ -1,7 +1,9 @@
 "use client";
 import {useEffect,useRef,useState} from "react";
+import {useSceneActivity} from "@/lib/scene-activity";
 import * as THREE from "three";
 import {OrbitControls} from "three/addons/controls/OrbitControls.js";
+import {RoomEnvironment} from "three/addons/environments/RoomEnvironment.js";
 import {directionColors,type ViewMode} from "@/lib/mri";
 import {useMRIModel} from "@/lib/mri-context";
 import {useLanguage} from "@/lib/language-context";
@@ -11,8 +13,9 @@ import type {LiveFieldResult} from "@/lib/live-field";
 import {createCoilGeometry} from "@/components/coil-geometry";
 import {rfDirection,type SystemLayers,type GradientAxis} from "@/lib/coils";
 interface Props {layers:SystemLayers;gradientAxis:GradientAxis;rfPhase:number;field:boolean;fieldData:LiveFieldResult|null;ring:number;selected:string|null;mode:ViewMode;expansion:number;arrows:boolean;reset:number;onSelect:(id:string)=>void;}
-interface Runtime {update:(p:Props)=>void;dispose:()=>void;}
+interface Runtime {update:(p:Props)=>void;setActive:(value:boolean)=>void;dispose:()=>void;}
 export default function MRIScene(props:Props){
+ const active=useSceneActivity(),activityRef=useRef(active);activityRef.current=active;
  const {t,language}=useLanguage();
  const model=useMRIModel(),{magnets,rings,position,ringY,magnetById}=model,BLOCK_SIZE=model.blockSize,REPEATS=model.repeats;
  const modelRef=useRef(model);modelRef.current=model;
@@ -37,12 +40,18 @@ export default function MRIScene(props:Props){
   renderer.domElement.setAttribute("aria-label",t("磁环三维模型。拖动旋转，滚轮缩放，右键平移；点击磁铁查看详情。","3D magnet-ring model. Drag to rotate, scroll to zoom, and right-drag to pan. Select a magnet for details."));
   renderer.domElement.setAttribute("role","img");
   const scene=new THREE.Scene();
+  let studioEnvironment:THREE.WebGLRenderTarget|null=null;
+  const studio=new RoomEnvironment(),pmrem=new THREE.PMREMGenerator(renderer);
+  try{studioEnvironment=pmrem.fromScene(studio,.05,.1,100,{size:128});scene.environment=studioEnvironment.texture;scene.environmentIntensity=.35;}
+  catch{/* Keep the direct lights on devices without environment-map support. */}
+  finally{studio.traverse(object=>{if(object instanceof THREE.InstancedMesh)object.dispose();});studio.dispose();pmrem.dispose();}
+  container.dataset.studioEnvironment=studioEnvironment?"procedural":"direct";
   const camera=new THREE.PerspectiveCamera(37,1,.1,400);camera.position.set(29,22,34);
   const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.dampingFactor=.08;controls.minDistance=7;controls.maxDistance=180;
   controls.target.set(0,0,0);
-  scene.add(new THREE.HemisphereLight(0xffffff,0xc6c9cd,2.0));
-  const key=new THREE.DirectionalLight(0xffffff,2.6);key.position.set(16,30,24);scene.add(key);
-  const fill=new THREE.DirectionalLight(0xffffff,1.0);fill.position.set(-20,3,-13);scene.add(fill);
+  scene.add(new THREE.HemisphereLight(0xffffff,0xc6c9cd,1.65));
+  const key=new THREE.DirectionalLight(0xffffff,2.2);key.position.set(16,30,24);scene.add(key);
+  const fill=new THREE.DirectionalLight(0xffffff,.85);fill.position.set(-20,3,-13);scene.add(fill);
   const root=new THREE.Group();scene.add(root);
   const coils=createCoilGeometry(model.coilScale);scene.add(coils.root);
   const geoms:THREE.BufferGeometry[]=[];
@@ -172,7 +181,7 @@ export default function MRIScene(props:Props){
    el.style.left=(p.x*.5+.5)*container!.clientWidth+"px";el.style.top=(-p.y*.5+.5)*container!.clientHeight+"px";
   }
   let raf=0;
-  function animate(){raf=requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);
+  function animate(){raf=0;if(!activityRef.current)return;raf=requestAnimationFrame(animate);controls.update();renderer.render(scene,camera);
    label(startLabel.current,new THREE.Vector3(0,ringY(1,current.expansion)+2,0),current.mode!=="single"&&current.layers.magnet);
    label(endLabel.current,new THREE.Vector3(0,ringY(14,current.expansion)-2,0),current.mode!=="single"&&current.layers.magnet);
    const system=current.mode==="assembly"&&(current.layers.gradient||current.layers.rf);
@@ -183,16 +192,17 @@ export default function MRIScene(props:Props){
    label(southLabel.current,selectedPosition?.clone().addScaledVector(selectedNormal!,-BLOCK_SIZE*.9)??new THREE.Vector3(),!!selectedPosition);
   }
   update(latest.current);resize();animate();setReady(true);
-  runtime.current={update,dispose(){
+  runtime.current={update,setActive(value){controls.enabled=value;cancelAnimationFrame(raf);raf=0;if(value)animate();},dispose(){
    cancelAnimationFrame(raf);coils.dispose();observer.disconnect();controls.dispose();
    renderer.domElement.removeEventListener("pointerdown",down);renderer.domElement.removeEventListener("pointerup",pick);renderer.domElement.removeEventListener("webglcontextlost",lost);
-   fluxGeometries.forEach(g=>g.dispose());fluxMaterials.forEach(m=>m.dispose());fluxGroup.children.forEach(o=>{if(o instanceof THREE.InstancedMesh)o.dispose();});geoms.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());[body,north,south,shafts,heads].forEach(m=>m.dispose());renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();
+   fluxGeometries.forEach(g=>g.dispose());fluxMaterials.forEach(m=>m.dispose());fluxGroup.children.forEach(o=>{if(o instanceof THREE.InstancedMesh)o.dispose();});geoms.forEach(g=>g.dispose());mats.forEach(m=>m.dispose());[body,north,south,shafts,heads].forEach(m=>m.dispose());scene.environment=null;studioEnvironment?.dispose();renderer.dispose();renderer.forceContextLoss();renderer.domElement.remove();
   }};
   return ()=>{runtime.current?.dispose();runtime.current=null;};
  },[]);
  useEffect(()=>{host.current?.querySelector("canvas")?.setAttribute("aria-label",t("磁环三维模型。拖动旋转，滚轮缩放，右键平移；点击磁铁查看详情。","3D magnet-ring model. Drag to rotate, scroll to zoom, and right-drag to pan. Select a magnet for details."));},[language]);
+ useEffect(()=>{runtime.current?.setActive(active);},[active]);
  useEffect(()=>{runtime.current?.update(props);},[props.ring,props.selected,props.mode,props.expansion,props.arrows,props.reset,props.field,props.fieldData,props.layers,props.gradientAxis,props.rfPhase,model]);
- return <div className="scene-host" ref={host} data-scheme={model.id} data-magnet-count={magnets.length} data-columns={REPEATS} data-magnets-visible={props.mode!=="assembly"||props.layers.magnet} data-gradients-visible={props.mode==="assembly"&&props.layers.gradient} data-rf-visible={props.mode==="assembly"&&props.layers.rf} data-gradient-axis={props.gradientAxis} data-rf-phase={props.rfPhase} data-field-visible={props.field&&props.mode==="assembly"&&props.expansion===0&&!!props.fieldData} data-scene-ready={ready} data-webgl-error={error}>
+ return <div className="scene-host" ref={host} data-render-active={active} data-scheme={model.id} data-magnet-count={magnets.length} data-columns={REPEATS} data-magnets-visible={props.mode!=="assembly"||props.layers.magnet} data-gradients-visible={props.mode==="assembly"&&props.layers.gradient} data-rf-visible={props.mode==="assembly"&&props.layers.rf} data-gradient-axis={props.gradientAxis} data-rf-phase={props.rfPhase} data-field-visible={props.field&&props.mode==="assembly"&&props.expansion===0&&!!props.fieldData} data-scene-ready={ready} data-webgl-error={error}>
   <span ref={b0Label} className="coil-axis-label">{t("z · 装置参考轴","z · device axis")}</span><span ref={b1Label} className="coil-axis-label rf-label">{t("B₁ · 方向示意","B₁ · illustrative direction")}</span><span ref={xLabel} className="coil-axis-label">x</span><span ref={yLabel} className="coil-axis-label">y</span>
   <div className="end-label" ref={startLabel}>R01 <span>{t("+Z 端","+Z end")}</span></div>
   <div className="end-label" ref={endLabel}>R14 <span>{t("−Z 端","−Z end")}</span></div>

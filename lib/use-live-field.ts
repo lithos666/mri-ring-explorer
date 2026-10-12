@@ -32,7 +32,7 @@ export function useLiveField(){
    try{
     const signature=await sourceSignature(sourcesFor(baseline));
     if(controller.signal.aborted||manualRequested.current)return;
-    const response=await fetch("/live-field-initial-"+baseline.id+".json?source="+signature,{signal:controller.signal,cache:"no-store"});
+    const response=await fetch("/live-field-initial-"+baseline.id+".json?source="+signature,{signal:controller.signal,cache:"default"});
     if(!response.ok)throw new Error("Initial field asset is unavailable.");
     const data=decodeInitialField(await response.json(),{schemeId:baseline.id,signature,count:baseline.magnets.length,angle:baseline.angularOffset});
     if(controller.signal.aborted||manualRequested.current||scheme.current!==baseline.id)return;

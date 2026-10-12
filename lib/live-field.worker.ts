@@ -20,7 +20,8 @@ async function run(request:LiveFieldRequest,token:number){
   let baseline=cached.get(key);
   if(!baseline&&request.baselineAssetURL){
    try{
-    const response=await fetch(request.baselineAssetURL);if(!response.ok)throw new Error("No precomputed live field asset.");
+    const assetURL=request.baselineAssetURL+(request.baselineAssetURL.includes("?")?"&":"?")+"source="+encodeURIComponent(signature);
+    const response=await fetch(assetURL,{cache:"default"});if(!response.ok)throw new Error("No precomputed live field asset.");
     baseline=decodeBaseline(await response.arrayBuffer());
     if(baseline.header.signature!==signature||baseline.header.plane.angle!==request.angle||baseline.header.count!==request.baseline.length)throw new Error("Obsolete live field asset.");
    }catch(error){if(scheduler.cancelled())throw new Cancelled();baseline=undefined;}

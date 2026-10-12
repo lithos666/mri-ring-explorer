@@ -1,0 +1,15 @@
+# Content-hashed transport assets are safe to reuse across visits and releases.
+/assembly/cache/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Framework bundles are also content-hashed.
+/_next/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Audit manifests and engineering downloads keep stable, human-readable names.
+# Revalidate these names so a revised drawing never silently stays stale.
+/assembly/manifest.json
+  Cache-Control: public, max-age=0, must-revalidate
+
+/resources/*
+  Cache-Control: public, max-age=0, must-revalidate

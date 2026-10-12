@@ -1,0 +1,942 @@
+[
+  {
+    "id": "cad-layer-01",
+    "titleZh": "R01 原始装配 CAD",
+    "titleEn": "R01 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer1.step",
+    "url": "/resources/cad-layer-01.step",
+    "bytes": 1294240,
+    "sha256": "d0a86bf24abe04a85b0d784a50786107f66a1c8c027de64910977ec37f267f26",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 1,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-layer-02",
+    "titleZh": "R02 原始装配 CAD",
+    "titleEn": "R02 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer2.step",
+    "url": "/resources/cad-layer-02.step",
+    "bytes": 1279268,
+    "sha256": "5922ad66a6a37b3182cd92b72c2a76573b44859971153a907f997ca3045de363",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 2,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-layer-03",
+    "titleZh": "R03 原始装配 CAD",
+    "titleEn": "R03 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer3.step",
+    "url": "/resources/cad-layer-03.step",
+    "bytes": 1204440,
+    "sha256": "3d67597de621e25fcc04aa24a82f70eb195451ca35cc33aee19984d0f28f4f21",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 3,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-layer-04",
+    "titleZh": "R04 原始装配 CAD",
+    "titleEn": "R04 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer4.step",
+    "url": "/resources/cad-layer-04.step",
+    "bytes": 1279148,
+    "sha256": "f43b8a952009dd9062bfc0c3b86b12fa4287af37d5d5c97781c457bc751b0f37",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 4,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-layer-05",
+    "titleZh": "R05 原始装配 CAD",
+    "titleEn": "R05 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer5.step",
+    "url": "/resources/cad-layer-05.step",
+    "bytes": 1693276,
+    "sha256": "e2ba6cb82f7c8c1f39878636133a68418a6658cbc13dcc043fdf81938cecdd61",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 5,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-layer-06",
+    "titleZh": "R06 原始装配 CAD",
+    "titleEn": "R06 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer6.step",
+    "url": "/resources/cad-layer-06.step",
+    "bytes": 1692118,
+    "sha256": "53f6a1fc9d7e125e506ee66e433be684eef395223bf4b09d77540046c869d67a",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 6,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-layer-07",
+    "titleZh": "R07 原始装配 CAD",
+    "titleEn": "R07 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer7.step",
+    "url": "/resources/cad-layer-07.step",
+    "bytes": 1488531,
+    "sha256": "2db292174723da920f32aee38500fed4e0fcfb05669ee2f2c19794e51a6b3934",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 7,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-layer-08",
+    "titleZh": "R08 原始装配 CAD",
+    "titleEn": "R08 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer8.step",
+    "url": "/resources/cad-layer-08.step",
+    "bytes": 1488531,
+    "sha256": "2db292174723da920f32aee38500fed4e0fcfb05669ee2f2c19794e51a6b3934",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 8,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-layer-09",
+    "titleZh": "R09 原始装配 CAD",
+    "titleEn": "R09 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer9.step",
+    "url": "/resources/cad-layer-09.step",
+    "bytes": 1692118,
+    "sha256": "53f6a1fc9d7e125e506ee66e433be684eef395223bf4b09d77540046c869d67a",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 9,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-layer-10",
+    "titleZh": "R10 原始装配 CAD",
+    "titleEn": "R10 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer10.step",
+    "url": "/resources/cad-layer-10.step",
+    "bytes": 1693276,
+    "sha256": "e2ba6cb82f7c8c1f39878636133a68418a6658cbc13dcc043fdf81938cecdd61",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 10,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-layer-11",
+    "titleZh": "R11 原始装配 CAD",
+    "titleEn": "R11 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer11.step",
+    "url": "/resources/cad-layer-11.step",
+    "bytes": 1279148,
+    "sha256": "f43b8a952009dd9062bfc0c3b86b12fa4287af37d5d5c97781c457bc751b0f37",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 11,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-layer-12",
+    "titleZh": "R12 原始装配 CAD",
+    "titleEn": "R12 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer12.step",
+    "url": "/resources/cad-layer-12.step",
+    "bytes": 1204440,
+    "sha256": "3d67597de621e25fcc04aa24a82f70eb195451ca35cc33aee19984d0f28f4f21",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 12,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-layer-13",
+    "titleZh": "R13 原始装配 CAD",
+    "titleEn": "R13 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer13.step",
+    "url": "/resources/cad-layer-13.step",
+    "bytes": 1279268,
+    "sha256": "5922ad66a6a37b3182cd92b72c2a76573b44859971153a907f997ca3045de363",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 13,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-layer-14",
+    "titleZh": "R14 原始装配 CAD",
+    "titleEn": "R14 source assembly CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/layer14.step",
+    "url": "/resources/cad-layer-14.step",
+    "bytes": 1294240,
+    "sha256": "d0a86bf24abe04a85b0d784a50786107f66a1c8c027de64910977ec37f267f26",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover",
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-03",
+      "step-04",
+      "step-05",
+      "step-09"
+    ],
+    "layer": 14,
+    "versionStatus": "source-reference"
+  },
+  {
+    "id": "cad-template",
+    "titleZh": "扇形拼接与盖板模板",
+    "titleEn": "Sector joint and cover template",
+    "type": "STEP",
+    "sourceRelativePath": "模型/new_genneration.step",
+    "url": "/resources/cad-template.step",
+    "bytes": 286529,
+    "sha256": "e7ddf592048db9ac1b64ceb88d0cc1dd50e3b486816f9faa0a6d0b1cb5be786d",
+    "category": "cad",
+    "partIds": [
+      "printed-ring",
+      "ring-cover"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-02",
+      "step-04"
+    ]
+  },
+  {
+    "id": "cad-ring-support",
+    "titleZh": "左、右、下支撑 CAD",
+    "titleEn": "Left, right and lower support CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/surport.step",
+    "url": "/resources/cad-ring-support.step",
+    "bytes": 321847,
+    "sha256": "10ae5c66feb127811b985b15a468acd73e28654a10ce660853bd93612c44df3d",
+    "category": "cad",
+    "partIds": [
+      "ring-support"
+    ],
+    "stepIds": [
+      "step-06",
+      "step-08",
+      "step-09"
+    ]
+  },
+  {
+    "id": "cad-locator",
+    "titleZh": "层间定位件 CAD",
+    "titleEn": "Inter-layer locator CAD",
+    "type": "STEP",
+    "sourceRelativePath": "模型/support_layer.step",
+    "url": "/resources/cad-locator.step",
+    "bytes": 31745,
+    "sha256": "b4a5028c99e010462083c05ac781cdfef72c633eb499d79052fb75c5d72d4351",
+    "category": "cad",
+    "partIds": [
+      "locator"
+    ],
+    "stepIds": [
+      "step-06",
+      "step-07",
+      "step-09"
+    ]
+  },
+  {
+    "id": "print-side-support",
+    "titleZh": "侧边支撑打印参考",
+    "titleEn": "Side-support print reference",
+    "type": "3MF",
+    "sourceRelativePath": "打印文件/侧边支撑.3mf",
+    "url": "/resources/print-side-support.3mf",
+    "bytes": 225843,
+    "sha256": "8dac9734655e90e2e2fdd8212eea55c98b92c60ff3bc0a01a66ffb8d97462095",
+    "category": "print",
+    "partIds": [
+      "ring-support"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-04",
+      "step-06"
+    ],
+    "versionStatus": "print-reference-not-release-confirmed"
+  },
+  {
+    "id": "print-interlayer-support",
+    "titleZh": "层间支撑打印参考（原文件名保留）",
+    "titleEn": "Inter-layer support print reference",
+    "type": "3MF",
+    "sourceRelativePath": "打印文件/曾与层之间的支撑.3mf",
+    "url": "/resources/print-interlayer-support.3mf",
+    "bytes": 104859,
+    "sha256": "c4bf25754a2eb77bc04e810992a550e03f0c931b233fb596207cdde60b96fb42",
+    "category": "print",
+    "partIds": [
+      "locator"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-04",
+      "step-06"
+    ],
+    "versionStatus": "print-reference-not-release-confirmed"
+  },
+  {
+    "id": "print-holder-v1",
+    "titleZh": "holder v1 打印参考",
+    "titleEn": "holder v1 print reference",
+    "type": "3MF",
+    "sourceRelativePath": "打印文件/holderv1.3mf",
+    "url": "/resources/print-holder-v1.3mf",
+    "bytes": 219720,
+    "sha256": "4f05bcf60ad375969a179f913c0c150358120a7f76937845dd13256a2ff5b2bc",
+    "category": "print",
+    "partIds": [
+      "ring-support"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-04",
+      "step-06"
+    ],
+    "versionStatus": "print-reference-not-release-confirmed"
+  },
+  {
+    "id": "print-layer-01",
+    "titleZh": "layer1 打印参考",
+    "titleEn": "layer1 print reference",
+    "type": "3MF",
+    "sourceRelativePath": "打印文件/layer1.3mf",
+    "url": "/resources/print-layer-01.3mf",
+    "bytes": 998945,
+    "sha256": "79868838906a948151cc9852123b2cfbf426f46d13c2cfc20883bcbce52059b7",
+    "category": "print",
+    "partIds": [
+      "printed-ring",
+      "ring-cover"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-04",
+      "step-06"
+    ],
+    "layer": 1,
+    "versionStatus": "print-reference-not-release-confirmed"
+  },
+  {
+    "id": "print-prototype-v0",
+    "titleZh": "prototype v0 版本参考",
+    "titleEn": "prototype v0 version reference",
+    "type": "3MF",
+    "sourceRelativePath": "打印文件/prototypev0.3mf",
+    "url": "/resources/print-prototype-v0.3mf",
+    "bytes": 220504,
+    "sha256": "5546d084f41449cbfa5b8f233aae78c093fa62a278bc1255c8d744fe58d3c88b",
+    "category": "print",
+    "partIds": [
+      "printed-ring",
+      "ring-cover"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-04",
+      "step-06"
+    ],
+    "versionStatus": "version-reference-not-release-confirmed"
+  },
+  {
+    "id": "print-prototype-v1",
+    "titleZh": "prototype v1 版本参考",
+    "titleEn": "prototype v1 version reference",
+    "type": "3MF",
+    "sourceRelativePath": "打印文件/prototypev1.3mf",
+    "url": "/resources/print-prototype-v1.3mf",
+    "bytes": 706192,
+    "sha256": "7361999108294eb9f067a84073e9b35e3719bed3c848cee1b5398f9880ac9af7",
+    "category": "print",
+    "partIds": [
+      "printed-ring",
+      "ring-cover"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-04",
+      "step-06"
+    ],
+    "versionStatus": "version-reference-not-release-confirmed"
+  },
+  {
+    "id": "print-prototype-v2",
+    "titleZh": "prototype v2 版本参考",
+    "titleEn": "prototype v2 version reference",
+    "type": "3MF",
+    "sourceRelativePath": "打印文件/prototypev2.3mf",
+    "url": "/resources/print-prototype-v2.3mf",
+    "bytes": 817039,
+    "sha256": "c37f0cd04f27c38665c9d330037c07af412e93631e9dd288a2885646185d9584",
+    "category": "print",
+    "partIds": [
+      "printed-ring",
+      "ring-cover"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-04",
+      "step-06"
+    ],
+    "versionStatus": "version-reference-not-release-confirmed"
+  },
+  {
+    "id": "print-prototype-v3",
+    "titleZh": "prototype v3 版本参考",
+    "titleEn": "prototype v3 version reference",
+    "type": "3MF",
+    "sourceRelativePath": "打印文件/prototypev3.3mf",
+    "url": "/resources/print-prototype-v3.3mf",
+    "bytes": 818181,
+    "sha256": "dddcc39fb3f6728897eb8f257ca78144fd8f8d98221a6452ae4263191be85320",
+    "category": "print",
+    "partIds": [
+      "printed-ring",
+      "ring-cover"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-04",
+      "step-06"
+    ],
+    "versionStatus": "version-reference-not-release-confirmed"
+  },
+  {
+    "id": "print-prototype-v4",
+    "titleZh": "prototype v4 版本参考",
+    "titleEn": "prototype v4 version reference",
+    "type": "3MF",
+    "sourceRelativePath": "打印文件/prototypev4.3mf",
+    "url": "/resources/print-prototype-v4.3mf",
+    "bytes": 987757,
+    "sha256": "a7d022a55e1ffe6af5241d6b145f8732ee7218daec62b62f8a30e7f4706abbfc",
+    "category": "print",
+    "partIds": [
+      "printed-ring",
+      "ring-cover"
+    ],
+    "stepIds": [
+      "step-01",
+      "step-04",
+      "step-06"
+    ],
+    "versionStatus": "version-reference-not-release-confirmed"
+  },
+  {
+    "id": "placement-01",
+    "titleZh": "新版14层径向剖面.png",
+    "titleEn": "Magnet-layout source reference",
+    "type": "PNG",
+    "sourceRelativePath": "磁铁放置信息/新版14层径向剖面.png",
+    "url": "/resources/placement-01.png",
+    "bytes": 191385,
+    "sha256": "3de10948b90f07caf0d55f74c097f0e943bf8af3410f5114345b1c74a2129081",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ]
+  },
+  {
+    "id": "placement-02",
+    "titleZh": "新版14层径向剖面.svg",
+    "titleEn": "Magnet-layout source reference",
+    "type": "SVG",
+    "sourceRelativePath": "磁铁放置信息/新版14层径向剖面.svg",
+    "url": "/resources/placement-02.svg",
+    "bytes": 29850,
+    "sha256": "11c7d1297cfaac9811e6dfd34d519558745fb72dae85f6571121d2b01b6c9527",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ]
+  },
+  {
+    "id": "placement-03",
+    "titleZh": "新版14层磁铁放置尺寸.txt",
+    "titleEn": "14-layer magnet placement notes",
+    "type": "TXT",
+    "sourceRelativePath": "磁铁放置信息/新版14层磁铁放置尺寸.txt",
+    "url": "/resources/placement-03.txt",
+    "bytes": 15659,
+    "sha256": "8766df9c34934246e47043ccc5e883fa341c026dc81682dfda25d2ac31111ac6",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ]
+  },
+  {
+    "id": "placement-04",
+    "titleZh": "新版14层边缘距离.svg",
+    "titleEn": "14-layer edge dimensions",
+    "type": "SVG",
+    "sourceRelativePath": "磁铁放置信息/新版14层边缘距离.svg",
+    "url": "/resources/placement-04.svg",
+    "bytes": 49235,
+    "sha256": "84eaedc8e9676202bacf99eb3958196253a02628737b0de38890d1055e2c73fe",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ]
+  },
+  {
+    "id": "placement-05",
+    "titleZh": "新版1736块磁铁坐标.json",
+    "titleEn": "1,736 magnet coordinates",
+    "type": "JSON",
+    "sourceRelativePath": "磁铁放置信息/新版1736块磁铁坐标.json",
+    "url": "/resources/placement-05.json",
+    "bytes": 2686452,
+    "sha256": "6b2eb3589a7c770617f51b2bd059541fc1dac61b35cdc9d7e40d2c63207eaa0f",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ]
+  },
+  {
+    "id": "placement-06",
+    "titleZh": "磁铁的排布.png",
+    "titleEn": "Magnet-layout source reference",
+    "type": "PNG",
+    "sourceRelativePath": "磁铁放置信息/磁铁的排布.png",
+    "url": "/resources/placement-06.png",
+    "bytes": 321674,
+    "sha256": "e33c351a81dc21fad8f2438bf4f4041bca3e61e68943bbf4b5f9769fb87d4e51",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ]
+  },
+  {
+    "id": "placement-07",
+    "titleZh": "磁铁的排布——新版14层边缘距离.png",
+    "titleEn": "14-layer edge dimensions",
+    "type": "PNG",
+    "sourceRelativePath": "磁铁放置信息/磁铁的排布——新版14层边缘距离.png",
+    "url": "/resources/placement-07.png",
+    "bytes": 231077,
+    "sha256": "fcc299cb180ad55f29bf04e9cc857391f8868eef416f588e5f2b1543805f6f97",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ]
+  },
+  {
+    "id": "fastener-m3-reference",
+    "titleZh": "M3×18 螺丝参考图（与 CAD 标记不一致）",
+    "titleEn": "M3×18 screw reference (conflicts with CAD label)",
+    "type": "PNG",
+    "sourceRelativePath": "M3螺丝尺寸.png",
+    "url": "/resources/fastener-m3-reference.png",
+    "bytes": 1005456,
+    "sha256": "33d1243969cf05fdeec0b9ed0c296eef51bd9bb61ea2f90f3ec0afd64bff0a8d",
+    "category": "fastener-reference",
+    "partIds": [
+      "short-screw"
+    ],
+    "stepIds": [
+      "step-05"
+    ]
+  },
+  {
+    "id": "fastener-nut-reference",
+    "titleZh": "M10 黄铜螺母参考图",
+    "titleEn": "M10 brass-nut reference",
+    "type": "PNG",
+    "sourceRelativePath": "螺母.png",
+    "url": "/resources/fastener-nut-reference.png",
+    "bytes": 238780,
+    "sha256": "a1749d9298b72553c28e04af5d9c38d434c1001d41c02d4d27c117981095c8d1",
+    "category": "fastener-reference",
+    "partIds": [
+      "nut"
+    ],
+    "stepIds": [
+      "step-07"
+    ]
+  },
+  {
+    "id": "matlab-drawmagnetization",
+    "titleZh": "MATLAB · DrawMagnetization.m",
+    "titleEn": "MATLAB · DrawMagnetization.m",
+    "type": "MATLAB",
+    "sourceRelativePath": "matlab/DrawMagnetization.m",
+    "url": "/resources/matlab-drawmagnetization.m",
+    "bytes": 4176,
+    "sha256": "67bcca7582f8a11d1581d23ec81bb8f0b088225cf2ce4899be0862516224cda3",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ],
+    "versionStatus": "physics-source"
+  },
+  {
+    "id": "matlab-generateioringhackathonbig_37mt",
+    "titleZh": "MATLAB · GenerateIORingHackathonBig_37mT.m",
+    "titleEn": "MATLAB · GenerateIORingHackathonBig_37mT.m",
+    "type": "MATLAB",
+    "sourceRelativePath": "matlab/GenerateIORingHackathonBig_37mT.m",
+    "url": "/resources/matlab-generateioringhackathonbig_37mt.m",
+    "bytes": 12319,
+    "sha256": "b9720c11f6b21a413fc11433f13e519d621103196caa48e38dcdad7b77c19b8c",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ],
+    "versionStatus": "physics-source"
+  },
+  {
+    "id": "matlab-generateioringhackathonsmall_32mt",
+    "titleZh": "MATLAB · GenerateIORingHackathonSmall_32mT.m",
+    "titleEn": "MATLAB · GenerateIORingHackathonSmall_32mT.m",
+    "type": "MATLAB",
+    "sourceRelativePath": "matlab/GenerateIORingHackathonSmall_32mT.m",
+    "url": "/resources/matlab-generateioringhackathonsmall_32mt.m",
+    "bytes": 7557,
+    "sha256": "d515ffaaaaf8b9e77f03fc2530270b90eb27bf5b47f027fb2487ceac67fae713",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ],
+    "versionStatus": "physics-source"
+  },
+  {
+    "id": "matlab-generateioringpair",
+    "titleZh": "MATLAB · GenerateIORingPair.m",
+    "titleEn": "MATLAB · GenerateIORingPair.m",
+    "type": "MATLAB",
+    "sourceRelativePath": "matlab/GenerateIORingPair.m",
+    "url": "/resources/matlab-generateioringpair.m",
+    "bytes": 1184,
+    "sha256": "c65a09d4155577a3e7a69eb3601973ac5f98167b15950255af6500e796d0b58f",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ],
+    "versionStatus": "physics-source"
+  },
+  {
+    "id": "matlab-generateioringpairfromquadrant",
+    "titleZh": "MATLAB · GenerateIORingPairFromQuadrant.m",
+    "titleEn": "MATLAB · GenerateIORingPairFromQuadrant.m",
+    "type": "MATLAB",
+    "sourceRelativePath": "matlab/GenerateIORingPairFromQuadrant.m",
+    "url": "/resources/matlab-generateioringpairfromquadrant.m",
+    "bytes": 15911,
+    "sha256": "2735c1d441474da5da74ff5370e5285b84c6d353c19a34ff3b2e303ee7a2c883",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ],
+    "versionStatus": "physics-source"
+  },
+  {
+    "id": "matlab-magtetris",
+    "titleZh": "MATLAB · MagTetris.m",
+    "titleEn": "MATLAB · MagTetris.m",
+    "type": "MATLAB",
+    "sourceRelativePath": "matlab/MagTetris.m",
+    "url": "/resources/matlab-magtetris.m",
+    "bytes": 31426,
+    "sha256": "2b2952cb7cbb4d6a2be8c0825a659e60c82f1af075df84f49d5f675d155e12af",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ],
+    "versionStatus": "physics-source"
+  },
+  {
+    "id": "matlab-testgenerateioringpairfromquadrant",
+    "titleZh": "MATLAB · TestGenerateIORingPairFromQuadrant.m",
+    "titleEn": "MATLAB · TestGenerateIORingPairFromQuadrant.m",
+    "type": "MATLAB",
+    "sourceRelativePath": "matlab/TestGenerateIORingPairFromQuadrant.m",
+    "url": "/resources/matlab-testgenerateioringpairfromquadrant.m",
+    "bytes": 5314,
+    "sha256": "6ccd89a45c474083b56a06a25f151baff89ee72138fe9b97987668ae663cdefb",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ],
+    "versionStatus": "physics-source"
+  },
+  {
+    "id": "edge-dimensions-zh",
+    "titleZh": "新版十四层边缘尺寸 · 中文",
+    "titleEn": "14-layer edge dimensions · Chinese",
+    "type": "SVG",
+    "sourceRelativePath": "public/diagrams/mri-14-layer-edge-dimensions-zh.svg",
+    "url": "/diagrams/mri-14-layer-edge-dimensions-zh.svg",
+    "bytes": 49235,
+    "sha256": "84eaedc8e9676202bacf99eb3958196253a02628737b0de38890d1055e2c73fe",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ],
+    "versionStatus": "derived-verified"
+  },
+  {
+    "id": "edge-dimensions-en",
+    "titleZh": "新版十四层边缘尺寸 · 英文",
+    "titleEn": "14-layer edge dimensions · English",
+    "type": "SVG",
+    "sourceRelativePath": "public/diagrams/mri-14-layer-edge-dimensions-en.svg",
+    "url": "/diagrams/mri-14-layer-edge-dimensions-en.svg",
+    "bytes": 49240,
+    "sha256": "ebb8e9c83f84a35291bfde829c910f1f0373020539d2fd798aa4c58802b5b4ac",
+    "category": "placement",
+    "partIds": [
+      "magnet-cube"
+    ],
+    "stepIds": [
+      "step-03",
+      "step-09"
+    ],
+    "versionStatus": "derived-verified"
+  }
+]

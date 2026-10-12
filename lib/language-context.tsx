@@ -6,7 +6,7 @@ const LanguageContext=createContext<{language:Language;setLanguage:(language:Lan
 export function LanguageProvider({children}:{children:React.ReactNode}){
  const [language,setLanguage]=useState<Language>("zh"),[ready,setReady]=useState(false);
  useEffect(()=>{try{const saved=localStorage.getItem("mri-language");if(saved==="zh"||saved==="en")setLanguage(saved);}catch{}setReady(true);},[]);
- useEffect(()=>{document.documentElement.lang=language==="zh"?"zh-CN":"en";document.title=language==="zh"?"磁环实验台 | 14环便携式 MRI":"MRI Ring Explorer | 14-ring portable MRI";if(ready){try{localStorage.setItem("mri-language",language);}catch{}}},[language,ready]);
+ useEffect(()=>{document.documentElement.lang=language==="zh"?"zh-CN":"en";document.title=language==="zh"?"MRI 黑客松 | 从零件到磁体":"MRI Hackathon | From parts to a magnet";if(ready){try{localStorage.setItem("mri-language",language);}catch{}}},[language,ready]);
  const t=useCallback<Translator>((zh,en)=>language==="zh"?zh:en,[language]);
  const value=useMemo(()=>({language,setLanguage,t}),[language,t]);
  return <LanguageContext.Provider value={value}>{children}</LanguageContext.Provider>;

@@ -1,2 +1,6 @@
 # Preserve the supplied MATLAB program bytes and their recorded SHA-256.
 matlab/*.m -text
+# Download checksums and content-addressed URLs require byte-stable assets.
+public/resources/** -text
+public/assembly/** -text
+public/diagrams/** -text

@@ -1,0 +1,76 @@
+MRI 黑客松教学版 — 本地预览说明
+MRI Hackathon — local teaching preview
+整理日期 / Updated: 2026-10-12
+
+公开教学网站 / Public teaching website:
+https://mri-ring-explorer.thosli611.chatgpt.site
+
+下面说明如何运行本地副本。本地修改不会自动发布到公开网站。
+The following instructions run a local copy. Local changes do not automatically publish to the public website.
+
+项目目录 / Project folder:
+G:\OneDrive\桌面\MRI\Mri-ring-explorer
+
+在 PowerShell 中进入上述目录，然后执行：
+In PowerShell, enter the project folder and run:
+
+    npm.cmd run dev
+
+浏览器打开 / Open:
+http://localhost:5173/
+
+保留终端窗口。停止网页服务时，在该窗口按 Ctrl+C。
+Keep the terminal open. Press Ctrl+C in that terminal to stop the server.
+
+PowerShell 使用 npm.cmd，可避开 npm.ps1 的脚本执行策略问题。
+Use npm.cmd in PowerShell to avoid the npm.ps1 execution-policy issue.
+
+构建并检查 / Build and inspect:
+
+    npm.cmd run build
+    npm.cmd start
+
+以终端实际显示的预览地址为准。
+Use the preview address shown in the terminal.
+
+五个板块 / Five sections:
+整体总览 / Overview
+材料清单 / BOM
+分步装配 / Assembly
+原理与实验 / Principles & Lab
+文件资料 / Resources
+
+装配动画支持播放、暂停、进度拖动、半速播放和自由观察。
+Animation supports play, pause, scrubbing, half speed and free observation.
+装配完成项需要人工勾选，播放结束不会自动认定实物已经装好。
+Mark completion manually; animation playback does not confirm physical completion.
+
+教学进度、检查项和收料记录保存在当前浏览器。
+Learning progress, checks and material receipt records remain in this browser.
+学习进度重置与磁铁设计独立。实验台修改方向后仍需点击“计算磁场”。
+Learning reset is separate from magnet designs. Lab edits still require Compute field.
+
+教学数据 / Teaching baseline:
+新版 14 层、每环 28 列、共 1,736 颗 12×12×12 mm 方块磁铁。
+New configuration: 14 rings, 28 columns per ring, 1,736 cubes of 12×12×12 mm.
+26 mm 表示相邻层磁铁端面净距，不是支撑或定位件厚度。
+26 mm is the clear magnet-face gap, not support or locator thickness.
+
+仍需核对 / Items requiring confirmation:
+1. R05/R10 最外槽与 MATLAB 名义磁铁位置有约 0.2 mm 的内侧干涉。
+   R05/R10 outer pockets have about 0.2 mm nominal inner-edge interference.
+2. CAD 短螺丝标记 2.9×16 BF，材料图片为 M3×18；不能直接视作同一规格。
+   CAD short screws specify 2.9×16 BF; the material reference specifies M3×18.
+3. 亚克力实际分件 CAD、厚度和滑入路径的实物配合需要确认。
+   Confirm acrylic CAD, thickness and the physical fit of its insertion path.
+4. 打印材料、公差、打印配置、贯穿螺杆和框架切割清单、紧固工艺需补齐。
+   Confirm printing materials/tolerances/settings, rods, frame cut lists and fastening procedures.
+
+详细 CAD 对应与文件来源见 docs/cad-audit.md。
+See docs/cad-audit.md for CAD mapping and file provenance.
+封面是 Imagegen 制作的章节示意图；操作演示使用 CAD 网格和磁铁数据。
+The Imagegen cover is illustrative; operating scenes use CAD meshes and magnet data.
+
+v16 本地源文件基线：
+Local v16 source baseline:
+C:\Users\肖楚煜\Documents\Codex\2026-09-26\mri\work\v16-local-baseline

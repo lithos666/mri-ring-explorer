@@ -1,0 +1,258 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="500" viewBox="0 0 1280 500">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:"Microsoft YaHei","Segoe UI",sans-serif;fill:#1d1d1f}.small{font-size:12px}.label{font-size:13px}.muted{fill:#666}</style>
+<text x="40" y="36" font-size="23" font-weight="600">新版 MRI · 14 层磁铁放置尺寸</text>
+<text x="40" y="62" class="label muted">通过一列中心的 R–Z 剖面 · 等比例几何 · 单位 mm · 每个色块沿圆周重复 28 次</text>
+<text x="40" y="88" class="label">方块 12×12×12 · 方块内数字=中心半径 R · ↑ N朝外　↓ N朝内　→ N朝−Z</text>
+<line x1="84" y1="302" x2="1197.2" y2="302" stroke="#e5e7eb"/>
+<text x="73" y="306" class="small muted" text-anchor="end">110</text>
+<line x1="84" y1="280" x2="1197.2" y2="280" stroke="#e5e7eb"/>
+<text x="73" y="284" class="small muted" text-anchor="end">120</text>
+<line x1="84" y1="236" x2="1197.2" y2="236" stroke="#e5e7eb"/>
+<text x="73" y="240" class="small muted" text-anchor="end">140</text>
+<line x1="84" y1="192" x2="1197.2" y2="192" stroke="#e5e7eb"/>
+<text x="73" y="196" class="small muted" text-anchor="end">160</text>
+<line x1="84" y1="148" x2="1197.2" y2="148" stroke="#e5e7eb"/>
+<text x="73" y="152" class="small muted" text-anchor="end">180</text>
+<line x1="84" y1="121.6" x2="1197.2" y2="121.6" stroke="#e5e7eb"/>
+<text x="73" y="125.6" class="small muted" text-anchor="end">192</text>
+<line x1="84" y1="104" x2="1197.2" y2="104" stroke="#e5e7eb"/>
+<text x="73" y="108" class="small muted" text-anchor="end">200</text>
+<text x="36" y="117" class="small muted">R</text>
+<line x1="640.6" y1="101" x2="640.6" y2="309" stroke="#999" stroke-dasharray="5 5"/>
+<text x="640.6" y="332" class="small muted" text-anchor="middle">Z=0</text>
+<rect x="84" y="249.2" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="97.2" y="271.4" text-anchor="middle" style="font-size:11px;fill:white">128</text>
+<path d="M 97.2 259.4 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="84" y="222.8" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="97.2" y="245" text-anchor="middle" style="font-size:11px;fill:white">140</text>
+<path d="M 97.2 233 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="84" y="196.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="97.2" y="218.60000000000002" text-anchor="middle" style="font-size:11px;fill:white">152</text>
+<path d="M 97.2 206.60000000000002 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="84" y="170" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="97.2" y="192.2" text-anchor="middle" style="font-size:11px;fill:white">164</text>
+<path d="M 97.2 180.2 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="84" y="123.8" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="97.2" y="146" text-anchor="middle" style="font-size:11px;fill:white">185</text>
+<path d="M 97.2 134 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="97.2" y="354" text-anchor="middle" class="label" font-weight="600">R01</text>
+<text x="97.2" y="375" text-anchor="middle" class="small">Z=+247</text>
+<text x="97.2" y="395" text-anchor="middle" class="small muted">140 块</text>
+<rect x="167.60000000000002" y="253.60000000000002" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="180.8" y="275.8" text-anchor="middle" style="font-size:11px;fill:white">126</text>
+<path d="M 180.8 263.8 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="167.60000000000002" y="227.20000000000002" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="180.8" y="249.4" text-anchor="middle" style="font-size:11px;fill:white">138</text>
+<path d="M 180.8 237.4 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="167.60000000000002" y="200.8" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="180.8" y="223" text-anchor="middle" style="font-size:11px;fill:white">150</text>
+<path d="M 180.8 211 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="167.60000000000002" y="174.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="180.8" y="196.60000000000002" text-anchor="middle" style="font-size:11px;fill:white">162</text>
+<path d="M 180.8 184.60000000000002 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="167.60000000000002" y="148" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="180.8" y="170.2" text-anchor="middle" style="font-size:11px;fill:white">174</text>
+<path d="M 180.8 158.2 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="167.60000000000002" y="121.60000000000001" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="180.8" y="143.8" text-anchor="middle" style="font-size:11px;fill:white">186</text>
+<path d="M 180.8 131.8 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="180.8" y="354" text-anchor="middle" class="label" font-weight="600">R02</text>
+<text x="180.8" y="375" text-anchor="middle" class="small">Z=+209</text>
+<text x="180.8" y="395" text-anchor="middle" class="small muted">168 块</text>
+<rect x="251.2" y="227.20000000000002" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="264.4" y="249.4" text-anchor="middle" style="font-size:11px;fill:white">138</text>
+<path d="M 264.4 237.4 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="251.2" y="200.8" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="264.4" y="223" text-anchor="middle" style="font-size:11px;fill:white">150</text>
+<path d="M 264.4 211 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="251.2" y="174.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="264.4" y="196.60000000000002" text-anchor="middle" style="font-size:11px;fill:white">162</text>
+<path d="M 264.4 184.60000000000002 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="251.2" y="148" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="264.4" y="170.2" text-anchor="middle" style="font-size:11px;fill:white">174</text>
+<path d="M 264.4 158.2 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="251.2" y="121.60000000000001" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="264.4" y="143.8" text-anchor="middle" style="font-size:11px;fill:white">186</text>
+<path d="M 264.4 131.8 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="264.4" y="354" text-anchor="middle" class="label" font-weight="600">R03</text>
+<text x="264.4" y="375" text-anchor="middle" class="small">Z=+171</text>
+<text x="264.4" y="395" text-anchor="middle" class="small muted">140 块</text>
+<rect x="334.8" y="253.60000000000002" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="348" y="275.8" text-anchor="middle" style="font-size:11px;fill:white">126</text>
+<path d="M 348 263.8 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="334.8" y="227.20000000000002" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="348" y="249.4" text-anchor="middle" style="font-size:11px;fill:white">138</text>
+<path d="M 348 237.4 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="334.8" y="200.8" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="348" y="223" text-anchor="middle" style="font-size:11px;fill:white">150</text>
+<path d="M 348 211 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="334.8" y="174.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="348" y="196.60000000000002" text-anchor="middle" style="font-size:11px;fill:white">162</text>
+<path d="M 348 184.60000000000002 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="334.8" y="148" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="348" y="170.2" text-anchor="middle" style="font-size:11px;fill:white">174</text>
+<path d="M 348 158.2 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="334.8" y="121.60000000000001" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="348" y="143.8" text-anchor="middle" style="font-size:11px;fill:white">186</text>
+<path d="M 348 131.8 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="348" y="354" text-anchor="middle" class="label" font-weight="600">R04</text>
+<text x="348" y="375" text-anchor="middle" class="small">Z=+133</text>
+<text x="348" y="395" text-anchor="middle" class="small muted">168 块</text>
+<rect x="418.40000000000003" y="251.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#976426" stroke="white" stroke-width="0.7"/>
+<text x="431.6" y="273.6" text-anchor="middle" style="font-size:11px;fill:white">127</text>
+<path d="M 427.6 257.6 h 8 m -3 -3 l 3 3 l -3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="418.40000000000003" y="200.8" width="26.400000000000002" height="26.400000000000002" fill="#976426" stroke="white" stroke-width="0.7"/>
+<text x="431.6" y="223" text-anchor="middle" style="font-size:11px;fill:white">150</text>
+<path d="M 427.6 207 h 8 m -3 -3 l 3 3 l -3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="418.40000000000003" y="145.8" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="431.6" y="168" text-anchor="middle" style="font-size:11px;fill:white">175</text>
+<path d="M 431.6 149 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="431.6" y="354" text-anchor="middle" class="label" font-weight="600">R05</text>
+<text x="431.6" y="375" text-anchor="middle" class="small">Z=+95</text>
+<text x="431.6" y="395" text-anchor="middle" class="small muted">84 块</text>
+<rect x="502.00000000000006" y="240.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#976426" stroke="white" stroke-width="0.7"/>
+<text x="515.2" y="262.6" text-anchor="middle" style="font-size:11px;fill:white">132</text>
+<path d="M 511.20000000000005 246.60000000000002 h 8 m -3 -3 l 3 3 l -3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="502.00000000000006" y="187.60000000000002" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="515.2" y="209.8" text-anchor="middle" style="font-size:11px;fill:white">156</text>
+<path d="M 515.2 197.8 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="502.00000000000006" y="121.60000000000001" width="26.400000000000002" height="26.400000000000002" fill="#976426" stroke="white" stroke-width="0.7"/>
+<text x="515.2" y="143.8" text-anchor="middle" style="font-size:11px;fill:white">186</text>
+<path d="M 511.20000000000005 127.80000000000001 h 8 m -3 -3 l 3 3 l -3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="515.2" y="354" text-anchor="middle" class="label" font-weight="600">R06</text>
+<text x="515.2" y="375" text-anchor="middle" class="small">Z=+57</text>
+<text x="515.2" y="395" text-anchor="middle" class="small muted">84 块</text>
+<rect x="585.6" y="251.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#976426" stroke="white" stroke-width="0.7"/>
+<text x="598.8000000000001" y="273.6" text-anchor="middle" style="font-size:11px;fill:white">127</text>
+<path d="M 594.8000000000001 257.6 h 8 m -3 -3 l 3 3 l -3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="585.6" y="174.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="598.8000000000001" y="196.60000000000002" text-anchor="middle" style="font-size:11px;fill:white">162</text>
+<path d="M 598.8000000000001 184.60000000000002 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="585.6" y="121.60000000000001" width="26.400000000000002" height="26.400000000000002" fill="#976426" stroke="white" stroke-width="0.7"/>
+<text x="598.8000000000001" y="143.8" text-anchor="middle" style="font-size:11px;fill:white">186</text>
+<path d="M 594.8000000000001 127.80000000000001 h 8 m -3 -3 l 3 3 l -3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="598.8000000000001" y="354" text-anchor="middle" class="label" font-weight="600">R07</text>
+<text x="598.8000000000001" y="375" text-anchor="middle" class="small">Z=+19</text>
+<text x="598.8000000000001" y="395" text-anchor="middle" class="small muted">84 块</text>
+<rect x="669.2" y="251.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#976426" stroke="white" stroke-width="0.7"/>
+<text x="682.4000000000001" y="273.6" text-anchor="middle" style="font-size:11px;fill:white">127</text>
+<path d="M 678.4000000000001 257.6 h 8 m -3 -3 l 3 3 l -3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="669.2" y="174.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="682.4000000000001" y="196.60000000000002" text-anchor="middle" style="font-size:11px;fill:white">162</text>
+<path d="M 682.4000000000001 177.60000000000002 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="669.2" y="121.60000000000001" width="26.400000000000002" height="26.400000000000002" fill="#976426" stroke="white" stroke-width="0.7"/>
+<text x="682.4000000000001" y="143.8" text-anchor="middle" style="font-size:11px;fill:white">186</text>
+<path d="M 678.4000000000001 127.80000000000001 h 8 m -3 -3 l 3 3 l -3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="682.4000000000001" y="354" text-anchor="middle" class="label" font-weight="600">R08</text>
+<text x="682.4000000000001" y="375" text-anchor="middle" class="small">Z=-19</text>
+<text x="682.4000000000001" y="395" text-anchor="middle" class="small muted">84 块</text>
+<rect x="752.8" y="240.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#976426" stroke="white" stroke-width="0.7"/>
+<text x="766" y="262.6" text-anchor="middle" style="font-size:11px;fill:white">132</text>
+<path d="M 762 246.60000000000002 h 8 m -3 -3 l 3 3 l -3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="752.8" y="187.60000000000002" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="766" y="209.8" text-anchor="middle" style="font-size:11px;fill:white">156</text>
+<path d="M 766 190.8 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="752.8" y="121.60000000000001" width="26.400000000000002" height="26.400000000000002" fill="#976426" stroke="white" stroke-width="0.7"/>
+<text x="766" y="143.8" text-anchor="middle" style="font-size:11px;fill:white">186</text>
+<path d="M 762 127.80000000000001 h 8 m -3 -3 l 3 3 l -3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="766" y="354" text-anchor="middle" class="label" font-weight="600">R09</text>
+<text x="766" y="375" text-anchor="middle" class="small">Z=-57</text>
+<text x="766" y="395" text-anchor="middle" class="small muted">84 块</text>
+<rect x="836.4" y="251.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#976426" stroke="white" stroke-width="0.7"/>
+<text x="849.6" y="273.6" text-anchor="middle" style="font-size:11px;fill:white">127</text>
+<path d="M 845.6 257.6 h 8 m -3 -3 l 3 3 l -3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="836.4" y="200.8" width="26.400000000000002" height="26.400000000000002" fill="#976426" stroke="white" stroke-width="0.7"/>
+<text x="849.6" y="223" text-anchor="middle" style="font-size:11px;fill:white">150</text>
+<path d="M 845.6 207 h 8 m -3 -3 l 3 3 l -3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="836.4" y="145.8" width="26.400000000000002" height="26.400000000000002" fill="#a12c30" stroke="white" stroke-width="0.7"/>
+<text x="849.6" y="168" text-anchor="middle" style="font-size:11px;fill:white">175</text>
+<path d="M 849.6 156 v -7 m -3 3 l 3 -3 l 3 3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="849.6" y="354" text-anchor="middle" class="label" font-weight="600">R10</text>
+<text x="849.6" y="375" text-anchor="middle" class="small">Z=-95</text>
+<text x="849.6" y="395" text-anchor="middle" class="small muted">84 块</text>
+<rect x="920" y="253.60000000000002" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="933.2" y="275.8" text-anchor="middle" style="font-size:11px;fill:white">126</text>
+<path d="M 933.2 256.8 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="920" y="227.20000000000002" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="933.2" y="249.4" text-anchor="middle" style="font-size:11px;fill:white">138</text>
+<path d="M 933.2 230.4 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="920" y="200.8" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="933.2" y="223" text-anchor="middle" style="font-size:11px;fill:white">150</text>
+<path d="M 933.2 204 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="920" y="174.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="933.2" y="196.60000000000002" text-anchor="middle" style="font-size:11px;fill:white">162</text>
+<path d="M 933.2 177.60000000000002 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="920" y="148" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="933.2" y="170.2" text-anchor="middle" style="font-size:11px;fill:white">174</text>
+<path d="M 933.2 151.2 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="920" y="121.60000000000001" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="933.2" y="143.8" text-anchor="middle" style="font-size:11px;fill:white">186</text>
+<path d="M 933.2 124.80000000000001 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="933.2" y="354" text-anchor="middle" class="label" font-weight="600">R11</text>
+<text x="933.2" y="375" text-anchor="middle" class="small">Z=-133</text>
+<text x="933.2" y="395" text-anchor="middle" class="small muted">168 块</text>
+<rect x="1003.6" y="227.20000000000002" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1016.8000000000001" y="249.4" text-anchor="middle" style="font-size:11px;fill:white">138</text>
+<path d="M 1016.8000000000001 230.4 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1003.6" y="200.8" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1016.8000000000001" y="223" text-anchor="middle" style="font-size:11px;fill:white">150</text>
+<path d="M 1016.8000000000001 204 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1003.6" y="174.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1016.8000000000001" y="196.60000000000002" text-anchor="middle" style="font-size:11px;fill:white">162</text>
+<path d="M 1016.8000000000001 177.60000000000002 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1003.6" y="148" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1016.8000000000001" y="170.2" text-anchor="middle" style="font-size:11px;fill:white">174</text>
+<path d="M 1016.8000000000001 151.2 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1003.6" y="121.60000000000001" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1016.8000000000001" y="143.8" text-anchor="middle" style="font-size:11px;fill:white">186</text>
+<path d="M 1016.8000000000001 124.80000000000001 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1016.8000000000001" y="354" text-anchor="middle" class="label" font-weight="600">R12</text>
+<text x="1016.8000000000001" y="375" text-anchor="middle" class="small">Z=-171</text>
+<text x="1016.8000000000001" y="395" text-anchor="middle" class="small muted">140 块</text>
+<rect x="1087.2" y="253.60000000000002" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1100.4" y="275.8" text-anchor="middle" style="font-size:11px;fill:white">126</text>
+<path d="M 1100.4 256.8 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1087.2" y="227.20000000000002" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1100.4" y="249.4" text-anchor="middle" style="font-size:11px;fill:white">138</text>
+<path d="M 1100.4 230.4 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1087.2" y="200.8" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1100.4" y="223" text-anchor="middle" style="font-size:11px;fill:white">150</text>
+<path d="M 1100.4 204 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1087.2" y="174.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1100.4" y="196.60000000000002" text-anchor="middle" style="font-size:11px;fill:white">162</text>
+<path d="M 1100.4 177.60000000000002 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1087.2" y="148" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1100.4" y="170.2" text-anchor="middle" style="font-size:11px;fill:white">174</text>
+<path d="M 1100.4 151.2 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1087.2" y="121.60000000000001" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1100.4" y="143.8" text-anchor="middle" style="font-size:11px;fill:white">186</text>
+<path d="M 1100.4 124.80000000000001 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1100.4" y="354" text-anchor="middle" class="label" font-weight="600">R13</text>
+<text x="1100.4" y="375" text-anchor="middle" class="small">Z=-209</text>
+<text x="1100.4" y="395" text-anchor="middle" class="small muted">168 块</text>
+<rect x="1170.8" y="249.2" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1184" y="271.4" text-anchor="middle" style="font-size:11px;fill:white">128</text>
+<path d="M 1184 252.39999999999998 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1170.8" y="222.8" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1184" y="245" text-anchor="middle" style="font-size:11px;fill:white">140</text>
+<path d="M 1184 226 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1170.8" y="196.40000000000003" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1184" y="218.60000000000002" text-anchor="middle" style="font-size:11px;fill:white">152</text>
+<path d="M 1184 199.60000000000002 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1170.8" y="170" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1184" y="192.2" text-anchor="middle" style="font-size:11px;fill:white">164</text>
+<path d="M 1184 173.2 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1170.8" y="123.8" width="26.400000000000002" height="26.400000000000002" fill="#174ea6" stroke="white" stroke-width="0.7"/>
+<text x="1184" y="146" text-anchor="middle" style="font-size:11px;fill:white">185</text>
+<path d="M 1184 127 v 7 m -3 -3 l 3 3 l 3 -3" fill="none" stroke="white" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1184" y="354" text-anchor="middle" class="label" font-weight="600">R14</text>
+<text x="1184" y="375" text-anchor="middle" class="small">Z=-247</text>
+<text x="1184" y="395" text-anchor="middle" class="small muted">140 块</text>
+<line x1="84" y1="423" x2="1197.2" y2="423" stroke="#777"/>
+<line x1="84" y1="417" x2="84" y2="429" stroke="#777"/>
+<line x1="1197.2" y1="417" x2="1197.2" y2="429" stroke="#777"/>
+<rect x="468" y="411" width="350" height="24" fill="white"/>
+<text x="643" y="429" text-anchor="middle" class="label">轴向磁铁总长 506 · 中心距 38 · 面间净隙 26</text>
+<text x="40" y="468" class="label muted">径向面包络 120–192；最外角实际半径 192.094。图示磁块名义尺寸，槽余量与隔墙尺寸需另定。</text>
+</svg>

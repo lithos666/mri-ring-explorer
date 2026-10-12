@@ -1,3 +1,29 @@
+# MRI Hackathon · MRI 黑客松教学版
+
+教学版将网站分为整体总览、材料清单、分步装配、原理与实验、文件资料五个板块。装配主体为新版 14 层、28 列、1,736 颗 12 mm 方块磁铁。CAD 网格来自提供的 STEP，磁铁位置与方向来自 MATLAB 数据。
+
+This teaching edition has five sections: Overview, BOM, Assembly, Principles & Lab, and Resources. Its baseline is the new 14-ring, 28-column assembly with 1,736 separate 12 mm cubes. Mechanical meshes come from supplied STEP files; magnet positions and directions come from the MATLAB data.
+
+公开网页沿用下方链接。运行本地版请使用 `npm.cmd run dev`（Windows PowerShell），打开终端显示的本地地址。详细说明见 [教学版本地预览说明.txt](教学版本地预览说明.txt)、[CAD 核对记录](docs/cad-audit.md) 和 [教学版性能检查](docs/teaching-performance.md)。
+
+The public teaching website uses the link below. On Windows PowerShell, run `npm.cmd run dev` and open the local address shown in the terminal.
+
+“原理与实验”先展示交互实验台，原理讲解位于下方。CAD 采用无损压缩及内容版本缓存；求场仍在参赛者自己的浏览器中进行，公式与模型参数不因性能优化改变。
+
+Principles & Lab opens with the interactive workbench, followed by the explanations. CAD assets use lossless compression and content-versioned caching. Field computation remains in each participant's browser; performance changes do not alter the formulas or model parameters.
+
+装配完成项由参赛者人工确认。学习进度、收料记录与磁铁设计独立；切换教学板块会保留已挂载实验台中的修改、撤销历史和计算结果。修改磁化方向仍需手动点击计算磁场。
+
+Completion checks are manual. Learning progress and material receipt records are separate from magnet designs. Moving between teaching sections retains a mounted Lab's edits, undo history and computed results. Orientation edits still require manual Compute field.
+
+工程参数待确认项集中记录在材料清单、对应步骤及 CAD 核对记录。章节封面为 Imagegen 示意图，操作场景使用 CAD 与磁铁数据；[视觉来源与生成提示](docs/teaching-visuals.md) 包含封面的完整提示。
+
+Pending engineering parameters are recorded in the BOM, corresponding steps and CAD audit. The cover is an Imagegen illustration; operating scenes use CAD and magnet data.
+
+---
+
+以下保留 v16 实验台的原有说明 / Retained v16 laboratory documentation
+
 # MRI Ring Explorer · 磁环实验台
 
 **公开网页 / Public web app:** https://mri-ring-explorer.thosli611.chatgpt.site
