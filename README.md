@@ -26,10 +26,10 @@ Pending engineering parameters are recorded in the BOM, corresponding steps and 
 
 # MRI Ring Explorer · 磁环实验台
 
-**公开网页 / Public web app:** https://mri-ring-explorer.thosli611.chatgpt.site
+**公开网页 / Public web app:** https://mri-nerdfeast.thosli611.chatgpt.site
 
-这个 GitHub 仓库保存私有源码，只有获授权的成员可以访问。使用网页不需要取得仓库权限。
-This repository stores private source code. Anyone can use the public web app; repository access is limited to authorized collaborators.
+这个 GitHub 仓库公开提供项目源文件，任何人都可以查看、下载或克隆，无需登录。点击 [下载 ZIP](https://github.com/lithos666/mri-ring-explorer/archive/refs/heads/main.zip)，解压后按下方说明安装并运行。
+This repository is public. Anyone can browse, download or clone the project without signing in. [Download ZIP](https://github.com/lithos666/mri-ring-explorer/archive/refs/heads/main.zip), extract it, then follow the installation and running instructions below.
 
 ## 本地运行 / Run locally
 
@@ -112,7 +112,7 @@ sourcesFor(model)按不可变模型对象缓存独立源，修改后的源不会
 领域检查覆盖756/1736计数、对置配对、镜像与轴向符号、圆周相位、单位隔离、独立数值积分、远场极限、Maxwell空气区域、离散旋转对称、两套数据签名及轨迹方向、控制变量与成像公式。
 浏览器检查包括两套方案全部视图与快速切换、真实三维点击/旋转、独立线圈开关、白色表面、390/320触屏布局、无WebGL降级及生产Worker读取。
 
-开发默认localhost:5173；生产输出dist/server和dist/client。部署身份保留在.openai/hosting.json，测试截图/工具与凭据不纳入源码。
+开发默认localhost:5173；生产输出dist/server和dist/client。此副本的.openai/hosting.json仅保留空数据库/存储配置，不包含原网站的发布身份或凭据；测试截图/工具与凭据不纳入源码。
 
 ## 依据
 

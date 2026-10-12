@@ -3,7 +3,7 @@ MRI Hackathon — local teaching preview
 整理日期 / Updated: 2026-10-12
 
 公开教学网站 / Public teaching website:
-https://mri-ring-explorer.thosli611.chatgpt.site
+https://mri-nerdfeast.thosli611.chatgpt.site
 
 下面说明如何运行本地副本。本地修改不会自动发布到公开网站。
 The following instructions run a local copy. Local changes do not automatically publish to the public website.
