@@ -1,6 +1,6 @@
 # 本地教学版 CAD 核对记录 / Local teaching CAD audit
 
-适用版本：新版 14 层、28 列、1,736 颗 12 mm 磁铁。核对输入为 `new_generation_prototype/模型`、同目录打印与放置说明，以及项目 MATLAB 文件；原始下载文件按字节保留。每个文件的 SHA-256、大小和对应步骤列于 `lib/cad-manifest.json`。
+适用版本：新版 14 层、28 列、1,736 颗 12 mm 磁铁。核对输入为 `new_generation_prototype/模型`、同目录打印与放置说明，以及项目 MATLAB 文件；原始参考下载按字节保留，新增紧固件示意独立标注。每个文件的 SHA-256、大小和对应步骤列于 `lib/cad-manifest.json`。
 
 ## 真实零件实例及单位
 
@@ -23,11 +23,11 @@ R01、R14 是独立 XY 平面模型；R02–R13 位于源 CAD 的 YZ 平面，�
 1. **R05/R10 最外侧槽名义干涉 0.2 mm。** CAD 槽底径向区间约 169.2–181.4 mm，而 MATLAB R=175 mm 的 12 mm 方块径向面为 169–181 mm。内侧槽壁存在约 0.2 mm 名义干涉。网页不挪动磁铁、不缩小磁铁来隐藏该差异；加工或打印前需修订槽位、公差或确认数据版本。
 2. 其余层名义槽底包含对应磁铁径向面，但这是名义几何检查，不代替打印公差、曲面/完整碰撞、装载夹具和实物配合检查。
 3. 未在提供的 STEP 中独立确认亚克力实体。页面的透明亚克力滑入演示是关系示意；厚度、分段、路径与最终加工文件仍需确认。
-4. CAD 螺丝名称为 `2.9×16 BF`；参考图标记 `M3×18`。二者不能视为已确认的同一采购规格。
-5. `螺母.png` 提供 H59 黄铜 M10 参考，但不能由它推定贯穿杆长度、材料、螺距、垫片配置或数量。定位块给出的四条轴线是孔轴候选，不等于已经核实的螺杆规格。
+4. 用户已确认上盖、亚克力与下盖之间使用 **M3** 螺丝和螺母。CAD 螺丝名称仍为 `2.9×16 BF`；已有参考图标记 `M3×18`，仅作为原始参考保留。M3 螺纹用途已确认，长度、数量和扭矩仍待确认；不能把参考图中的 18 mm 自动设为采购长度。
+5. 用户已确认层间连接使用 **M6** 螺杆和螺母，装配不使用 M10。原 M10 图片已退出网站下载目录及发布文件，没有重新标成 M6。定位块给出的四条轴线仍是孔轴候选；M6 是确认的螺纹规格，不等于已测量的孔径。杆长、孔隙配合、材料、垫片配置和采购数量仍待确认。贯穿杆在十四层全部就位后最后插入。
 6. 26 mm 是相邻层磁铁端面的净距；不能将其当作支撑件厚度。定位块 CAD 厚度是独立测得的 18 mm。
-7. 3MF `prototypev0`–`prototypev4` 均标记版本参考；没有自动指定最新文件为已发行打印版本。`layer1.3mf` 不代表已经取得全部十四层的打印发行包。
-8. 本次未取得铝型材框架 CAD、切割清单、连接件配置、紧固扭矩或经验证的插入夹具。框架和部分动作使用明确标注的教学示意。
+7. 用户指定 **`prototypev4.3mf` 为当前教学打印版本**；`prototypev0`–`prototypev3` 已退出网站目录与发布副本，用户本地原件保留。其他侧支撑、层间支撑、holder v1 和 layer1 打印参考继续保留。`layer1.3mf` 不代表已经取得全部十四层的打印发行包。
+8. BOM 已补入铝型材 **L 型角码**，并提供独立的角码、M3、M6 关系示意图。角码孔距、外形尺寸、数量以及铝型材切割清单仍未确认，示意图不能作为加工图。本次未取得框架 CAD、紧固扭矩或经验证的插入夹具。
 
 ## 卡扣与闭环演示路径
 
@@ -43,10 +43,12 @@ R01、R14 是独立 XY 平面模型；R02–R13 位于源 CAD 的 YZ 平面，�
 
 预生成的 GLB 已包含在本地项目中，普通 `npm.cmd run dev`/构建不需要安装 CAD 转换器。若需转换更新后的 STEP，单独安装 `occt-import-js`，然后运行 `node scripts/generate-assembly-assets.mjs --source=<new_generation_prototype目录> --toolkit=<occt-import-js.js路径> --matlab=<项目matlab目录>`。转换器仅用于离线准备，不向浏览器发送 STEP/WASM。
 
+仅更新下载清单时使用 `node scripts/refresh-teaching-resources.mjs --source=<new_generation_prototype目录>`；它重新核对资源大小和 SHA-256，不重建 CAD、不修改磁场模型、不修改 MATLAB 程序。两种入口共用资源生成规则，均只发布 prototype v4，不会重新加入旧版本或 M10 图片。本次核对的 7 个 MATLAB 程序与用户项目目录逐字节一致，保持原样。
+
 `node --experimental-strip-types scripts/test-assembly-assets.mjs` 检查十四层身份、毫米单位、正交刚体矩阵、56/56/182 CAD 实例数、28 槽列对齐、实际 MATLAB 磁铁计数、下载完整性和 R05/R10 已知名义差异。零件运动演示不计算装配力、磁吸力或真实夹具限制；完成勾选需由参赛者实际检查。
 
 ## English handoff
 
 The local teaching assets retain STEP world coordinates in millimetres and apply one proper rigid transform per layer. Each layer contains four actual base and four cover instances; never duplicate them as if the file were a single quadrant. The fourteen files contain 56 base, 56 cover and 182 short-screw instances. These are CAD observations, not released procurement quantities.
 
-All 28 slot columns register to the same MATLAB physical azimuth lattice. Cube centers remain at the MATLAB radii and at local Z=9 mm. The R05/R10 outer pocket has a **0.2 mm nominal inner-wall interference**; the model deliberately preserves and reports this discrepancy. Independently identified acrylic geometry, frame fabrication data, actual rod specifications, released print versions, fixtures and fastening parameters remain pending. Animated motion is instructional, and does not validate mechanical forces or a physical assembly procedure.
+All 28 slot columns register to the same MATLAB physical azimuth lattice. Cube centers remain at the MATLAB radii and at local Z=9 mm. The R05/R10 outer pocket has a **0.2 mm nominal inner-wall interference**; the model deliberately preserves and reports this discrepancy. M3 hardware joins the cover, acrylic and base; M6 hardware connects the layers. Through-rods are inserted after all fourteen layers have been positioned. Thread usage is confirmed, but lengths, clearances, quantities and tightening specifications remain pending. Only prototype v4 is published; earlier prototype copies and the obsolete M10 illustration are withdrawn without deleting the user's original files. Independently identified acrylic geometry, frame fabrication data, fixtures and fastening parameters remain pending. Animated motion is instructional, and does not validate mechanical forces or a physical assembly procedure.

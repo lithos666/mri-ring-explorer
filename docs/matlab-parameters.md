@@ -1,8 +1,12 @@
 # MATLAB 参数与网页模型 / MATLAB parameters and web model
 
-网页 v15 将两份 14 层脚本的数值声明作为几何与 Br 的来源。网页源文件在项目根目录，MATLAB 程序集中在 `matlab/`；用户原有的 `hackathon_big/` 数据也已移动到该目录下，120 个原文件逐个核对，内容未改变。公开源码仓库保留 7 个 MATLAB 程序；优化数据留在用户本地，不作为网页运行资产发布。
+网页 v15 将两份 14 层脚本的数值声明作为几何与 Br 的来源。网页源文件在项目根目录，MATLAB 程序集中在 `matlab/`；用户原有的 `hackathon_big/` 数据也已移动到该目录下，120 个原文件逐个核对，内容未改变。源码仓库保留 7 个 MATLAB 程序；优化数据留在用户本地，不作为网页运行资产发布。
 
 Web v15 uses the numeric declarations from the two 14-layer scripts. Web source is at the project root; MATLAB programs are in `matlab/`. The user's optimization data stays local and is not a public runtime asset.
+
+本次材料与装配教程更新再次核对了用户项目目录中的 7 个 MATLAB 程序：与网页源程序和下载副本逐字节一致。本次未清理、修改或删除 MATLAB 代码，也未改变磁体参数或磁场缓存。
+
+The hardware/tutorial update verified all seven MATLAB programs against the user's project directory and the downloadable copies byte for byte. No MATLAB source was cleaned, changed or removed; magnetic parameters and field caches are unchanged.
 
 ## 采用参数 / Adopted parameters
 

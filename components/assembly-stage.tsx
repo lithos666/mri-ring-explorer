@@ -113,7 +113,7 @@ function partRole(partId:string|undefined){
  if(/locator|spacer|定位|层间/.test(id))return "locator";
  if(/frame|extrusion|铝/.test(id))return "frame";
  if(/rod|螺杆/.test(id))return "rod";
- if(/fastener|screw|nut|m3|m10|螺丝|螺母/.test(id))return "fastener";
+ if(/fastener|screw|nut|m3|m6|螺丝|螺母/.test(id))return "fastener";
  return roleOf(id);
 }
 
@@ -192,7 +192,7 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
   };
   const display:DisplayMesh[]=[],wholeDisplay:DisplayMesh[]=[];
   let localToken=0,fullToken=0,disposed=false,currentRing=-1,fullLoaded=false,fullComplete=false,ringComplete=-1,assetManifest:AssemblyManifest|null=null;
-  let current={...latest.current},raf=0,previousTime=0,reportTime=0,autoCamera=true;
+  let current={...latest.current},raf=0,previousTime=0,reportTime=0,autoCamera=true,lastRodCameraProgress=-1;
   const targetWhole=new THREE.Vector3(),targetDetail=new THREE.Vector3(),eyeWhole=new THREE.Vector3(),eyeDetail=new THREE.Vector3();
   let focusedId:string|null=null;
   const jointDirection=new THREE.Vector3(0,1,0),closureDirection=new THREE.Vector3(1,0,0);
@@ -227,7 +227,7 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
   function toggleLoading(value:boolean){if(!disposed)setLoading(value);}
   function updateReady(){
    if(disposed)return;
-   const full=(current.step===0&&!current.partId)||current.step===9;
+   const full=(current.step===0&&!current.partId)||current.step===7||current.step===9;
    const ready=full?fullComplete:ringComplete===current.ring;
    setReady(ready);toggleLoading(!ready);
   }
@@ -282,8 +282,8 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
    }
   }
 
-  // Rods and the frame only illustrate their position. Their manufacturing
-  // dimensions are deliberately not inferred from the screenshot or M10 nut.
+  // M6 is confirmed for the inter-layer rods. Their lengths and quantities,
+  // along with the frame cut list, remain illustrative rather than inferred.
   const frameMaterial=ownMat(new THREE.MeshPhysicalMaterial({color:0xb9c0c7,metalness:.8,roughness:.3,clearcoat:.16,clearcoatRoughness:.24}));
   const frameEdges=ownMat(new THREE.LineBasicMaterial({color:0x59616b,transparent:true,opacity:.25}));
   const profileCache=new Map<string,{body:THREE.BufferGeometry;edges:THREE.EdgesGeometry}>();
@@ -349,7 +349,7 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
   for(const mesh of [brackets,boltHeads,boltSockets]){mesh.castShadow=mesh!==boltSockets;mesh.receiveShadow=true;mesh.computeBoundingSphere();frameGroup.add(mesh);}
   container.dataset.frameProfiles="9";container.dataset.frameGeometryVariants=String(profileCache.size);container.dataset.frameBrackets=String(bracketIndex);container.dataset.studioEnvironment=studioEnvironment?"procedural":"direct";
   const rodMaterial=ownMat(new THREE.MeshStandardMaterial({color:0x9d855b,roughness:.36,metalness:.72}));
-  const rodGeometry=ownGeo(new THREE.CylinderGeometry(4.3,4.3,570,14));
+  const rodGeometry=ownGeo(new THREE.CylinderGeometry(3,3,570,14));
   const axisMaterial=ownMat(new THREE.LineDashedMaterial({color:0x6a9dd4,dashSize:7,gapSize:6,transparent:true,opacity:.65}));
   function rebuildRods(){
    rodGroup.clear();for(const child of [...axisGroup.children]){if(child instanceof THREE.Line){ownedGeometry.delete(child.geometry);child.geometry.dispose();}}axisGroup.clear();
@@ -405,7 +405,7 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
   const displayedMagnetPositions=new Map<string,THREE.Vector3>();
   function orient(magnet:Magnet){const [u,n,w]=magnetBasis(magnet);return q.setFromRotationMatrix(basis.makeBasis(physicalDirection(u),physicalDirection(n),physicalDirection(w)));}
   function buildMagnets(){
-   const preview=partRole(current.partId),full=(current.step===0&&!preview)||current.step===9;
+   const preview=partRole(current.partId),full=(current.step===0&&!preview)||current.step===7||current.step===9;
    const magnets=preview==="magnet"?cubeModel.magnets.filter(m=>m.ring===current.ring&&m.sector===1):full?cubeModel.magnets:cubeModel.magnets.filter(m=>m.ring===current.ring).sort((a,b)=>a.sector-b.sector||a.radial-b.radial);
    let k=0;magnetIds=[];displayedMagnetPositions.clear();
    for(const magnet of magnets){
@@ -454,7 +454,7 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
    return null;
   }
   function apply(){
-   const preview=partRole(current.partId),full=(current.step===0&&!preview)||current.step===9;
+   const preview=partRole(current.partId),full=(current.step===0&&!preview)||current.step===7||current.step===9;
    const cinematic=current.step===0&&!preview;
    renderer.toneMappingExposure=cinematic?.82:1;
    scene.environmentIntensity=cinematic?.56:.68;
@@ -468,11 +468,13 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
    frameEdges.opacity=cinematic?.33:.25;
    northMaterial.color.setHex(cinematic?0xed292d:0xe84b49);
    southMaterial.color.setHex(cinematic?0x006be5:0x1675d9);
-   individual.visible=!full;whole.visible=full;frameGroup.visible=(!preview&&(current.step===0||current.step>=8))||preview==="frame";
+   individual.visible=!full;whole.visible=full;frameGroup.visible=(!preview&&(current.step===0||current.step>=7))||preview==="frame";
    floor.visible=full||current.step===8||preview==="frame";
    supportGroup.visible=(!full&&!preview&&current.step>=6)||preview==="support";
    locatorGroup.visible=(!full&&!preview&&current.step>=6)||preview==="locator";
-   rodGroup.visible=(!preview&&(current.step===0||current.step>=7))||preview==="rod";
+   // Semantic phase 7 is now the final lesson: mount the frame (8), then all
+   // layers (9), and only then insert rods. Never show rods in those two phases.
+   rodGroup.visible=(!preview&&(current.step===0||current.step===7))||preview==="rod";
    axisGroup.visible=!preview&&current.step===7;
    acrylicGroup.visible=(!preview&&current.step===5)||preview==="acrylic";
    const z=cubeModel.rings[current.ring-1]?.zMM??247;
@@ -529,16 +531,18 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
     if(object.edge){(object.edge.material as THREE.LineBasicMaterial).clippingPlanes=current.cutaway&&!preview?[clippingPlane]:[];object.edge.visible=visible&&!full&&!current.transparent;}
    }
    const insertion=1-range(current.progress,.35,.84);
-   if(current.step===7)rodGroup.position.z=-insertion*420;else rodGroup.position.z=0;
+   if(current.step===7)rodGroup.position.z=-insertion*570;else rodGroup.position.z=0;
+   if(current.step===7&&current.progress!==lastRodCameraProgress){lastRodCameraProgress=current.progress;cameraTargets(false);}
    const drop=current.step===8?(1-range(current.progress,.34,.85))*82:0;
    for(const group of [individual,supportGroup,locatorGroup])group.position.copy(liftDirection).multiplyScalar(drop);
    buildMagnets();
    container!.dataset.magnetCount=String(magnetBody.count);container!.dataset.ring=String(current.ring);container!.dataset.step=String(current.step);
    container!.dataset.cadMeshes=String((full?wholeDisplay:display).filter(d=>d.mesh.visible).length);container!.dataset.progress=current.progress.toFixed(3);
+   container!.dataset.rodsVisible=String(rodGroup.visible);container!.dataset.rodDiameterMM="6";container!.dataset.rodCount=String(rodGroup.children.length);container!.dataset.rodOffsetMM=String(rodGroup.position.z);
   }
 
-  function cameraTargets(){
-   const preview=partRole(current.partId),full=(current.step===0&&!preview)||current.step===9,z=cubeModel.rings[current.ring-1]?.zMM??247;
+  function cameraTargets(snap=true){
+   const preview=partRole(current.partId),full=(current.step===0&&!preview)||current.step===7||current.step===9,z=cubeModel.rings[current.ring-1]?.zMM??247;
    targetWhole.set(0,-8,full?0:z);eyeWhole.set(full?660:420,full?430:300,full?910:z+720);
    if(preview){
     const relevant=display.filter(item=>item.role===preview),bounds=new THREE.Box3();
@@ -548,11 +552,11 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
     if(preview==="frame"){targetWhole.set(0,0,0);eyeWhole.set(720,480,990);}
     if(preview==="rod"){targetWhole.set(0,0,0);eyeWhole.set(670,410,830);}
    }
-   if(preview==="frame"||!preview&&(current.step===0||current.step===8||current.step===9)){
+   if(preview==="frame"||!preview&&(current.step===0||current.step>=7)){
     // Fit the display envelope, including the ring's lifted start position.
     // These bounds describe the illustration, not manufacturing dimensions.
     const direction=eyeWhole.clone().sub(targetWhole).normalize();
-    const low=new THREE.Vector3(-270,-305,-315),high=new THREE.Vector3(270,current.step===8?290:210,315);
+    const low=new THREE.Vector3(-270,-305,current.step===7?Math.min(-315,rodGroup.position.z-285):-315),high=new THREE.Vector3(270,current.step===8?290:210,315);
     const center=low.clone().add(high).multiplyScalar(.5);
     const right=new THREE.Vector3(0,1,0).cross(direction).normalize(),up=direction.clone().cross(right).normalize();
     const tanY=Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*.88,tanX=tanY*camera.aspect;
@@ -569,7 +573,7 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
    if(current.step===3){const m=cubeModel.magnets.find(m=>m.ring===current.ring&&m.sector===1&&m.radial===Math.ceil(cubeModel.rings[current.ring-1].radii.length/2));if(m){targetDetail.copy(physical(cubeModel.position(m)));eyeDetail.copy(targetDetail).add(new THREE.Vector3(95,105,230));}}
    if(current.step===5){targetDetail.set(159,0,z+7);eyeDetail.set(310,105,z+285);}
    if(current.step===6){targetDetail.set(205,0,z);eyeDetail.set(350,110,z+305);}
-   if(current.step===7){const first=assetManifest?.rodAxes?.[0];if(first){targetDetail.set(first.x,first.y,z);eyeDetail.copy(targetDetail).add(new THREE.Vector3(160,90,350));}}
+   if(current.step===7){const first=assetManifest?.rodAxes?.[0];if(first){targetDetail.set(first.x,first.y,cubeModel.rings[13].zMM);eyeDetail.copy(targetDetail).add(new THREE.Vector3(160,90,-350));}}
    if(current.step===8){targetDetail.set(215,0,z);eyeDetail.set(445,110,z+480);}
    if(current.step===9){targetDetail.set(0,0,120);eyeDetail.set(520,300,690);}
    // Detail coordinates are assembly-local; orbit cameras and hotspots use
@@ -578,10 +582,11 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
    targetDetail.applyMatrix4(mountingRotation);eyeDetail.applyMatrix4(mountingRotation);
    if(!full&&current.step!==8&&!preview){targetWhole.applyMatrix4(mountingRotation);eyeWhole.applyMatrix4(mountingRotation);}
    if(preview){targetDetail.copy(targetWhole);eyeDetail.copy(eyeWhole);}
-   if(autoCamera){camera.position.copy(eyeWhole);controls.target.copy(targetWhole);controls.update();}
+   if(snap&&autoCamera){camera.position.copy(eyeWhole);controls.target.copy(targetWhole);controls.update();}
   }
   function chooseView(kind:"recommended"|"whole"|"detail"){
    autoCamera=kind==="recommended";
+   cameraTargets(false);
    const detail=kind==="detail";camera.position.copy(detail?eyeDetail:eyeWhole);controls.target.copy(detail?targetDetail:targetWhole);controls.update();
   }
   const gesture=()=>{autoCamera=false;setCameraMode("whole");};controls.addEventListener("start",gesture);
@@ -630,7 +635,7 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
    const changed=next.step!==current.step||next.ring!==current.ring||next.partId!==current.partId;
    current={...next};controls.enabled=next.active;
    if(changed){autoCamera=true;focusedId=null;cameraTargets();}
-   const full=(next.step===0&&!next.partId)||next.step===9;
+   const full=(next.step===0&&!next.partId)||next.step===7||next.step===9;
    if(full)void loadWhole();else if(currentRing!==next.ring)void loadRing(next.ring);
    updateReady();
    apply();
@@ -654,17 +659,17 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
  const fitIssue=(ring===5||ring===10)&&!part&&step>=3&&step<=5;
  const note=part==="acrylic"||step===5?t("蓝色悬浮层演示圆周滑动，不表示实际层位。独立亚克力 CAD、厚度及到位位置待确认；先定位盖板，再插入，最后紧固。","The floating blue guide shows circumferential sliding, not a measured layer position. Acrylic CAD, thickness and seating await confirmation; position covers, insert, then secure."):
   part==="frame"||step===8?t("铝型材框架为位置示意；具体截面、长度与固定规格待确认。三处支撑接触应在实物中核对。","Frame positioning is schematic; extrusion sections, lengths and fixings await confirmation. Verify all three support contacts on the real assembly."):
-  part==="rod"||step===7?t("螺杆候选轴线来自 CAD 定位孔。螺杆与紧固关系为示意，长度、直径和紧固配置待确认。","Candidate rod axes follow CAD locating holes. Rods and fastening are schematic; length, diameter and fastening configuration await confirmation."):
+  part==="rod"||step===7?t("十四层全部安装后，最后沿对齐的孔轴插入 M6 贯穿螺杆并用 M6 螺母紧固。候选轴线来自 CAD；杆长、材料、数量和扭矩待确认。","After mounting all fourteen layers, insert the M6 through-rods last along aligned hole axes and secure with M6 nuts. Candidate axes follow CAD; rod lengths, material, quantity and torque await confirmation."):
   step===1?t("蓝色扇形的卡扣沿灰色导槽的径向滑入；路径遵循 CAD 轨道方向，实际夹持与操作需现场确认。","The blue sector's clip slides radially into the grey guide, following the CAD rail direction. Confirm physical restraint and handling at the bench."):
   step===2?t("灰色半环保持固定，蓝色半环沿两处卡扣的共同径向导轨滑入。100 mm 仅为展示行程，现场夹持与闭合工艺待核对。","Keep the grey half fixed and slide the blue half along the common radial axis of both dovetails. The 100 mm travel is for demonstration; confirm workshop restraint and procedure."):
   step===3?t("每个长条由独立 12 mm 方块组成。红／蓝和 N／S 为教学标识；逐块核对环号、层位和磁化方向。","Every strip contains separate 12 mm cubes. Red/blue and N/S are teaching labels. Check each ID, radial position and magnetization."):
   step===4?t("盖板只做定位，还未最终锁紧；准备沿圆周插入亚克力。","Position the covers without final tightening, preparing for circumferential acrylic insertion."):
   step===6&&(ring===1||ring===14)?t("支撑件使用实际 CAD 外形。R01／R14 为独立导出，支撑与缺口的位置配合仍待确认。26 mm 不是定位件厚度。","Support shapes use actual CAD. R01/R14 are standalone exports; support-to-notch registration awaits confirmation. The 26 mm is not locator thickness."):
   step===6?t("左、右、下支撑与层间定位件使用实际 CAD。26 mm 是磁铁端面净距，不是定位件厚度；完整机械配合仍需核对。","Left, right, bottom supports and locators use actual CAD. The 26 mm magnet-face gap is not locator thickness; verify the complete mechanical fit."):
-  step===9?t("R01 → R14 顺序、28 列和 1,736 颗磁铁来自 MATLAB；机械安装检查须手动完成。","R01 → R14, 28 columns and 1,736 magnets follow MATLAB. Confirm the physical assembly checks manually."):
+  step===9?t("按 R01 → R14 安装全部十四层，每层 28 列，共 1,736 颗磁铁。此时不装贯穿螺杆；所有层到位后，在最后一步插入 M6 螺杆。","Mount all fourteen layers in R01 → R14 order, with 28 columns each and 1,736 magnets total. Do not fit through-rods yet; insert the M6 rods in the final stage after every layer is seated."):
   schematic?t("环体与支撑来自实际 CAD；框架、贯穿螺杆为位置示意，制造规格待确认。","Ring parts and supports use actual CAD; the frame and through rods are positioning guides with manufacturing specifications pending."):t("毫米单位的 CAD 视图；拖动自由观察，滚轮放大。","CAD in millimetres. Drag to inspect and scroll to zoom.");
  const selectedDirection=selected?t(({out:"径向朝外",in:"径向朝内",axial:"轴向 −Z",axialUp:"轴向 +Z",tangent:"切向 +θ",tangentNeg:"切向 −θ"})[selected.direction],directionEnglish[selected.direction]):"";
- const hotspots=["",t("卡扣与导槽","Clip and guide"),t("最后两处接口","Final two joints"),t("A01 · 磁化方向","A01 · Magnetization"),t("盖板孔位","Cover holes"),t("弧形导向示意","Curved slide guide"),t("支撑与缺口","Support and notch"),t("候选螺杆轴线","Candidate rod axis"),t("支撑接触位置","Support contacts"),"R01 → R14"];
+ const hotspots=["",t("卡扣与导槽","Clip and guide"),t("最后两处接口","Final two joints"),t("A01 · 磁化方向","A01 · Magnetization"),t("盖板孔位","Cover holes"),t("弧形导向示意","Curved slide guide"),t("支撑与缺口","Support and notch"),t("M6 螺杆插入轴线","M6 rod insertion axis"),t("支撑接触位置","Support contacts"),"R01 → R14"];
  return <div className="assembly-stage" data-assembly-stage={step} data-active={active}>
    <div className="assembly-stage__toolbar">
     <div className="assembly-stage__views">

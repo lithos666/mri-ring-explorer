@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { models } from '../lib/mri.ts';
+import { teachingParts, teachingSteps } from '../lib/teaching.ts';
 
 const project=path.resolve(import.meta.dirname,'..');
 const manifest=JSON.parse(fs.readFileSync(path.join(project,'lib/cad-manifest.json'),'utf8'));
@@ -19,10 +20,21 @@ assert.deepEqual(manifest.target,{rings:14,columns:28,magnetCount:1736,magnetEdg
 assert.equal(models.latest.magnets.length,1736);assert.equal(models.latest.repeats,28);
 assert.equal(manifest.layers.length,14);
 const resourceIDs=new Set(manifest.resources.map(r=>r.id));assert.equal(resourceIDs.size,manifest.resources.length);
+assert.deepEqual(manifest.resources,JSON.parse(fs.readFileSync(path.join(project,'lib/teaching-resources.json'),'utf8')),'CAD and teaching resource catalogs differ');
+const partIDs=new Set(teachingParts.map(p=>p.id)),stepIDs=new Set(teachingSteps.map(s=>s.id));
 for(const resource of manifest.resources) {
  const bytes=fs.readFileSync(publicFile(resource.url));assert.equal(bytes.length,resource.bytes,resource.id);assert.equal(hash(bytes),resource.sha256,resource.id);
  assert.ok(resource.partIds.length&&resource.stepIds.length,`Resource linkage missing: ${resource.id}`);
+ assert.ok(resource.partIds.every(id=>partIDs.has(id)),`Unknown BOM link: ${resource.id}`);
+ assert.ok(resource.stepIds.every(id=>stepIDs.has(id)),`Unknown assembly link: ${resource.id}`);
 }
+assert.deepEqual(manifest.resources.filter(r=>r.id.startsWith('print-prototype-')).map(r=>r.id),['print-prototype-v4']);
+assert.equal(manifest.resources.filter(r=>r.category==='print').length,5);
+for(const filename of ['print-prototype-v0.3mf','print-prototype-v1.3mf','print-prototype-v2.3mf','print-prototype-v3.3mf','fastener-nut-reference.png'])assert.ok(!fs.existsSync(publicFile(`/resources/${filename}`)),`Retired publication file remains: ${filename}`);
+assert.ok(!manifest.resources.some(r=>/M10/.test(`${r.titleZh} ${r.titleEn}`)),'M10 is not used in this assembly');
+for(const id of ['fastener-l-bracket-diagram','fastener-m3-diagram','fastener-m6-diagram'])assert.ok(resourceIDs.has(id),`Missing hardware diagram: ${id}`);
+const matlabResources=manifest.resources.filter(r=>r.type==='MATLAB');assert.equal(matlabResources.length,7);
+for(const resource of matlabResources)assert.equal(hash(fs.readFileSync(path.join(project,resource.sourceRelativePath))),resource.sha256,`MATLAB download differs from preserved source: ${resource.id}`);
 const conflicts=[];
 for(const layer of manifest.layers) {
  const m=layer.sourceToCanonical;assert.equal(m.length,16);
@@ -57,6 +69,7 @@ assert.deepEqual(manifest.confirmedCADInstanceCounts,{base:56,cover:56,shortScre
 for(const part of manifest.parts){const gltf=glbJSON(publicFile(part.url));assert.equal(gltf.nodes.length,part.nodes.length);assert.equal(hash(fs.readFileSync(publicFile(part.url))),part.sha256);}
 const supports=manifest.parts.find(p=>p.role==='support');assert.equal(supports.nodes.length,3);assert.equal(supports.nodes.filter(n=>n.role==='side-support').length,2);assert.equal(supports.nodes.filter(n=>n.role==='bottom-support').length,1);
 const locators=manifest.parts.find(p=>p.role==='locator');assert.equal(locators.nodes.length,4);for(const n of locators.nodes){near(n.canonicalBounds.size[2],18);near(n.canonicalBounds.min[2],-18);near(n.canonicalBounds.max[2],0);}
-assert.equal(manifest.rodAxes.length,4);assert.ok(manifest.rodAxes.every(a=>a.diameterMM===null&&a.status.includes('pending')));
+assert.equal(manifest.rodAxes.length,4);assert.ok(manifest.rodAxes.every(a=>a.diameterMM===null&&a.hardwareThread==='M6'&&a.hardwareStatus==='user-confirmed'&&a.status==='axis-candidate-hole-diameter-pending'));
+assert.equal(manifest.hardware.coverAcrylicBase.thread,'M3');assert.equal(manifest.hardware.interLayer.thread,'M6');
 assert.ok(!manifest.parts.some(p=>p.role==='acrylic'),'Do not misidentify independent acrylic CAD');
 console.log(JSON.stringify({status:'passed',layers:14,columns:28,magnets:1736,downloads:manifest.resources.length,CADInstances:manifest.confirmedCADInstanceCounts,nominalPocketConflicts:conflicts,properRigidRegistrations:14},null,2));

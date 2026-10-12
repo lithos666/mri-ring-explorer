@@ -4,6 +4,10 @@
 
 This teaching edition has five sections: Overview, BOM, Assembly, Principles & Lab, and Resources. Its baseline is the new 14-ring, 28-column assembly with 1,736 separate 12 mm cubes. Mechanical meshes come from supplied STEP files; magnet positions and directions come from the MATLAB data.
 
+当前装配路线最后三步为：放入框架 → 安装全部十四层 → 最后插入贯穿螺杆。M3 用于上盖、亚克力与下盖，M6 用于层间连接；材料清单包含 L 型角码及零件图片。prototype 打印文件仅保留 v4，另保留支撑等零件参考文件。七份 MATLAB 程序原样保留。
+
+The final three stages are: mount in the frame → mount all fourteen layers → insert through-rods last. M3 secures the upper cover, acrylic and lower cover; M6 is used between layers. The BOM includes L-brackets and part images. Only prototype v4 is offered, alongside support and other part references. All seven MATLAB programs are preserved unchanged.
+
 公开网页沿用下方链接。运行本地版请使用 `npm.cmd run dev`（Windows PowerShell），打开终端显示的本地地址。详细说明见 [教学版本地预览说明.txt](教学版本地预览说明.txt)、[CAD 核对记录](docs/cad-audit.md) 和 [教学版性能检查](docs/teaching-performance.md)。
 
 The public teaching website uses the link below. On Windows PowerShell, run `npm.cmd run dev` and open the local address shown in the terminal.

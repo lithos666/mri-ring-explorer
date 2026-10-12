@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { pathToFileURL } from 'node:url';
+import { buildTeachingResources, updateConfirmedHardwareMetadata } from './teaching-resource-catalog.mjs';
 
 // Offline-only CAD conversion. Browser assets retain the original STEP world
 // coordinates in millimetres; a separate rigid transform registers every layer.
@@ -139,38 +140,11 @@ for(const [id,filename,role] of [['cad-ring-support','surport.step','support'],[
   const glb=writeGLB(`${role}.glb`,cad.parsed,{sourceRelativePath:cad.sourceRelativePath,sourceSha256:cad.sha256},matrix,(mesh,i,b)=>role==='support'?(i===2?'bottom-support':'side-support'):role==='locator'?'locator':b.size[2]===7?'cover-variant':'base');
   parts.push({id,role,sourceRelativePath:cad.sourceRelativePath,sourceSha256:cad.sha256,...glb,sourceToCanonical:matrix,unit:'millimeter',placement:role==='locator'?'ring-local-negative-z-gap':role==='support'?'ring-local':'template-reference',procurementQuantityStatus:'pending'});
 }
-const resources=[];
-function addResource(relative,id,category,titleZh,titleEn,partIds,stepIds,layer,options={}) {
-  const input=path.join(source,relative),bytes=fs.readFileSync(input),extension=path.extname(relative).slice(1).toLowerCase(),output=`${id}.${extension}`;
-  fs.writeFileSync(path.join(resourceDirectory,output),bytes);
-  resources.push({id,titleZh,titleEn,type:extension.toUpperCase(),sourceRelativePath:relative.replaceAll('\\','/'),url:`/resources/${output}`,bytes:bytes.length,sha256:hash(bytes),category,partIds,stepIds,...(layer?{layer}:{}),...options});
-}
-for(let ring=1;ring<=14;ring++)addResource(`模型/layer${ring}.step`,`cad-layer-${String(ring).padStart(2,'0')}`,'cad',`R${String(ring).padStart(2,'0')} 原始装配 CAD`,`R${String(ring).padStart(2,'0')} source assembly CAD`,['printed-ring','ring-cover','short-screw'],['step-01','step-02','step-03','step-04','step-05','step-09'],ring,{versionStatus:'source-reference'});
-addResource('模型/new_genneration.step','cad-template','cad','扇形拼接与盖板模板','Sector joint and cover template',['printed-ring','ring-cover'],['step-01','step-02','step-04']);
-addResource('模型/surport.step','cad-ring-support','cad','左、右、下支撑 CAD','Left, right and lower support CAD',['ring-support'],['step-06','step-08','step-09']);
-addResource('模型/support_layer.step','cad-locator','cad','层间定位件 CAD','Inter-layer locator CAD',['locator'],['step-06','step-07','step-09']);
-for(const [filename,id,zh,en,partIds] of [
- ['侧边支撑.3mf','print-side-support','侧边支撑打印参考','Side-support print reference',['ring-support']],
- ['曾与层之间的支撑.3mf','print-interlayer-support','层间支撑打印参考（原文件名保留）','Inter-layer support print reference',['locator']],
- ['holderv1.3mf','print-holder-v1','holder v1 打印参考','holder v1 print reference',['ring-support']],
- ['layer1.3mf','print-layer-01','layer1 打印参考','layer1 print reference',['printed-ring','ring-cover']],
- ...[0,1,2,3,4].map(v=>[`prototypev${v}.3mf`,`print-prototype-v${v}`,`prototype v${v} 版本参考`,`prototype v${v} version reference`,['printed-ring','ring-cover']])
-])addResource(`打印文件/${filename}`,id,'print',zh,en,partIds,['step-01','step-04','step-06'],filename==='layer1.3mf'?1:undefined,{versionStatus:filename.startsWith('prototypev')?'version-reference-not-release-confirmed':'print-reference-not-release-confirmed'});
-const placementFiles=fs.readdirSync(path.join(source,'磁铁放置信息'));
-for(const [index,filename] of placementFiles.entries())addResource(`磁铁放置信息/${filename}`,`placement-${String(index+1).padStart(2,'0')}`,'placement',filename,filename.includes('1736')?'1,736 magnet coordinates':filename.endsWith('.txt')?'14-layer magnet placement notes':filename.includes('边缘')?'14-layer edge dimensions':'Magnet-layout source reference',['magnet-cube'],['step-03','step-09']);
-addResource('M3螺丝尺寸.png','fastener-m3-reference','fastener-reference','M3×18 螺丝参考图（与 CAD 标记不一致）','M3×18 screw reference (conflicts with CAD label)',['short-screw'],['step-05']);
-addResource('螺母.png','fastener-nut-reference','fastener-reference','M10 黄铜螺母参考图','M10 brass-nut reference',['nut'],['step-07']);
-const matlabDirectory=path.resolve(argv.matlab||'G:/OneDrive/桌面/MRI/Mri-ring-explorer/matlab');
-for(const filename of fs.readdirSync(matlabDirectory).filter(f=>f.endsWith('.m'))) {
- const bytes=fs.readFileSync(path.join(matlabDirectory,filename)),id=`matlab-${filename.replace(/\.m$/,'').toLowerCase()}`;fs.writeFileSync(path.join(resourceDirectory,`${id}.m`),bytes);
- resources.push({id,titleZh:`MATLAB · ${filename}`,titleEn:`MATLAB · ${filename}`,type:'MATLAB',sourceRelativePath:`matlab/${filename}`,url:`/resources/${id}.m`,bytes:bytes.length,sha256:hash(bytes),category:'placement',partIds:['magnet-cube'],stepIds:['step-03','step-09'],versionStatus:'physics-source'});
-}
-for(const language of ['zh','en']) {
- const relative=`diagrams/mri-14-layer-edge-dimensions-${language}.svg`,filename=path.join(project,'public',relative),bytes=fs.readFileSync(filename);
- resources.push({id:`edge-dimensions-${language}`,titleZh:language==='zh'?'新版十四层边缘尺寸 · 中文':'新版十四层边缘尺寸 · 英文',titleEn:language==='zh'?'14-layer edge dimensions · Chinese':'14-layer edge dimensions · English',type:'SVG',sourceRelativePath:`public/${relative}`,url:`/${relative}`,bytes:bytes.length,sha256:hash(bytes),category:'placement',partIds:['magnet-cube'],stepIds:['step-03','step-09'],versionStatus:'derived-verified'});
-}
+const matlabDirectory=path.resolve(argv.matlab||path.join(project,'matlab'));
+const resources=buildTeachingResources({project,source,matlabDirectory});
 const rodAxes=parts.find(p=>p.role==='locator').nodes.map(n=>({x:n.canonicalCentroid[0],y:n.canonicalCentroid[1],xMM:n.canonicalCentroid[0],yMM:n.canonicalCentroid[1],source:'locator CAD hole-axis candidate',diameterMM:null,status:'axis-candidate-diameter-and-hardware-pending'}));
 const manifest={schemaVersion:1,unit:'millimeter',geometryVersion:'hackathon-local-v1',target:{rings:14,columns:28,magnetCount:1736,magnetEdgeMM:12,magnetPitchMM:38,magnetLocalCenterZMM:9},layers,parts,rodAxes,resources,confirmedCADInstanceCounts:{base:56,cover:56,shortScrew:layers.reduce((s,l)=>s+l.counts.fastener,0)},pending:['Independent acrylic CAD and thickness','Profile cut list and connectors','Procurement quantities and materials','Screw conflict: CAD 2.9×16 BF versus reference M3×18','R05/R10 outer-pocket nominal 0.2 mm radial interference','R01/R14 support-notch mating registration','Physical fixtures, insertion paths and fastening sequence'],registrationNotes:['Layer1 and layer14 are standalone XY-plane exports; other layers are YZ-plane exports with assembly translations.','A proper rigid transform preserves millimetre sizes while registering the slot lattice to the MATLAB displayed azimuth frame.','Slot-lattice phase fixes rotation only modulo the column pitch; it does not validate R01/R14 support-notch mating.','Displayed magnets remain at MATLAB radii; nominal pocket discrepancies are reported, never hidden by shifting magnets.']};
+updateConfirmedHardwareMetadata(manifest);
 fs.writeFileSync(path.join(project,'lib/cad-manifest.json'),JSON.stringify(manifest,null,2)+'\n');
 fs.writeFileSync(path.join(project,'lib/teaching-resources.json'),JSON.stringify(resources,null,2)+'\n');
 fs.writeFileSync(path.join(assemblyDirectory,'manifest.json'),JSON.stringify(manifest)+'\n');

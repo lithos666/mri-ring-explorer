@@ -4,3 +4,5 @@ matlab/*.m -text
 public/resources/** -text
 public/assembly/** -text
 public/diagrams/** -text
+public/bom/** -text
+public/brand/** -text

@@ -36450,7 +36450,9 @@
       "yMM": 84.00259772925065,
       "source": "locator CAD hole-axis candidate",
       "diameterMM": null,
-      "status": "axis-candidate-diameter-and-hardware-pending"
+      "status": "axis-candidate-hole-diameter-pending",
+      "hardwareThread": "M6",
+      "hardwareStatus": "user-confirmed"
     },
     {
       "x": 105.33592581311555,
@@ -36459,7 +36461,9 @@
       "yMM": -84.00259772925148,
       "source": "locator CAD hole-axis candidate",
       "diameterMM": null,
-      "status": "axis-candidate-diameter-and-hardware-pending"
+      "status": "axis-candidate-hole-diameter-pending",
+      "hardwareThread": "M6",
+      "hardwareStatus": "user-confirmed"
     },
     {
       "x": 84.00259772925114,
@@ -36468,7 +36472,9 @@
       "yMM": 105.33592581311517,
       "source": "locator CAD hole-axis candidate",
       "diameterMM": null,
-      "status": "axis-candidate-diameter-and-hardware-pending"
+      "status": "axis-candidate-hole-diameter-pending",
+      "hardwareThread": "M6",
+      "hardwareStatus": "user-confirmed"
     },
     {
       "x": -84.002597729251,
@@ -36477,7 +36483,9 @@
       "yMM": -105.335925813116,
       "source": "locator CAD hole-axis candidate",
       "diameterMM": null,
-      "status": "axis-candidate-diameter-and-hardware-pending"
+      "status": "axis-candidate-hole-diameter-pending",
+      "hardwareThread": "M6",
+      "hardwareStatus": "user-confirmed"
     }
   ],
   "resources": [
@@ -36910,8 +36918,8 @@
       "type": "3MF",
       "sourceRelativePath": "打印文件/侧边支撑.3mf",
       "url": "/resources/print-side-support.3mf",
-      "bytes": 225843,
-      "sha256": "8dac9734655e90e2e2fdd8212eea55c98b92c60ff3bc0a01a66ffb8d97462095",
+      "bytes": 225905,
+      "sha256": "673bb5a819b3fda46f416b12ab14f5c5fddd8af221d6ba1932c2e4e88025b568",
       "category": "print",
       "partIds": [
         "ring-support"
@@ -36986,93 +36994,9 @@
       "versionStatus": "print-reference-not-release-confirmed"
     },
     {
-      "id": "print-prototype-v0",
-      "titleZh": "prototype v0 版本参考",
-      "titleEn": "prototype v0 version reference",
-      "type": "3MF",
-      "sourceRelativePath": "打印文件/prototypev0.3mf",
-      "url": "/resources/print-prototype-v0.3mf",
-      "bytes": 220504,
-      "sha256": "5546d084f41449cbfa5b8f233aae78c093fa62a278bc1255c8d744fe58d3c88b",
-      "category": "print",
-      "partIds": [
-        "printed-ring",
-        "ring-cover"
-      ],
-      "stepIds": [
-        "step-01",
-        "step-04",
-        "step-06"
-      ],
-      "versionStatus": "version-reference-not-release-confirmed"
-    },
-    {
-      "id": "print-prototype-v1",
-      "titleZh": "prototype v1 版本参考",
-      "titleEn": "prototype v1 version reference",
-      "type": "3MF",
-      "sourceRelativePath": "打印文件/prototypev1.3mf",
-      "url": "/resources/print-prototype-v1.3mf",
-      "bytes": 706192,
-      "sha256": "7361999108294eb9f067a84073e9b35e3719bed3c848cee1b5398f9880ac9af7",
-      "category": "print",
-      "partIds": [
-        "printed-ring",
-        "ring-cover"
-      ],
-      "stepIds": [
-        "step-01",
-        "step-04",
-        "step-06"
-      ],
-      "versionStatus": "version-reference-not-release-confirmed"
-    },
-    {
-      "id": "print-prototype-v2",
-      "titleZh": "prototype v2 版本参考",
-      "titleEn": "prototype v2 version reference",
-      "type": "3MF",
-      "sourceRelativePath": "打印文件/prototypev2.3mf",
-      "url": "/resources/print-prototype-v2.3mf",
-      "bytes": 817039,
-      "sha256": "c37f0cd04f27c38665c9d330037c07af412e93631e9dd288a2885646185d9584",
-      "category": "print",
-      "partIds": [
-        "printed-ring",
-        "ring-cover"
-      ],
-      "stepIds": [
-        "step-01",
-        "step-04",
-        "step-06"
-      ],
-      "versionStatus": "version-reference-not-release-confirmed"
-    },
-    {
-      "id": "print-prototype-v3",
-      "titleZh": "prototype v3 版本参考",
-      "titleEn": "prototype v3 version reference",
-      "type": "3MF",
-      "sourceRelativePath": "打印文件/prototypev3.3mf",
-      "url": "/resources/print-prototype-v3.3mf",
-      "bytes": 818181,
-      "sha256": "dddcc39fb3f6728897eb8f257ca78144fd8f8d98221a6452ae4263191be85320",
-      "category": "print",
-      "partIds": [
-        "printed-ring",
-        "ring-cover"
-      ],
-      "stepIds": [
-        "step-01",
-        "step-04",
-        "step-06"
-      ],
-      "versionStatus": "version-reference-not-release-confirmed"
-    },
-    {
       "id": "print-prototype-v4",
-      "titleZh": "prototype v4 版本参考",
-      "titleEn": "prototype v4 version reference",
+      "titleZh": "prototype v4 · 当前教学打印版本",
+      "titleEn": "prototype v4 · current teaching print version",
       "type": "3MF",
       "sourceRelativePath": "打印文件/prototypev4.3mf",
       "url": "/resources/print-prototype-v4.3mf",
@@ -37088,7 +37012,7 @@
         "step-04",
         "step-06"
       ],
-      "versionStatus": "version-reference-not-release-confirmed"
+      "versionStatus": "user-selected-teaching-version"
     },
     {
       "id": "placement-01",
@@ -37218,8 +37142,8 @@
     },
     {
       "id": "fastener-m3-reference",
-      "titleZh": "M3×18 螺丝参考图（与 CAD 标记不一致）",
-      "titleEn": "M3×18 screw reference (conflicts with CAD label)",
+      "titleZh": "M3 螺丝参考图（长度待确认）",
+      "titleEn": "M3 screw reference (length to confirm)",
       "type": "PNG",
       "sourceRelativePath": "M3螺丝尺寸.png",
       "url": "/resources/fastener-m3-reference.png",
@@ -37231,24 +37155,73 @@
       ],
       "stepIds": [
         "step-05"
-      ]
+      ],
+      "versionStatus": "reference-thread-confirmed-length-pending",
+      "referenceNoteZh": "原图标记 M3×18；M3 螺纹已确认，实际长度尚未确认。",
+      "referenceNoteEn": "The supplied image is labeled M3×18. M3 thread is confirmed; the installed length remains unconfirmed."
     },
     {
-      "id": "fastener-nut-reference",
-      "titleZh": "M10 黄铜螺母参考图",
-      "titleEn": "M10 brass-nut reference",
-      "type": "PNG",
-      "sourceRelativePath": "螺母.png",
-      "url": "/resources/fastener-nut-reference.png",
-      "bytes": 238780,
-      "sha256": "a1749d9298b72553c28e04af5d9c38d434c1001d41c02d4d27c117981095c8d1",
+      "id": "fastener-l-bracket-diagram",
+      "titleZh": "铝型材 L 型角码示意",
+      "titleEn": "Aluminum-frame L-bracket diagram",
+      "type": "SVG",
+      "sourceRelativePath": "public/bom/l-bracket.svg",
+      "url": "/bom/l-bracket.svg",
+      "bytes": 7291,
+      "sha256": "3b9fd891c8067a62e5c6f6a67912ea3af412023fd26032f992b030a34a3e6d42",
       "category": "fastener-reference",
       "partIds": [
-        "nut"
+        "frame-l-bracket",
+        "aluminum-frame"
       ],
       "stepIds": [
-        "step-07"
-      ]
+        "step-08"
+      ],
+      "versionStatus": "schematic-thread-usage-confirmed-dimensions-pending"
+    },
+    {
+      "id": "fastener-m3-diagram",
+      "titleZh": "M3 紧固件 · 盖板与亚克力",
+      "titleEn": "M3 hardware · covers and acrylic",
+      "type": "SVG",
+      "sourceRelativePath": "public/bom/m3-hardware.svg",
+      "url": "/bom/m3-hardware.svg",
+      "bytes": 10706,
+      "sha256": "4bd2869c0cf224c131e64f8ebfae196858de65f68802c2ce0db0e6b5de114652",
+      "category": "fastener-reference",
+      "partIds": [
+        "short-screw",
+        "m3-nut",
+        "ring-cover",
+        "acrylic"
+      ],
+      "stepIds": [
+        "step-04",
+        "step-05"
+      ],
+      "versionStatus": "schematic-thread-usage-confirmed-dimensions-pending"
+    },
+    {
+      "id": "fastener-m6-diagram",
+      "titleZh": "M6 紧固件 · 层间连接",
+      "titleEn": "M6 hardware · inter-layer connection",
+      "type": "SVG",
+      "sourceRelativePath": "public/bom/m6-hardware.svg",
+      "url": "/bom/m6-hardware.svg",
+      "bytes": 10912,
+      "sha256": "1cc74e2cc426d50949b29edbcecb53870cb4737782dae188e324a752607cdf52",
+      "category": "fastener-reference",
+      "partIds": [
+        "through-rod",
+        "m6-nut",
+        "locator"
+      ],
+      "stepIds": [
+        "step-06",
+        "step-07",
+        "step-09"
+      ],
+      "versionStatus": "schematic-thread-usage-confirmed-dimensions-pending"
     },
     {
       "id": "matlab-drawmagnetization",
@@ -37431,15 +37404,43 @@
     "Independent acrylic CAD and thickness",
     "Profile cut list and connectors",
     "Procurement quantities and materials",
-    "Screw conflict: CAD 2.9×16 BF versus reference M3×18",
     "R05/R10 outer-pocket nominal 0.2 mm radial interference",
     "R01/R14 support-notch mating registration",
-    "Physical fixtures, insertion paths and fastening sequence"
+    "Physical fixtures, insertion paths and fastening sequence",
+    "M3 thread confirmed; screw length pending (CAD 2.9×16 BF versus supplied M3×18 reference)",
+    "M6 layer-connection thread confirmed; rod length, hole clearance and quantities pending",
+    "L-bracket dimensions and procurement quantities"
   ],
   "registrationNotes": [
     "Layer1 and layer14 are standalone XY-plane exports; other layers are YZ-plane exports with assembly translations.",
     "A proper rigid transform preserves millimetre sizes while registering the slot lattice to the MATLAB displayed azimuth frame.",
     "Slot-lattice phase fixes rotation only modulo the column pitch; it does not validate R01/R14 support-notch mating.",
     "Displayed magnets remain at MATLAB radii; nominal pocket discrepancies are reported, never hidden by shifting magnets."
-  ]
+  ],
+  "hardware": {
+    "confirmation": "user-confirmed-thread-and-use",
+    "coverAcrylicBase": {
+      "thread": "M3",
+      "partIds": [
+        "short-screw",
+        "m3-nut"
+      ],
+      "lengthStatus": "pending",
+      "quantityStatus": "pending"
+    },
+    "interLayer": {
+      "thread": "M6",
+      "partIds": [
+        "through-rod",
+        "m6-nut"
+      ],
+      "rodLengthStatus": "pending",
+      "quantityStatus": "pending"
+    },
+    "frameBrackets": {
+      "partId": "frame-l-bracket",
+      "dimensionsStatus": "pending",
+      "quantityStatus": "pending"
+    }
+  }
 }
