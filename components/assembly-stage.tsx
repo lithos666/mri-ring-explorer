@@ -159,10 +159,13 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
   const hemisphere=new THREE.HemisphereLight(0xffffff,0xdce1e7,.7);scene.add(hemisphere);
   const fill=new THREE.DirectionalLight(0xffffff,1);fill.position.set(-550,260,-180);scene.add(fill);
   const rim=new THREE.DirectionalLight(0xf1f6ff,.85);rim.position.set(150,200,-800);scene.add(rim);
-  const floor=new THREE.Mesh(new THREE.PlaneGeometry(3000,3000),new THREE.ShadowMaterial({opacity:.14}));floor.rotation.x=-Math.PI/2;floor.position.y=-258;floor.receiveShadow=true;scene.add(floor);
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(3000,3000),new THREE.ShadowMaterial({opacity:.14}));floor.rotation.x=-Math.PI/2;floor.position.y=-296;floor.receiveShadow=true;scene.add(floor);
   const root=new THREE.Group();scene.add(root);
   const individual=new THREE.Group(),whole=new THREE.Group(),supportGroup=new THREE.Group(),locatorGroup=new THREE.Group(),frameGroup=new THREE.Group(),rodGroup=new THREE.Group(),acrylicGroup=new THREE.Group(),axisGroup=new THREE.Group();
-  root.add(individual,whole,supportGroup,locatorGroup,frameGroup,rodGroup,acrylicGroup,axisGroup);
+  // Mounting coordinates level the support channels; the solver and cached
+  // CAD stay in their original canonical coordinates. Rotate every assembly
+  // element together, while the aluminum frame remains level in world space.
+  root.add(individual,whole,supportGroup,locatorGroup,rodGroup,acrylicGroup,axisGroup);scene.add(frameGroup);
   const ownedGeometry=new Set<THREE.BufferGeometry>(),ownedMaterial=new Set<THREE.Material>();
   const ownGeo=<T extends THREE.BufferGeometry>(g:T)=>{ownedGeometry.add(g);return g;};
   const ownMat=<T extends THREE.Material>(m:T)=>{ownedMaterial.add(m);return m;};
@@ -193,6 +196,16 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
   const targetWhole=new THREE.Vector3(),targetDetail=new THREE.Vector3(),eyeWhole=new THREE.Vector3(),eyeDetail=new THREE.Vector3();
   let focusedId:string|null=null;
   const jointDirection=new THREE.Vector3(0,1,0),closureDirection=new THREE.Vector3(1,0,0);
+  const liftDirection=new THREE.Vector3(0,1,0);
+  function alignMountingFrame(){
+   const phase=assetManifest?.layers[1]?.registration?.phaseCorrectionDeg??0;
+   root.rotation.z=THREE.MathUtils.degToRad(-phase);
+   liftDirection.set(Math.sin(root.rotation.z),Math.cos(root.rotation.z),0);
+   clippingPlane.normal.set(-Math.cos(root.rotation.z),-Math.sin(root.rotation.z),0);
+   root.updateMatrixWorld(true);
+   container!.dataset.mountingRotationDeg=String(-phase);
+   container!.dataset.frameSupportChannels="3";
+  }
   const insertionArrow=new THREE.ArrowHelper(new THREE.Vector3(0,-1,0),new THREE.Vector3(),53,0x0071e3,13,7);root.add(insertionArrow);
 
   function makeCAD(meshes:CADMesh[],parent:THREE.Group,destination:DisplayMesh[],layer:number,shift:number,edges=true){
@@ -221,7 +234,7 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
   async function loadRing(layer:number){
    const token=++localToken;currentRing=layer;toggleLoading(true);setError(false);setReady(false);
    try{
-    assetManifest=await manifest();
+    assetManifest=await manifest();alignMountingFrame();
     const asset=assetManifest.layers.find(item=>item.ring===layer)??assetManifest.layers[layer-1];
     if(!asset)throw new Error("Layer CAD missing");
     if(asset.jointGuide?.direction.length===3)jointDirection.fromArray(asset.jointGuide.direction);
@@ -246,7 +259,7 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
   async function loadWhole(){
    if(fullLoaded)return;fullLoaded=true;const token=++fullToken;toggleLoading(true);
    try{
-    assetManifest=await manifest();
+    assetManifest=await manifest();alignMountingFrame();
     const queue=[...assetManifest.layers];
     const next=async()=>{
      for(;;){const asset=queue.shift();if(!asset)return;const meshes=await loadCAD(asset);if(disposed||token!==fullToken)return;
@@ -274,35 +287,43 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
   const frameMaterial=ownMat(new THREE.MeshPhysicalMaterial({color:0xb9c0c7,metalness:.8,roughness:.3,clearcoat:.16,clearcoatRoughness:.24}));
   const frameEdges=ownMat(new THREE.LineBasicMaterial({color:0x59616b,transparent:true,opacity:.25}));
   const profileCache=new Map<string,{body:THREE.BufferGeometry;edges:THREE.EdgesGeometry}>();
-  function extrusion(width:number,length:number){
-   const id=width+":"+length,cached=profileCache.get(id);if(cached)return cached;
+  function extrusion(width:number,height:number,length:number){
+   const id=width+":"+height+":"+length,cached=profileCache.get(id);if(cached)return cached;
    // Four open T-slots and a through-bore make the extrusion legible from
    // its sides and ends. These proportions are illustrative, not stock specs.
-   const h=width/2,opening=width*.105,chamber=width*.23,lip=width*.075,depth=width*.23;
-   const side:[number,number][]=[[-h,h],[-opening,h],[-opening,h-lip],[-chamber,h-lip],[-chamber,h-depth],[chamber,h-depth],[chamber,h-lip],[opening,h-lip],[opening,h],[h,h]];
-   const shape=new THREE.Shape();shape.moveTo(-h,h);
-   for(let face=0;face<4;face++)for(let i=1;i<side.length;i++){
-    const [a,b]=side[i];let x=a,y=b;
-    if(face===1){x=b;y=-a;}else if(face===2){x=-a;y=-b;}else if(face===3){x=-b;y=a;}
-    shape.lineTo(x,y);
+   const minor=Math.min(width,height),opening=minor*.105,chamber=minor*.23,lip=minor*.075,depth=minor*.23,radius=4.5;
+   const shape=new THREE.Shape();shape.moveTo(-width/2+radius,height/2);
+   for(let face=0;face<4;face++){
+    const span=(face%2?height:width)/2,reach=(face%2?width:height)/2;
+    const tangent=new THREE.Vector2(Math.cos(-face*Math.PI/2),Math.sin(-face*Math.PI/2));
+    const normal=new THREE.Vector2(-tangent.y,tangent.x);
+    const side:[number,number][]=[[-opening,reach],[-opening,reach-lip],[-chamber,reach-lip],[-chamber,reach-depth],[chamber,reach-depth],[chamber,reach-lip],[opening,reach-lip],[opening,reach],[span-radius,reach]];
+    for(const [a,b] of side)shape.lineTo(tangent.x*a+normal.x*b,tangent.y*a+normal.y*b);
+    const center=tangent.clone().multiplyScalar(span-radius).addScaledVector(normal,reach-radius);
+    shape.absarc(center.x,center.y,radius,Math.PI/2-face*Math.PI/2,-face*Math.PI/2,true);
    }
    shape.closePath();
-   const bore=new THREE.Path();bore.absarc(0,0,width*.105,0,Math.PI*2,false);shape.holes.push(bore);
+   const bore=new THREE.Path();bore.absarc(0,0,minor*.105,0,Math.PI*2,false);shape.holes.push(bore);
    const body=ownGeo(new THREE.ExtrudeGeometry(shape,{depth:length,bevelEnabled:false,curveSegments:12,steps:1}));body.translate(0,0,-length/2);body.computeBoundingBox();
    const result={body,edges:ownGeo(new THREE.EdgesGeometry(body,35))};profileCache.set(id,result);return result;
   }
   function beam(x:number,y:number,z:number,sx:number,sy:number,sz:number){
-   const axis=sx>sy&&sx>sz?"x":sy>sz?"y":"z",length=Math.max(sx,sy,sz),width=axis==="x"?sy:sx;
-   const profile=extrusion(width,length),mesh=new THREE.Mesh(profile.body,frameMaterial);mesh.position.set(x,y,z);
+   const axis=sx>sy&&sx>sz?"x":sy>sz?"y":"z",length=Math.max(sx,sy,sz),width=axis==="x"?sz:sx,height=axis==="z"?sy:axis==="y"?sz:sy;
+   const profile=extrusion(width,height,length),mesh=new THREE.Mesh(profile.body,frameMaterial);mesh.position.set(x,y,z);
    if(axis==="x")mesh.rotation.y=Math.PI/2;else if(axis==="y")mesh.rotation.x=-Math.PI/2;
    mesh.castShadow=true;mesh.receiveShadow=true;frameGroup.add(mesh);
    const line=new THREE.LineSegments(profile.edges,frameEdges);line.position.copy(mesh.position);line.quaternion.copy(mesh.quaternion);frameGroup.add(line);
   }
   for(const z of [-295,295]){
-   for(const x of [-237,237])beam(x,-82.5,z,28,325,28);
-   beam(0,-245,z,502,28,28);
+   for(const x of [-235.1,235.1])beam(x,-87.5,z,40,335,40);
+   beam(0,-275,z,510.2,40,40);
   }
-  for(const x of [-237,237])for(const y of [-215,3])beam(x,y,0,24,24,590);
+  // Nominal support-channel coordinates measured in the supplied support CAD:
+  // side walls |X|=215..255.2, upper seat Y=40.1; lower seat Y=-215.
+  // These rounded illustrative guides fit the channel, rather than a narrow
+  // floating square beam. They are not an approved profile/cut-list release.
+  for(const x of [-235.1,235.1])beam(x,.1,0,40,80,550);
+  beam(0,-235,0,80,40,590);
   // Lightweight corner connections: shared geometry and three instanced
   // draws for all eight brackets and their heads. Fastening is schematic.
   const bracketShape=new THREE.Shape();bracketShape.moveTo(0,0);bracketShape.lineTo(30,0);bracketShape.lineTo(30,3);bracketShape.lineTo(3,3);bracketShape.lineTo(3,30);bracketShape.lineTo(0,30);bracketShape.closePath();
@@ -317,7 +338,7 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
   const boltHeads=new THREE.InstancedMesh(headGeometry,headMaterial,16);
   const boltSockets=new THREE.InstancedMesh(ownGeo(new THREE.CylinderGeometry(1.2,1.2,.05,6)),socketMaterial,16);
   const connection=new THREE.Object3D(),head=new THREE.Object3D(),matrix=new THREE.Matrix4();let bracketIndex=0;
-  for(const x of [-215,215])for(const y of [-203,15])for(const z of [-281,281]){
+  for(const x of [-215.1,215.1])for(const y of [-255,40.1])for(const z of [-275,275]){
    connection.position.set(x,y,z);connection.rotation.set(0,z<0?-Math.PI/2:Math.PI/2,0);connection.updateMatrix();brackets.setMatrixAt(bracketIndex,connection.matrix);
    for(let face=0;face<2;face++){
     head.position.set(face===0?3.9:19,face===0?19:3.9,0);head.rotation.set(0,0,face===0?-Math.PI/2:0);head.updateMatrix();matrix.multiplyMatrices(connection.matrix,head.matrix);boltHeads.setMatrixAt(bracketIndex*2+face,matrix);
@@ -326,7 +347,7 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
    bracketIndex++;
   }
   for(const mesh of [brackets,boltHeads,boltSockets]){mesh.castShadow=mesh!==boltSockets;mesh.receiveShadow=true;mesh.computeBoundingSphere();frameGroup.add(mesh);}
-  container.dataset.frameProfiles="10";container.dataset.frameGeometryVariants=String(profileCache.size);container.dataset.frameBrackets=String(bracketIndex);container.dataset.studioEnvironment=studioEnvironment?"procedural":"direct";
+  container.dataset.frameProfiles="9";container.dataset.frameGeometryVariants=String(profileCache.size);container.dataset.frameBrackets=String(bracketIndex);container.dataset.studioEnvironment=studioEnvironment?"procedural":"direct";
   const rodMaterial=ownMat(new THREE.MeshStandardMaterial({color:0x9d855b,roughness:.36,metalness:.72}));
   const rodGeometry=ownGeo(new THREE.CylinderGeometry(4.3,4.3,570,14));
   const axisMaterial=ownMat(new THREE.LineDashedMaterial({color:0x6a9dd4,dashSize:7,gapSize:6,transparent:true,opacity:.65}));
@@ -374,11 +395,11 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
   const glyphN=new THREE.InstancedMesh(glyphGeometry,ownMat(new THREE.MeshBasicMaterial({map:glyphTexture("N"),transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2})),count);
   const glyphS=new THREE.InstancedMesh(glyphGeometry,ownMat(new THREE.MeshBasicMaterial({map:glyphTexture("S"),transparent:true,depthWrite:false,polygonOffset:true,polygonOffsetFactor:-2})),count);
   root.add(glyphN,glyphS);for(const glyph of [glyphN,glyphS])glyph.instanceMatrix.setUsage(THREE.DynamicDrawUsage);
-  const outline=new THREE.LineSegments(ownGeo(new THREE.EdgesGeometry(new THREE.BoxGeometry(13.1,13.1,13.1))),ownMat(new THREE.LineBasicMaterial({color:0xffa700})));scene.add(outline);outline.visible=false;
-  const columnHighlight=new THREE.Group();scene.add(columnHighlight);
+  const outline=new THREE.LineSegments(ownGeo(new THREE.EdgesGeometry(new THREE.BoxGeometry(13.1,13.1,13.1))),ownMat(new THREE.LineBasicMaterial({color:0xffa700})));root.add(outline);outline.visible=false;
+  const columnHighlight=new THREE.Group();root.add(columnHighlight);
   const columnMaterial=ownMat(new THREE.LineBasicMaterial({color:0x0071e3,transparent:true,opacity:.68}));
   for(let i=0;i<6;i++)columnHighlight.add(new THREE.LineSegments(outline.geometry,columnMaterial));
-  const polarArrow=new THREE.ArrowHelper(new THREE.Vector3(0,1,0),new THREE.Vector3(),27,0xe53335,8,4);scene.add(polarArrow);polarArrow.visible=false;
+  const polarArrow=new THREE.ArrowHelper(new THREE.Vector3(0,1,0),new THREE.Vector3(),27,0xe53335,8,4);root.add(polarArrow);polarArrow.visible=false;
   const dummy=new THREE.Object3D(),basis=new THREE.Matrix4(),q=new THREE.Quaternion();
   let magnetIds:Magnet[]=[];
   const displayedMagnetPositions=new Map<string,THREE.Vector3>();
@@ -407,7 +428,7 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
     if(current.cutaway&&position.x>0&&!preview)visible=false;
     if(!visible)continue;
     if(current.exploded&&full)position.z+=(7.5-magnet.ring)*18;
-    if(current.step===8&&!preview)position.y+=(1-range(current.progress,.34,.85))*82;
+    if(current.step===8&&!preview)position.addScaledVector(liftDirection,(1-range(current.progress,.34,.85))*82);
     const orientation=orient(magnet).clone(),normal=physicalDirection(magnet.normal);
     dummy.scale.setScalar(1);dummy.position.copy(position);dummy.quaternion.copy(orientation);dummy.updateMatrix();magnetBody.setMatrixAt(k,dummy.matrix);
     dummy.position.copy(position).addScaledVector(normal,3);dummy.updateMatrix();magnetNorth.setMatrixAt(k,dummy.matrix);
@@ -509,8 +530,8 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
    }
    const insertion=1-range(current.progress,.35,.84);
    if(current.step===7)rodGroup.position.z=-insertion*420;else rodGroup.position.z=0;
-   if(current.step===8){const drop=(1-range(current.progress,.34,.85))*82;individual.position.y=drop;supportGroup.position.y=drop;locatorGroup.position.y=drop;}
-   else{individual.position.y=0;supportGroup.position.y=0;locatorGroup.position.y=0;}
+   const drop=current.step===8?(1-range(current.progress,.34,.85))*82:0;
+   for(const group of [individual,supportGroup,locatorGroup])group.position.copy(liftDirection).multiplyScalar(drop);
    buildMagnets();
    container!.dataset.magnetCount=String(magnetBody.count);container!.dataset.ring=String(current.ring);container!.dataset.step=String(current.step);
    container!.dataset.cadMeshes=String((full?wholeDisplay:display).filter(d=>d.mesh.visible).length);container!.dataset.progress=current.progress.toFixed(3);
@@ -531,7 +552,7 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
     // Fit the display envelope, including the ring's lifted start position.
     // These bounds describe the illustration, not manufacturing dimensions.
     const direction=eyeWhole.clone().sub(targetWhole).normalize();
-    const low=new THREE.Vector3(-257,-265,-315),high=new THREE.Vector3(257,current.step===8?290:210,315);
+    const low=new THREE.Vector3(-270,-305,-315),high=new THREE.Vector3(270,current.step===8?290:210,315);
     const center=low.clone().add(high).multiplyScalar(.5);
     const right=new THREE.Vector3(0,1,0).cross(direction).normalize(),up=direction.clone().cross(right).normalize();
     const tanY=Math.tan(THREE.MathUtils.degToRad(camera.fov/2))*.88,tanX=tanY*camera.aspect;
@@ -551,6 +572,11 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
    if(current.step===7){const first=assetManifest?.rodAxes?.[0];if(first){targetDetail.set(first.x,first.y,z);eyeDetail.copy(targetDetail).add(new THREE.Vector3(160,90,350));}}
    if(current.step===8){targetDetail.set(215,0,z);eyeDetail.set(445,110,z+480);}
    if(current.step===9){targetDetail.set(0,0,120);eyeDetail.set(520,300,690);}
+   // Detail coordinates are assembly-local; orbit cameras and hotspots use
+   // world mounting coordinates. Whole-frame bounds above are already world.
+   const mountingRotation=new THREE.Matrix4().makeRotationZ(root.rotation.z);
+   targetDetail.applyMatrix4(mountingRotation);eyeDetail.applyMatrix4(mountingRotation);
+   if(!full&&current.step!==8&&!preview){targetWhole.applyMatrix4(mountingRotation);eyeWhole.applyMatrix4(mountingRotation);}
    if(preview){targetDetail.copy(targetWhole);eyeDetail.copy(eyeWhole);}
    if(autoCamera){camera.position.copy(eyeWhole);controls.target.copy(targetWhole);controls.update();}
   }
