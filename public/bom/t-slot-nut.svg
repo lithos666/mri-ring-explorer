@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="Schematic T-slot nut with a threaded hole and rail-slot fit; thread size and extrusion profile are unspecified">
+  <title>Schematic T-slot nut with a threaded hole and rail-slot fit; thread size and extrusion profile are unspecified</title>
+  <defs>
+    <linearGradient id="top" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7fafc"/><stop offset=".45" stop-color="#dce6ee"/><stop offset="1" stop-color="#93a9bd"/></linearGradient>
+    <linearGradient id="side" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b6c7d6"/><stop offset="1" stop-color="#718ba2"/></linearGradient>
+    <radialGradient id="floor"><stop stop-color="#b0c0ce" stop-opacity=".25"/><stop offset="1" stop-color="#e5e9ee" stop-opacity="0"/></radialGradient>
+    <clipPath id="threadedHole"><ellipse cx="214" cy="177" rx="22" ry="9"/></clipPath>
+    <marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="none" stroke="#007aff" stroke-width="1.4"/></marker>
+  </defs>
+  <rect width="600" height="400" fill="#fff"/>
+  <ellipse cx="290" cy="307" rx="240" ry="54" fill="url(#floor)"/>
+  <g stroke="#778fa4" stroke-width="1.6" stroke-linejoin="round">
+    <path d="M100 202L230 152L322 188L192 238Z" fill="url(#top)"/>
+    <path d="M100 202V241L192 277V238Z" fill="url(#side)"/>
+    <path d="M192 238L322 188V227L192 277Z" fill="#809bb1"/>
+    <path d="M130 183L230 144L294 169L194 208Z" fill="url(#top)"/>
+    <path d="M130 183V198L194 223V208Z" fill="#b2c5d5"/>
+    <path d="M194 208L294 169V184L194 223Z" fill="#718da5"/>
+    <ellipse cx="214" cy="177" rx="23" ry="10" fill="#436079"/>
+    <g clip-path="url(#threadedHole)" stroke="none"><path d="M190 176Q213 190 239 176V189H190Z" fill="#617e96"/><path d="M193 176Q214 186 235 176M193 180Q214 190 235 180M193 184Q214 194 235 184" fill="none" stroke="#adbfcd" stroke-width="1.2"/></g>
+    <ellipse cx="214" cy="177" rx="23" ry="10" fill="none" stroke="#a5bacb" stroke-width="2"/>
+    <path d="M109 235L187 266M202 259L311 218" stroke="#bfced9" stroke-width="1"/>
+    <path d="M142 178L231 147L282 166" fill="none" stroke="#fff" stroke-width="2" opacity=".8"/>
+  </g>
+  <g stroke="#8d9fad" stroke-width="1.1" stroke-linejoin="round">
+    <path d="M366 229L480 185L550 212L436 256Z" fill="url(#top)"/>
+    <path d="M436 256L550 212V286L436 330Z" fill="#abbccc"/>
+    <path d="M366 229L436 256V330L366 303Z" fill="#c5d2dd"/>
+    <path d="M383 229L480 191L529 210L432 248Z" fill="#7891a7"/>
+    <path d="M393 229L480 195L518 210L431 244Z" fill="#47637b" stroke="none"/>
+    <path d="M378 246L424 264V300L378 282Z" fill="#718ba2"/>
+    <path d="M383 246L396 251V264L407 268V255L419 260V290L407 286V278L396 274V282L383 277Z" fill="#e3ebf1"/>
+    <path d="M442 275L543 236M442 299L543 260M442 312L543 273" fill="none" stroke="#edf3f7" stroke-width="2"/>
+    <g opacity=".93">
+      <path d="M419 176L457 162L486 173L448 188Z" fill="url(#top)" stroke="#668298"/>
+      <path d="M419 176V189L448 200V188Z" fill="#9bb3c5"/>
+      <path d="M448 188L486 173V186L448 200Z" fill="#7793aa"/>
+      <path d="M427 170L457 159L477 167L447 178Z" fill="url(#top)"/>
+      <path d="M427 170V175L447 183V178Z" fill="#adbfce"/>
+      <path d="M447 178L477 167V172L447 183Z" fill="#7793aa"/>
+      <ellipse cx="452" cy="169" rx="7" ry="3" fill="#3a566e" stroke="#b1c4d3"/>
+    </g>
+  </g>
+  <path d="M452 205V220" fill="none" stroke="#007aff" stroke-width="1.8" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+  <path d="M348 165V309" fill="none" stroke="#e1e8ef" stroke-width="1"/>
+</svg>

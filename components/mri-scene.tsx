@@ -12,7 +12,7 @@ import {magnetBasis} from "@/lib/field";
 import type {LiveFieldResult} from "@/lib/live-field";
 import {createCoilGeometry} from "@/components/coil-geometry";
 import {rfDirection,type SystemLayers,type GradientAxis} from "@/lib/coils";
-interface Props {layers:SystemLayers;gradientAxis:GradientAxis;rfPhase:number;field:boolean;fieldData:LiveFieldResult|null;ring:number;selected:string|null;mode:ViewMode;expansion:number;arrows:boolean;reset:number;onSelect:(id:string)=>void;}
+interface Props {layers:SystemLayers;gradientAxis:GradientAxis;rfPhase:number;field:boolean;fieldData:LiveFieldResult|null;ring:number;selected:string|null;mode:ViewMode;expansion:number;arrows:boolean;reset:number;basic?:boolean;onSelect:(id:string)=>void;}
 interface Runtime {update:(p:Props)=>void;setActive:(value:boolean)=>void;dispose:()=>void;}
 export default function MRIScene(props:Props){
  const active=useSceneActivity(),activityRef=useRef(active);activityRef.current=active;
@@ -209,6 +209,6 @@ export default function MRIScene(props:Props){
   <span ref={northLabel} className="pole-label pole-n">N</span><span ref={southLabel} className="pole-label pole-s">S</span>
   {ready&&!error&&props.mode==="assembly"&&!props.layers.magnet&&!props.layers.gradient&&!props.layers.rf&&!props.field&&<div className="scene-message">{t("所有结构图层已隐藏，可在上方重新打开。","All structural layers are hidden. Use the controls above to show them again.")}</div>}
   {!ready&&!error&&<div className="scene-message">{t(`正在载入 ${magnets.length} 块磁铁…`,`Loading ${magnets.length} magnets…`)}</div>}
-  {error&&<div className="scene-message"><strong>{t("此浏览器暂时无法显示 3D","3D is unavailable in this browser")}</strong><p>{t("请切换「径向剖面」或打开「排布清单」，仍可核对所有磁铁方向和数量。","Switch to Radial section or open the Layout list to check all magnet directions and counts.")}</p></div>}
+  {error&&<div className="scene-message"><strong>{t("此浏览器暂时无法显示 3D","3D is unavailable in this browser")}</strong><p>{props.basic?t("请使用右侧的磁环与径向位置按钮修改方向，或切换到「磁场」查看结果。","Use the ring and radial-position controls to edit orientations, or switch to Field to view the result."):t("请切换「径向剖面」或打开「排布清单」，仍可核对所有磁铁方向和数量。","Switch to Radial section or open the Layout list to check all magnet directions and counts.")}</p></div>}
  </div>;
 }

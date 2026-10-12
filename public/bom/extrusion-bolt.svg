@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="600" height="400" role="img" aria-label="Schematic extrusion mounting bolt with an exploded bracket and rail-slot connection; thread size and length are unspecified">
+  <title>Schematic extrusion mounting bolt with an exploded bracket and rail-slot connection; thread size and length are unspecified</title>
+  <defs>
+    <linearGradient id="metal" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#859aac"/><stop offset=".25" stop-color="#f7fafc"/><stop offset=".55" stop-color="#c9d6e1"/><stop offset="1" stop-color="#8399ad"/></linearGradient>
+    <linearGradient id="top" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#f7fafc"/><stop offset="1" stop-color="#a3b5c6"/></linearGradient>
+    <radialGradient id="floor"><stop stop-color="#aebdcc" stop-opacity=".24"/><stop offset="1" stop-color="#e5e9ee" stop-opacity="0"/></radialGradient>
+    <marker id="arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="none" stroke="#007aff" stroke-width="1.4"/></marker>
+  </defs>
+  <rect width="600" height="400" fill="#fff"/>
+  <ellipse cx="285" cy="306" rx="242" ry="55" fill="url(#floor)"/>
+  <g transform="rotate(-43 218 210)" stroke="#71879b" stroke-width="1.5" stroke-linejoin="round">
+    <path d="M200 134H236V289Q218 305 200 289Z" fill="url(#metal)"/>
+    <ellipse cx="218" cy="289" rx="18" ry="7" fill="#a0b2c3"/>
+    <path d="M201 165L235 172M201 176L235 183M201 187L235 194M201 198L235 205M201 209L235 216M201 220L235 227M201 231L235 238M201 242L235 249M201 253L235 260M201 264L235 271M201 275L235 282" fill="none" stroke="#6e8397" stroke-width="2"/>
+    <path d="M174 95H262V136C262 163 174 163 174 136Z" fill="url(#metal)"/>
+    <path d="M180 108V135M188 114V143M251 111V143" fill="none" stroke="#9db0c1" stroke-width="1"/>
+    <ellipse cx="218" cy="95" rx="44" ry="20" fill="url(#top)"/>
+    <path d="M200 90L216 85L234 91L236 99L221 105L203 99Z" fill="#536e86" stroke="#7e93a6"/>
+    <path d="M200 90L203 99L221 105L221 100L207 95Z" fill="#8399ad" stroke="none"/>
+    <path d="M180 89Q209 75 242 85" fill="none" stroke="#fff" stroke-width="2" opacity=".8"/>
+  </g>
+  <g stroke="#8b9dac" stroke-width="1.1" stroke-linejoin="round">
+    <path d="M352 259L476 211L540 236L416 284Z" fill="url(#top)"/>
+    <path d="M416 284L540 236V279L416 327Z" fill="#a8bacb"/>
+    <path d="M352 259L416 284V327L352 302Z" fill="#c5d2dd"/>
+    <path d="M370 258L477 217L516 232L409 273Z" fill="#637e94"/>
+    <path d="M379 258L477 221L505 232L407 269Z" fill="#334f68" stroke="none"/>
+    <path d="M420 298L535 253M420 309L535 264" fill="none" stroke="#e8eef3" stroke-width="2"/>
+    <path d="M370 280L403 293V317L370 304Z" fill="#849aad"/>
+    <path d="M379 286L395 292V311L379 305Z" fill="#f0f5f8"/>
+    <path d="M389 261L420 249L443 258L412 270Z" fill="#aec0d0" stroke="#527087"/>
+    <path d="M389 261V268L412 277V270Z" fill="#879fb4"/>
+    <path d="M412 270L443 258V265L412 277Z" fill="#6b859c"/>
+    <ellipse cx="416" cy="260" rx="6.5" ry="3" fill="#334f68" stroke="#8fa6bb"/>
+    <path d="M381 220L415 207L445 219L411 232Z" fill="url(#top)"/>
+    <path d="M381 220V226L411 238V232Z" fill="#a6b8c8"/>
+    <path d="M411 232L445 219V225L411 238Z" fill="#8299ad"/>
+    <path d="M415 207L445 219V181L415 169Z" fill="#b6c7d6"/>
+    <path d="M415 169L421 166L451 178L445 181Z" fill="#e7eef4"/>
+    <path d="M445 181L451 178V216L445 219Z" fill="#829aae"/>
+    <ellipse cx="415" cy="220" rx="7" ry="3" fill="#607c93"/>
+    <path d="M410 158H422V183Q416 188 410 183Z" fill="url(#metal)"/>
+    <path d="M410 167L422 170M410 173L422 176M410 179L422 182" stroke="#6e879d"/>
+    <path d="M403 144H429V157C429 165 403 165 403 157Z" fill="url(#metal)"/>
+    <ellipse cx="416" cy="144" rx="13" ry="6" fill="url(#top)"/>
+    <path d="M411 143L416 140L421 143V146L416 148L411 146Z" fill="#536e86"/>
+  </g>
+  <path d="M416 190V204M416 242V250" fill="none" stroke="#007aff" stroke-width="1.8" stroke-dasharray="3 3" marker-end="url(#arrow)"/>
+  <path d="M346 163V314" fill="none" stroke="#e1e8ef" stroke-width="1"/>
+</svg>

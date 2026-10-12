@@ -4,9 +4,9 @@
 
 This teaching edition has five sections: Overview, BOM, Assembly, Principles & Lab, and Resources. Its baseline is the new 14-ring, 28-column assembly with 1,736 separate 12 mm cubes. Mechanical meshes come from supplied STEP files; magnet positions and directions come from the MATLAB data.
 
-当前装配路线最后三步为：放入框架 → 安装全部十四层 → 最后插入贯穿螺杆。M3 用于上盖、亚克力与下盖，M6 用于层间连接；材料清单包含 L 型角码及零件图片。prototype 打印文件仅保留 v4，另保留支撑等零件参考文件。七份 MATLAB 程序原样保留。
+当前装配路线最后三步为：放入框架 → 安装全部十四层 → 最后插入贯穿螺杆。M3 螺丝用于壳体盖板、透明盖板与磁铁壳体，M6 用于层间连接。材料清单包含 13 类物料，每项列出材料及配图，包括 N52 钕铁硼磁铁、L 型角码、铝型材连接螺栓和 T 型槽螺母。prototype 打印文件仅保留 v4。七份 MATLAB 程序原样保留，教学下载入口标为待更新。
 
-The final three stages are: mount in the frame → mount all fourteen layers → insert through-rods last. M3 secures the upper cover, acrylic and lower cover; M6 is used between layers. The BOM includes L-brackets and part images. Only prototype v4 is offered, alongside support and other part references. All seven MATLAB programs are preserved unchanged.
+The final three stages are: mount in the frame → mount all fourteen layers → insert through-rods last. M3 screws secure the housing cap, clear cover and magnet housing; M6 is used between layers. The 13-category BOM includes material descriptions and images, N52 grade NdFeB magnets, L-brackets, extrusion mounting bolts and T-slot nuts. Only prototype v4 is offered. All seven MATLAB programs remain unchanged; their teaching download entry is pending update.
 
 公开网页沿用下方链接。运行本地版请使用 `npm.cmd run dev`（Windows PowerShell），打开终端显示的本地地址。详细说明见 [教学版本地预览说明.txt](教学版本地预览说明.txt)、[CAD 核对记录](docs/cad-audit.md) 和 [教学版性能检查](docs/teaching-performance.md)。
 
@@ -16,9 +16,9 @@ The public teaching website uses the link below. On Windows PowerShell, run `npm
 
 Principles & Lab opens with the interactive workbench, followed by the explanations. CAD assets use lossless compression and content-versioned caching. Field computation remains in each participant's browser; performance changes do not alter the formulas or model parameters.
 
-装配完成项由参赛者人工确认。学习进度、收料记录与磁铁设计独立；切换教学板块会保留已挂载实验台中的修改、撤销历史和计算结果。修改磁化方向仍需手动点击计算磁场。
+装配完成项由参赛者人工确认。BOM 用于查阅零件和材料；装配学习进度与磁铁设计独立。基础实验仅展示新版模型的 3D 与磁场两个视图，按整层修改 28 颗磁铁；初始场自动载入，修改后手动计算。保存与文件操作位于折叠入口，切换教学板块会保留设计、撤销历史和已计算结果。
 
-Completion checks are manual. Learning progress and material receipt records are separate from magnet designs. Moving between teaching sections retains a mounted Lab's edits, undo history and computed results. Orientation edits still require manual Compute field.
+Completion checks are manual. The BOM is a parts and materials reference; assembly progress remains separate from magnet designs. The basic Lab offers the latest model with 3D and Field views and edits all 28 magnets at a selected radial position. The initial field loads automatically; edits require Compute. Save and file operations are folded, and changing teaching sections preserves edits, undo history and completed results.
 
 工程参数待确认项集中记录在材料清单、对应步骤及 CAD 核对记录。章节封面为 Imagegen 示意图，操作场景使用 CAD 与磁铁数据；[视觉来源与生成提示](docs/teaching-visuals.md) 包含封面的完整提示。
 

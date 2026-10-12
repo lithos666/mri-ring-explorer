@@ -36512,6 +36512,8 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 1,
       "versionStatus": "source-reference"
     },
@@ -36538,6 +36540,8 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 2,
       "versionStatus": "source-reference"
     },
@@ -36564,6 +36568,8 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 3,
       "versionStatus": "source-reference"
     },
@@ -36590,6 +36596,8 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 4,
       "versionStatus": "source-reference"
     },
@@ -36616,6 +36624,8 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 5,
       "versionStatus": "source-reference"
     },
@@ -36642,6 +36652,8 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 6,
       "versionStatus": "source-reference"
     },
@@ -36668,6 +36680,8 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 7,
       "versionStatus": "source-reference"
     },
@@ -36694,6 +36708,8 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 8,
       "versionStatus": "source-reference"
     },
@@ -36720,6 +36736,8 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 9,
       "versionStatus": "source-reference"
     },
@@ -36746,6 +36764,8 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 10,
       "versionStatus": "source-reference"
     },
@@ -36772,6 +36792,8 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 11,
       "versionStatus": "source-reference"
     },
@@ -36798,6 +36820,8 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 12,
       "versionStatus": "source-reference"
     },
@@ -36824,6 +36848,8 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 13,
       "versionStatus": "source-reference"
     },
@@ -36850,13 +36876,15 @@
         "step-05",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 14,
       "versionStatus": "source-reference"
     },
     {
       "id": "cad-template",
-      "titleZh": "扇形拼接与盖板模板",
-      "titleEn": "Sector joint and cover template",
+      "titleZh": "分段磁铁壳体与盖板模板",
+      "titleEn": "Segmented magnet housing and cap template",
       "type": "STEP",
       "sourceRelativePath": "模型/new_genneration.step",
       "url": "/resources/cad-template.step",
@@ -36871,12 +36899,14 @@
         "step-01",
         "step-02",
         "step-04"
-      ]
+      ],
+      "visibility": "resources",
+      "updateStatus": "current"
     },
     {
       "id": "cad-ring-support",
-      "titleZh": "左、右、下支撑 CAD",
-      "titleEn": "Left, right and lower support CAD",
+      "titleZh": "框架安装支撑 CAD",
+      "titleEn": "Frame mounting support CAD",
       "type": "STEP",
       "sourceRelativePath": "模型/surport.step",
       "url": "/resources/cad-ring-support.step",
@@ -36890,12 +36920,14 @@
         "step-06",
         "step-08",
         "step-09"
-      ]
+      ],
+      "visibility": "resources",
+      "updateStatus": "current"
     },
     {
       "id": "cad-locator",
-      "titleZh": "层间定位件 CAD",
-      "titleEn": "Inter-layer locator CAD",
+      "titleZh": "层间隔块 CAD",
+      "titleEn": "Inter-layer spacer CAD",
       "type": "STEP",
       "sourceRelativePath": "模型/support_layer.step",
       "url": "/resources/cad-locator.step",
@@ -36909,7 +36941,9 @@
         "step-06",
         "step-07",
         "step-09"
-      ]
+      ],
+      "visibility": "resources",
+      "updateStatus": "current"
     },
     {
       "id": "print-side-support",
@@ -36929,6 +36963,8 @@
         "step-04",
         "step-06"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "versionStatus": "print-reference-not-release-confirmed"
     },
     {
@@ -36949,6 +36985,8 @@
         "step-04",
         "step-06"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "versionStatus": "print-reference-not-release-confirmed"
     },
     {
@@ -36969,6 +37007,8 @@
         "step-04",
         "step-06"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "versionStatus": "print-reference-not-release-confirmed"
     },
     {
@@ -36990,6 +37030,8 @@
         "step-04",
         "step-06"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "layer": 1,
       "versionStatus": "print-reference-not-release-confirmed"
     },
@@ -37012,6 +37054,8 @@
         "step-04",
         "step-06"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "versionStatus": "user-selected-teaching-version"
     },
     {
@@ -37030,7 +37074,9 @@
       "stepIds": [
         "step-03",
         "step-09"
-      ]
+      ],
+      "visibility": "resources",
+      "updateStatus": "current"
     },
     {
       "id": "placement-02",
@@ -37048,7 +37094,9 @@
       "stepIds": [
         "step-03",
         "step-09"
-      ]
+      ],
+      "visibility": "resources",
+      "updateStatus": "current"
     },
     {
       "id": "placement-03",
@@ -37066,7 +37114,9 @@
       "stepIds": [
         "step-03",
         "step-09"
-      ]
+      ],
+      "visibility": "resources",
+      "updateStatus": "current"
     },
     {
       "id": "placement-04",
@@ -37084,7 +37134,9 @@
       "stepIds": [
         "step-03",
         "step-09"
-      ]
+      ],
+      "visibility": "resources",
+      "updateStatus": "current"
     },
     {
       "id": "placement-05",
@@ -37102,7 +37154,9 @@
       "stepIds": [
         "step-03",
         "step-09"
-      ]
+      ],
+      "visibility": "resources",
+      "updateStatus": "current"
     },
     {
       "id": "placement-06",
@@ -37120,7 +37174,9 @@
       "stepIds": [
         "step-03",
         "step-09"
-      ]
+      ],
+      "visibility": "resources",
+      "updateStatus": "current"
     },
     {
       "id": "placement-07",
@@ -37138,7 +37194,9 @@
       "stepIds": [
         "step-03",
         "step-09"
-      ]
+      ],
+      "visibility": "resources",
+      "updateStatus": "current"
     },
     {
       "id": "fastener-m3-reference",
@@ -37156,6 +37214,8 @@
       "stepIds": [
         "step-05"
       ],
+      "visibility": "bom",
+      "updateStatus": "current",
       "versionStatus": "reference-thread-confirmed-length-pending",
       "referenceNoteZh": "原图标记 M3×18；M3 螺纹已确认，实际长度尚未确认。",
       "referenceNoteEn": "The supplied image is labeled M3×18. M3 thread is confirmed; the installed length remains unconfirmed."
@@ -37177,21 +37237,22 @@
       "stepIds": [
         "step-08"
       ],
+      "visibility": "bom",
+      "updateStatus": "current",
       "versionStatus": "schematic-thread-usage-confirmed-dimensions-pending"
     },
     {
       "id": "fastener-m3-diagram",
-      "titleZh": "M3 紧固件 · 盖板与亚克力",
-      "titleEn": "M3 hardware · covers and acrylic",
+      "titleZh": "M3 螺丝 · 壳体盖板与透明盖板",
+      "titleEn": "M3 screws · housing cap and clear cover",
       "type": "SVG",
       "sourceRelativePath": "public/bom/m3-hardware.svg",
       "url": "/bom/m3-hardware.svg",
-      "bytes": 10706,
-      "sha256": "4bd2869c0cf224c131e64f8ebfae196858de65f68802c2ce0db0e6b5de114652",
+      "bytes": 2161,
+      "sha256": "b0db73a5ba680511aa441ef1044273d98189b118d7cabc86f6fa1db4301a213b",
       "category": "fastener-reference",
       "partIds": [
         "short-screw",
-        "m3-nut",
         "ring-cover",
         "acrylic"
       ],
@@ -37199,6 +37260,8 @@
         "step-04",
         "step-05"
       ],
+      "visibility": "bom",
+      "updateStatus": "current",
       "versionStatus": "schematic-thread-usage-confirmed-dimensions-pending"
     },
     {
@@ -37221,6 +37284,52 @@
         "step-07",
         "step-09"
       ],
+      "visibility": "bom",
+      "updateStatus": "current",
+      "versionStatus": "schematic-thread-usage-confirmed-dimensions-pending"
+    },
+    {
+      "id": "fastener-extrusion-bolt-diagram",
+      "titleZh": "铝型材连接螺栓示意",
+      "titleEn": "Extrusion mounting bolt diagram",
+      "type": "SVG",
+      "sourceRelativePath": "public/bom/extrusion-bolt.svg",
+      "url": "/bom/extrusion-bolt.svg",
+      "bytes": 4114,
+      "sha256": "73f3c96089d028f5e9c0dbc27870d3216a4adfa3fc27db75b7dbe8f75de5652f",
+      "category": "fastener-reference",
+      "partIds": [
+        "extrusion-bolt",
+        "frame-l-bracket",
+        "aluminum-frame"
+      ],
+      "stepIds": [
+        "step-08"
+      ],
+      "visibility": "bom",
+      "updateStatus": "current",
+      "versionStatus": "schematic-thread-usage-confirmed-dimensions-pending"
+    },
+    {
+      "id": "fastener-t-slot-nut-diagram",
+      "titleZh": "T 型槽螺母示意",
+      "titleEn": "T-slot nut diagram",
+      "type": "SVG",
+      "sourceRelativePath": "public/bom/t-slot-nut.svg",
+      "url": "/bom/t-slot-nut.svg",
+      "bytes": 3658,
+      "sha256": "1e3e0c21939eea6e0954a57b2bafc326a9ea6354028c89e40e9559a4b1343f77",
+      "category": "fastener-reference",
+      "partIds": [
+        "t-slot-nut",
+        "extrusion-bolt",
+        "aluminum-frame"
+      ],
+      "stepIds": [
+        "step-08"
+      ],
+      "visibility": "bom",
+      "updateStatus": "current",
       "versionStatus": "schematic-thread-usage-confirmed-dimensions-pending"
     },
     {
@@ -37240,6 +37349,8 @@
         "step-03",
         "step-09"
       ],
+      "visibility": "hidden",
+      "updateStatus": "pending-update",
       "versionStatus": "physics-source"
     },
     {
@@ -37259,6 +37370,8 @@
         "step-03",
         "step-09"
       ],
+      "visibility": "hidden",
+      "updateStatus": "pending-update",
       "versionStatus": "physics-source"
     },
     {
@@ -37278,6 +37391,8 @@
         "step-03",
         "step-09"
       ],
+      "visibility": "hidden",
+      "updateStatus": "pending-update",
       "versionStatus": "physics-source"
     },
     {
@@ -37297,6 +37412,8 @@
         "step-03",
         "step-09"
       ],
+      "visibility": "hidden",
+      "updateStatus": "pending-update",
       "versionStatus": "physics-source"
     },
     {
@@ -37316,6 +37433,8 @@
         "step-03",
         "step-09"
       ],
+      "visibility": "hidden",
+      "updateStatus": "pending-update",
       "versionStatus": "physics-source"
     },
     {
@@ -37335,6 +37454,8 @@
         "step-03",
         "step-09"
       ],
+      "visibility": "hidden",
+      "updateStatus": "pending-update",
       "versionStatus": "physics-source"
     },
     {
@@ -37354,6 +37475,8 @@
         "step-03",
         "step-09"
       ],
+      "visibility": "hidden",
+      "updateStatus": "pending-update",
       "versionStatus": "physics-source"
     },
     {
@@ -37373,6 +37496,8 @@
         "step-03",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "versionStatus": "derived-verified"
     },
     {
@@ -37392,6 +37517,8 @@
         "step-03",
         "step-09"
       ],
+      "visibility": "resources",
+      "updateStatus": "current",
       "versionStatus": "derived-verified"
     }
   ],
@@ -37422,11 +37549,11 @@
     "coverAcrylicBase": {
       "thread": "M3",
       "partIds": [
-        "short-screw",
-        "m3-nut"
+        "short-screw"
       ],
       "lengthStatus": "pending",
-      "quantityStatus": "pending"
+      "quantityStatus": "pending",
+      "materialStatus": "pending"
     },
     "interLayer": {
       "thread": "M6",
@@ -37440,7 +37567,18 @@
     "frameBrackets": {
       "partId": "frame-l-bracket",
       "dimensionsStatus": "pending",
-      "quantityStatus": "pending"
+      "quantityStatus": "pending",
+      "materialStatus": "pending"
+    },
+    "extrusionConnections": {
+      "partIds": [
+        "extrusion-bolt",
+        "t-slot-nut"
+      ],
+      "threadStatus": "pending",
+      "slotSeriesStatus": "pending",
+      "quantityStatus": "pending",
+      "materialStatus": "pending"
     }
   }
 }

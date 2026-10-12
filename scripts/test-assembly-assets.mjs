@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { models } from '../lib/mri.ts';
-import { teachingParts, teachingSteps } from '../lib/teaching.ts';
+import { bomCSV, teachingParts, teachingSteps } from '../lib/teaching.ts';
 
 const project=path.resolve(import.meta.dirname,'..');
 const manifest=JSON.parse(fs.readFileSync(path.join(project,'lib/cad-manifest.json'),'utf8'));
@@ -22,6 +22,20 @@ assert.equal(manifest.layers.length,14);
 const resourceIDs=new Set(manifest.resources.map(r=>r.id));assert.equal(resourceIDs.size,manifest.resources.length);
 assert.deepEqual(manifest.resources,JSON.parse(fs.readFileSync(path.join(project,'lib/teaching-resources.json'),'utf8')),'CAD and teaching resource catalogs differ');
 const partIDs=new Set(teachingParts.map(p=>p.id)),stepIDs=new Set(teachingSteps.map(s=>s.id));
+assert.equal(teachingParts.length,13,'The reference BOM has thirteen part categories');
+assert.ok(!partIDs.has('m3-nut'),'M3 nuts are not used in the assembly');
+assert.ok(partIDs.has('extrusion-bolt')&&partIDs.has('t-slot-nut'),'Extrusion connection hardware is required');
+assert.ok(teachingParts.every(part=>part.material.zh.trim()&&part.material.en.trim()),'Every BOM part needs a bilingual material');
+assert.equal(teachingParts.find(part=>part.id==='magnet-cube').quantity,1736);
+assert.match(teachingParts.find(part=>part.id==='magnet-cube').material.en,/N52.*NdFeB/);
+for(const language of ['zh','en']){
+ const csv=bomCSV(language);assert.equal(csv.split('\r\n').length,14);assert.ok(!/Receipt checked|收料/.test(csv));assert.ok(csv.split('\r\n')[0].includes(language==='en'?'Material':'材料'));
+}
+const visibleResources=manifest.resources.filter(resource=>resource.visibility==='resources'&&resource.updateStatus==='current');
+assert.equal(visibleResources.length,31,'Only current CAD, print and layout files appear in Resources');
+assert.equal(manifest.resources.filter(resource=>resource.visibility==='bom').length,6,'Hardware references belong to BOM');
+assert.ok(manifest.resources.every(resource=>['resources','bom','hidden'].includes(resource.visibility)&&['current','pending-update'].includes(resource.updateStatus)),'Resource publication policy is missing');
+assert.ok(teachingSteps.every(step=>step.partIds.every(id=>partIDs.has(id))),'Unknown step-to-part reference');
 for(const resource of manifest.resources) {
  const bytes=fs.readFileSync(publicFile(resource.url));assert.equal(bytes.length,resource.bytes,resource.id);assert.equal(hash(bytes),resource.sha256,resource.id);
  assert.ok(resource.partIds.length&&resource.stepIds.length,`Resource linkage missing: ${resource.id}`);
@@ -32,9 +46,9 @@ assert.deepEqual(manifest.resources.filter(r=>r.id.startsWith('print-prototype-'
 assert.equal(manifest.resources.filter(r=>r.category==='print').length,5);
 for(const filename of ['print-prototype-v0.3mf','print-prototype-v1.3mf','print-prototype-v2.3mf','print-prototype-v3.3mf','fastener-nut-reference.png'])assert.ok(!fs.existsSync(publicFile(`/resources/${filename}`)),`Retired publication file remains: ${filename}`);
 assert.ok(!manifest.resources.some(r=>/M10/.test(`${r.titleZh} ${r.titleEn}`)),'M10 is not used in this assembly');
-for(const id of ['fastener-l-bracket-diagram','fastener-m3-diagram','fastener-m6-diagram'])assert.ok(resourceIDs.has(id),`Missing hardware diagram: ${id}`);
+for(const id of ['fastener-l-bracket-diagram','fastener-m3-diagram','fastener-m6-diagram','fastener-extrusion-bolt-diagram','fastener-t-slot-nut-diagram'])assert.ok(resourceIDs.has(id),`Missing hardware diagram: ${id}`);
 const matlabResources=manifest.resources.filter(r=>r.type==='MATLAB');assert.equal(matlabResources.length,7);
-for(const resource of matlabResources)assert.equal(hash(fs.readFileSync(path.join(project,resource.sourceRelativePath))),resource.sha256,`MATLAB download differs from preserved source: ${resource.id}`);
+for(const resource of matlabResources){assert.equal(resource.visibility,'hidden');assert.equal(resource.updateStatus,'pending-update');assert.equal(hash(fs.readFileSync(path.join(project,resource.sourceRelativePath))),resource.sha256,`MATLAB download differs from preserved source: ${resource.id}`);}
 const conflicts=[];
 for(const layer of manifest.layers) {
  const m=layer.sourceToCanonical;assert.equal(m.length,16);
@@ -71,5 +85,7 @@ const supports=manifest.parts.find(p=>p.role==='support');assert.equal(supports.
 const locators=manifest.parts.find(p=>p.role==='locator');assert.equal(locators.nodes.length,4);for(const n of locators.nodes){near(n.canonicalBounds.size[2],18);near(n.canonicalBounds.min[2],-18);near(n.canonicalBounds.max[2],0);}
 assert.equal(manifest.rodAxes.length,4);assert.ok(manifest.rodAxes.every(a=>a.diameterMM===null&&a.hardwareThread==='M6'&&a.hardwareStatus==='user-confirmed'&&a.status==='axis-candidate-hole-diameter-pending'));
 assert.equal(manifest.hardware.coverAcrylicBase.thread,'M3');assert.equal(manifest.hardware.interLayer.thread,'M6');
+assert.deepEqual(manifest.hardware.coverAcrylicBase.partIds,['short-screw']);
+assert.deepEqual(manifest.hardware.extrusionConnections.partIds,['extrusion-bolt','t-slot-nut']);assert.equal(manifest.hardware.extrusionConnections.threadStatus,'pending');
 assert.ok(!manifest.parts.some(p=>p.role==='acrylic'),'Do not misidentify independent acrylic CAD');
-console.log(JSON.stringify({status:'passed',layers:14,columns:28,magnets:1736,downloads:manifest.resources.length,CADInstances:manifest.confirmedCADInstanceCounts,nominalPocketConflicts:conflicts,properRigidRegistrations:14},null,2));
+console.log(JSON.stringify({status:'passed',layers:14,columns:28,magnets:1736,BOMCategories:teachingParts.length,catalogEntries:manifest.resources.length,visibleResourceDownloads:visibleResources.length,bomReferenceDownloads:6,retainedMATLABPrograms:7,CADInstances:manifest.confirmedCADInstanceCounts,nominalPocketConflicts:conflicts,properRigidRegistrations:14},null,2));

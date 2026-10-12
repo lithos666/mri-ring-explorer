@@ -18,6 +18,7 @@ export interface AssemblyStageProps {
  ring:number;
  active?:boolean;
  partId?:string;
+ initialProgress?:number;
  onMagnetSelect?:(id:string)=>void;
 }
 
@@ -117,10 +118,11 @@ function partRole(partId:string|undefined){
  return roleOf(id);
 }
 
-export default function AssemblyStage({step,ring,active=true,partId,onMagnetSelect}:AssemblyStageProps){
+export default function AssemblyStage({step,ring,active=true,partId,initialProgress,onMagnetSelect}:AssemblyStageProps){
  const {t}=useLanguage();
  const host=useRef<HTMLDivElement>(null),hotspot=useRef<HTMLButtonElement>(null),runtime=useRef<Runtime|null>(null);
- const [progress,setProgress]=useState(step===0?1:0),[playing,setPlaying]=useState(false),[speed,setSpeed]=useState(1);
+ const startingProgress=initialProgress===undefined?(step===0?1:0):THREE.MathUtils.clamp(initialProgress,0,1);
+ const [progress,setProgress]=useState(startingProgress),[playing,setPlaying]=useState(false),[speed,setSpeed]=useState(1);
  const [highlight,setHighlight]=useState(true),[transparent,setTransparent]=useState(false),[cutaway,setCutaway]=useState(false),[exploded,setExploded]=useState(false);
  const [cameraMode,setCameraMode]=useState<"recommended"|"whole"|"detail">("recommended");
  const [loading,setLoading]=useState(true),[error,setError]=useState(false),[ready,setReady]=useState(false),[selected,setSelected]=useState<Magnet|null>(null);
@@ -130,9 +132,9 @@ export default function AssemblyStage({step,ring,active=true,partId,onMagnetSele
 
  useEffect(()=>{
   let cancelled=false;
-  queueMicrotask(()=>{if(cancelled)return;setProgress(step===0?1:0);setPlaying(false);setSelected(null);setCameraMode("recommended");setExploded(false);});
+  queueMicrotask(()=>{if(cancelled)return;setProgress(startingProgress);setPlaying(false);setSelected(null);setCameraMode("recommended");setExploded(false);});
   return()=>{cancelled=true;};
- },[step,ring,partId]);
+ },[step,ring,partId,startingProgress]);
  useEffect(()=>{runtime.current?.update(latest.current);},[step,ring,partId,progress,playing,speed,active,highlight,transparent,cutaway,exploded]);
  useEffect(()=>{host.current?.querySelector("canvas")?.setAttribute("aria-label",t("可交互 CAD 装配场景。拖动旋转，滚轮缩放，右键平移；磁铁步骤中可点击查看编号。","Interactive CAD assembly. Drag to rotate, scroll to zoom, and right-drag to pan. Select a magnet to inspect its ID."));},[t]);
 

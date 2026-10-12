@@ -29,7 +29,7 @@ TypeScript and the local production build pass. Desktop browser checks cover 144
 
 The overview model uses a separate product-lighting profile: warm ivory display materials, a directional warm key, a restrained cool fill, richer N/S labels, aluminum reflections and stronger contact shadows. Exposure and ambient fill are lower to avoid washed-out surfaces against the white background. This changes the interactive renderer, not the CAD or field model. Teaching-stage highlight and transparency behavior remains intact; no remote HDR or post-processing was added.
 
-Downloads now open as six collapsed categories: ring assembly CAD (14), part CAD (3), print files (9), layout/dimensions (9), MATLAB source (7), and fastener references (2). Search and category/part/ring filters open matching categories automatically; clearing filters restores the compact view. The large edge-dimension drawing is also an optional preview. All 44 original catalog entries, download URLs and file bytes are retained. Bilingual, keyboard and actual-download checks pass.
+The earlier grouped-download release used six collapsed categories. Search and category/part/ring filters open matching categories automatically; clearing filters restores the compact view. The large edge-dimension drawing is an optional preview. The current download counts and visibility policy are recorded in the simplified teaching release below.
 
 ### Support and rail alignment
 
@@ -39,8 +39,20 @@ The supplied support CAD has side-channel radial walls at |X|=215–255.2 mm, up
 
 ### Hardware, illustrations and user logo
 
-The current catalog contains 42 downloads. Prototype v0–v3 and the obsolete nut image have been withdrawn from the published file set; prototype v4 and unrelated part references remain. The seven MATLAB source programs and magnetic calculation baseline have not been changed.
+The preceding hardware release contained 42 catalog entries. Prototype v0–v3 and the obsolete nut image were withdrawn from the published file set; prototype v4 and unrelated part references remain. The seven MATLAB source programs and magnetic calculation baseline have not been changed. The current catalog adds two extrusion-hardware illustrations and records teaching visibility separately.
 
-`public/bom/` contains eleven code-native SVG illustrations. They show the shape and purpose of cubes, ring sectors, covers, acrylic, supports, locators, through-rods, the frame, L-brackets and M3/M6 hardware. They are labeled as illustrations in both languages, and are not photographs or dimensioned manufacturing drawings. The supplied M3 screw reference remains explicitly a length reference, with installation length unconfirmed. M3 secures covers/acrylic/base; M6 is used for inter-layer fastening.
+`public/bom/` contains code-native SVG illustrations. They show the shape and purpose of cubes, ring sectors, covers, acrylic, supports, spacers, through-rods, the frame, L-brackets and hardware. They are labeled as illustrations in both languages, and are not photographs or dimensioned manufacturing drawings. The supplied M3 screw reference remains explicitly a length reference, with installation length unconfirmed. M3 screws secure the housing cap/clear cover/housing; M6 is used for inter-layer fastening.
 
-The header and browser icon use the user's image unchanged at `public/brand/mri-hardware-ai.png`, from the supplied `codex-clipboard-09a53f5f-d9b8-435b-b7c3-7865e3195e17.png`. Its artwork and text are retained; CSS only scales the image. Assembly now mounts the frame and all fourteen layers before the final through-rod lesson. Earlier mounting phases hide rods; the final insertion phase shows the complete fourteen-layer geometry. Stored learning steps migrate by semantic identity, preserving completed checks and material receipts.
+The header and browser icon use the user's image unchanged at `public/brand/mri-hardware-ai.png`, from the supplied `codex-clipboard-09a53f5f-d9b8-435b-b7c3-7865e3195e17.png`. Its artwork and text are retained; CSS only scales the image. Assembly mounts the frame and all fourteen layers before the final through-rod lesson. Earlier mounting phases hide rods; the final insertion phase shows the complete fourteen-layer geometry. Stored learning steps migrate by semantic identity, preserving completed checks.
+
+### Simplified teaching release — 2026-10-13
+
+The BOM is a thirteen-category reference list with bilingual material descriptions. Material receipts are no longer read, written or displayed. Existing browser receipt data is left unused; assembly inspection progress and magnet designs remain independent. N52 NdFeB identifies the supplied magnet grade without changing the model's existing Br input.
+
+Two new 600 × 400 code-native illustrations, `public/bom/extrusion-bolt.svg` and `public/bom/t-slot-nut.svg`, explain the extrusion mounting-bolt and T-slot-nut relationships. Their geometry is schematic and does not specify thread size, stock dimensions or material. `public/bom/m3-hardware.svg` now shows an M3 screw only; the discontinued M3 nut has been removed from active content and catalog links.
+
+Frame mounting supports and inter-layer spacers keep their stable internal IDs, show their purpose in the BOM and offer an installation view using the existing CAD scene. Printing material descriptions use the current file settings: PLA for housing/cap/supports and PETG for spacers, with actual manufacturing material unconfirmed. Acrylic is identified as PMMA; the extrusion frame is aluminium with alloy grade unconfirmed. Hardware and bracket materials remain pending.
+
+Resources offers four file groups and 31 current downloads. Six hardware references download directly from BOM dialogs. Seven old MATLAB files remain byte-identical in the project but are marked hidden / update pending and have no teaching download entry. The nine layout-and-dimension downloads and their file bytes remain unchanged. The catalog generator preserves these display policies on future resource refreshes.
+
+The Lab shows the latest 14-ring, 28-column model, manual field calculation after layer edits and two main views. The principles below use three short concepts plus gradient/RF explanations. The displayed baseline 37.344 mT remains a centre-field value; region-average field and homogeneity metrics require a defined imaging volume.
