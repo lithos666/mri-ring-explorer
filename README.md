@@ -32,6 +32,10 @@ Completion checks are manual. The BOM is a parts and materials reference; assemb
 
 The transverse view uses a 1 mm XY grid and defaults to nine Z planes spanning −100…+100 mm at 25 mm intervals, viewed individually as Bz/|B|. The original MATLAB five-slice ±2 mm average remains a separate check mode. FOV diameters span 20–200 mm, with per-slice mean, peak-to-peak and standard-deviation statistics. A user-defined ppm limit selects the largest diameter within the variation limit across every sampled plane in the current range. Nine discrete planes do not prove homogeneity throughout the continuous 200 mm axial region or clinical hand/foot coverage. See [methods and numerical checks](docs/transverse-field-fov.md).
 
+场图默认使用“局部细节（MATLAB）”自动色标，突出当前截面/FOV 内的细微变化；另可选择“跨截面场强”固定参考色标。两者使用实际 MATLAB 图导出的 256 色 jet，不改变计算或均匀性指标。实际 MATLAB R2022a 运行原始新版脚本，核对全部圆内节点和五平面三维矢量，与网页的最大差异约 1.54×10⁻¹¹ mT。[实际运行与显示对照](docs/matlab-field-display-audit.md)。
+
+Field maps default to automatic **Local detail (MATLAB)** limits that reveal variations within the current slice/FOV, with a separate fixed **Across slices** reference scale. Both use the actual MATLAB figure's 256-entry jet palette without changing the computed field or homogeneity. Running the original big-ring script in MATLAB R2022a and comparing every disk point in all five vector planes gives a maximum difference of about 1.54×10⁻¹¹ mT. See [actual runtime and display comparison](docs/matlab-field-display-audit.md).
+
 工程参数待确认项集中记录在材料清单、对应步骤及 CAD 核对记录。章节封面为 Imagegen 示意图，操作场景使用 CAD 与磁铁数据；[视觉来源与生成提示](docs/teaching-visuals.md) 包含封面的完整提示。
 
 Pending engineering parameters are recorded in the BOM, corresponding steps and CAD audit. The cover is an Imagegen illustration; operating scenes use CAD and magnet data.

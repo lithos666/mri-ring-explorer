@@ -5,6 +5,7 @@ import {useLanguage} from "@/lib/language-context";
 import type {MRIModel} from "@/lib/mri";
 import {roiMetrics,fovCurve,recommendFOV,summarizeField,type TransverseFieldResult} from "@/lib/transverse-field";
 import {TRANSVERSE_RANGES,type TransverseRangeId} from "@/lib/transverse-ranges";
+import {displayColorScale,colorLegendDecimals,scaledColormapColor,colormapGradient,MATLAB_JET,type TransverseColorMode} from "@/lib/transverse-display";
 import "./transverse-field-panel.css";
 
 type Quantity="bz"|"magnitude";
@@ -19,11 +20,7 @@ export interface TransverseFieldPanelProps {
  rangeId:TransverseRangeId;
  onRangeChange:(id:TransverseRangeId)=>void;
 }
-const colors=[[48,18,59],[70,103,221],[36,188,232],[39,215,132],[182,228,71],[251,185,56],[239,91,17],[122,4,3]];
-function colorAt(value:number,min:number,max:number){
- const scaled=Math.max(0,Math.min(1,(value-min)/(max-min||1)))*(colors.length-1),i=Math.min(colors.length-2,Math.floor(scaled)),mix=scaled-i;
- return colors[i].map((v,j)=>Math.round(v+(colors[i+1][j]-v)*mix));
-}
+const matlabGradient=colormapGradient(MATLAB_JET);
 function mapValues(result:TransverseFieldResult,selection:PlotSelection,quantity:Quantity){
  if(selection==="average")return quantity==="bz"?result.averageBz:result.averageMagnitude;
  const count=result.grid.n**2,offset=selection*count*3,values=new Float64Array(count);
@@ -38,7 +35,6 @@ function displayRange(result:TransverseFieldResult,quantity:Quantity,diameter:nu
   const offset=(s*result.mask.length+i)*3,value=quantity==="bz"?result.values[offset+2]:Math.hypot(result.values[offset],result.values[offset+1],result.values[offset+2]);
   min=Math.min(min,value);max=Math.max(max,value);
  }
- if(max-min<1e-9){const span=Math.max(Math.abs(max)*.001,.001);min-=span;max+=span;}
  return {min,max};
 }
 function plottedMetrics(result:TransverseFieldResult,values:Float64Array,diameter:number){
@@ -59,12 +55,14 @@ export default function TransverseFieldPanel({result,baseline,displayModel,state
  const {t}=useLanguage(),canvas=useRef<HTMLCanvasElement>(null);
  const [diameter,setDiameter]=useState(150),[quantity,setQuantity]=useState<Quantity>("bz"),[plotState,setPlotState]=useState<{rangeId:TransverseRangeId;selection:PlotSelection}>(()=>({rangeId,selection:initialSelection(rangeId)})),[threshold,setThreshold]=useState("");
  const [axialDisclosure,setAxialDisclosure]=useState({rangeId,open:rangeId==="explore"});
+ const [colorMode,setColorMode]=useState<TransverseColorMode>("local");
  const selection=plotState.rangeId===rangeId?plotState.selection:initialSelection(rangeId),axialOpen=axialDisclosure.rangeId===rangeId?axialDisclosure.open:rangeId==="explore";
  const setSelection=(value:PlotSelection)=>setPlotState({rangeId,selection:value});
  const [probe,setProbe]=useState<{x:number;y:number;value:number}|null>(null);
  const values=useMemo(()=>result?mapValues(result,selection,quantity):null,[result,selection,quantity]);
- const range=useMemo(()=>baseline?displayRange(baseline,quantity,diameter):result?displayRange(result,quantity,diameter):null,[baseline,result,quantity,diameter]);
+ const referenceRange=useMemo(()=>baseline?displayRange(baseline,quantity,diameter):result?displayRange(result,quantity,diameter):null,[baseline,result,quantity,diameter]);
  const metrics=useMemo(()=>result&&values?plottedMetrics(result,values,diameter):null,[result,values,diameter]);
+ const range=useMemo(()=>referenceRange&&metrics?displayColorScale({min:metrics.min,max:metrics.max},referenceRange,colorMode):null,[referenceRange,metrics,colorMode]);
  const volume=useMemo(()=>result?roiMetrics(result,diameter):null,[result,diameter]);
  const curve=useMemo(()=>result?fovCurve(result):[],[result]);
  const axialProfile=useMemo(()=>result?result.grid.slicesMM.map((z,index)=>({z,index,...plottedMetrics(result,mapValues(result,index,quantity),diameter)})):[],[result,quantity,diameter]);
@@ -78,7 +76,7 @@ export default function TransverseFieldPanel({result,baseline,displayModel,state
   for(let row=0;row<n;row++)for(let col=0;col<n;col++){
    const source=(n-1-row)*n+col,destination=(row*n+col)*4,x=-result.grid.radiusMM+col*result.grid.stepMM,y=-result.grid.radiusMM+(n-1-row)*result.grid.stepMM;
    if(result.mask[source]||x*x+y*y>(diameter/2)**2+1e-9)continue;
-   const rgb=colorAt(values[source],range.min,range.max);pixels.data.set([...rgb,255],destination);
+   const rgb=scaledColormapColor(values[source],range,MATLAB_JET);pixels.data.set([...rgb,255],destination);
   }
   context.putImageData(pixels,0,0);
  },[result,values,range,diameter]);
@@ -99,6 +97,7 @@ export default function TransverseFieldPanel({result,baseline,displayModel,state
  const axialMin=Math.min(...axialProfile.map(point=>point.mean)),axialMax=Math.max(...axialProfile.map(point=>point.mean)),axialSpan=Math.max(axialMax-axialMin,.001),axialLow=axialMin-axialSpan*.1,axialHigh=axialMax+axialSpan*.1;
  const axialX=(z:number)=>38+(z-zMin)/(zMax-zMin||1)*292,axialY=(mean:number)=>86-(mean-axialLow)/(axialHigh-axialLow)*62;
  const outsideScale=metrics.min<range.min-1e-6||metrics.max>range.max+1e-6;
+ const legendDecimals=colorLegendDecimals(range,colorMode);
  const curveValues=curve.map(point=>point.peakToPeakCenterReferencePPM).filter((value):value is number=>value!==null&&Number.isFinite(value));
  const curveMax=Math.max(1,...curveValues,...(recommendation?[thresholdValue]:[]))*1.08;
  const curveY=(value:number)=>92-Math.max(0,value)/curveMax*70,curveX=(d:number)=>36+(d-20)/180*272;
@@ -109,10 +108,11 @@ export default function TransverseFieldPanel({result,baseline,displayModel,state
   const sampleX=-result.grid.radiusMM+col*result.grid.stepMM,sampleY=-result.grid.radiusMM+row*result.grid.stepMM;
   if(result.mask[i]||sampleX*sampleX+sampleY*sampleY>(diameter/2)**2+1e-9)return;setProbe({x:sampleX,y:sampleY,value:values[i]});
  }
- return <section className="transverse-field-panel" data-state={state} data-range-id={rangeId} data-plane-count={planeCount} data-revision={result.revision} data-source-signature={result.sourceSignature} data-fov-diameter-mm={diameter} data-quantity={quantity} data-slice={selection} data-display-model={displayModel?.id??""}>
+ return <section className="transverse-field-panel" data-state={state} data-range-id={rangeId} data-plane-count={planeCount} data-revision={result.revision} data-source-signature={result.sourceSignature} data-fov-diameter-mm={diameter} data-quantity={quantity} data-slice={selection} data-display-model={displayModel?.id??""} data-color-mode={colorMode} data-color-min-mt={range.min} data-color-max-mt={range.max}>
   {rangeSelector}
   <div className="transverse-panel-toolbar">
    <div className="transverse-quantity" role="group" aria-label={t("场图物理量","Field quantity")}><button type="button" aria-pressed={quantity==="bz"} onClick={()=>setQuantity("bz")}>Bz <span>{t("轴向分量","Axial component")}</span></button><button type="button" aria-pressed={quantity==="magnitude"} onClick={()=>setQuantity("magnitude")}>|B| <span>{t("场强","Magnitude")}</span></button></div>
+   <div className="transverse-color-modes" role="group" aria-label={t("场图色标模式","Field color scale")}><button type="button" aria-pressed={colorMode==="local"} onClick={()=>setColorMode("local")}>{t("局部细节（MATLAB）","Local detail (MATLAB)")}</button><button type="button" aria-pressed={colorMode==="reference"} onClick={()=>setColorMode("reference")}>{t("跨截面场强","Across slices")}</button></div>
    <label className="transverse-slice-select"><span>{t("横向截面","Transverse slice")}</span><select value={selection} onChange={e=>setSelection(e.target.value==="average"?"average":Number(e.target.value))}>{rangeId==="matlab"&&<option value="average">{planeCount+t(" 个截面均值","-slice mean")}</option>}{result.grid.slicesMM.map((z,i)=><option key={z} value={i}>Z = {z>0?"+":""}{z} mm</option>)}</select></label>
   </div>
   <p className={"transverse-result-state"+(state==="updating"||state==="previous"?" transverse-result-state--previous":"")} role="status">{status}</p>
@@ -129,8 +129,9 @@ export default function TransverseFieldPanel({result,baseline,displayModel,state
       {probe&&<g pointerEvents="none"><circle cx={probe.x} cy={-probe.y} r="2" fill="#fff" stroke="#1d1d1f" strokeWidth=".6"/></g>}
      </svg>
     </div>
-    <div className="transverse-colorbar" data-scale-min-mt={range.min} data-scale-max-mt={range.max} aria-label={t("当前采样范围和 FOV 内的初始排布参考色标","Initial-layout reference scale within the current sampling range and FOV")}><span>{number(range.min,3)}</span><i/><span>{number(range.max,3)} mT</span></div>
-    <small className="transverse-scale-caption">{t("色标取初始排布、当前范围与 FOV；同范围同 FOV 设计比较固定","Scale: initial layout, current range & FOV; fixed for same-range/FOV design comparisons")}</small>
+    <div className="transverse-colorbar" data-scale-min-mt={range.min} data-scale-max-mt={range.max} data-scale-constant={range.constant} data-palette="matlab-jet-256" aria-label={colorMode==="local"?t("当前截面与 FOV 的自动色标","Automatic color limits for the current slice and FOV"):t("当前采样范围和 FOV 内的初始排布参考色标","Initial-layout reference scale within the current sampling range and FOV")}><span>{number(range.min,legendDecimals)}</span><i style={{background:matlabGradient}}/><span>{number(range.max,legendDecimals)} mT</span></div>
+    <small className="transverse-scale-caption">{colorMode==="local"?t("自动放大当前截面/FOV 的细微差异；颜色不能直接比较不同截面或设计。","Automatically reveals small differences in the current slice/FOV; colors cannot directly compare different slices or designs."):t("色标取初始排布、当前范围与 FOV；同范围同 FOV 设计比较固定","Scale: initial layout, current range & FOV; fixed for same-range/FOV design comparisons")}</small>
+    {range.nearConstant&&<small className="transverse-scale-note">{range.constant?t("所选色标区域峰峰差为 0 mT；没有可显示的场强差异。","The selected color-scale region has a 0 mT peak-to-peak difference; there is no field variation to display."):t("差异接近浮点精度；颜色仅反映极小的数值差异。","Variation is near floating-point precision; colors reflect only tiny numerical differences.")}</small>}
     <div className="transverse-probe" data-probe-x-mm={probe?.x??""} data-probe-y-mm={probe?.y??""} data-probe-value-mt={probe?.value??""}>{probe?<><span>X {probe.x} · Y {probe.y} mm</span><strong>{quantityLabel} {number(probe.value,4)} mT</strong></>:<span>{t("点击场图读取采样值 · 虚线圈为 FOV","Click to probe · Dashed circle is the FOV")}</span>}</div>
     {outsideScale&&<small className="transverse-scale-note">{t("部分数值超出初始色标；数值读数仍为实际计算值。","Some values exceed the initial color scale; readouts retain computed values.")}</small>}
    </div>
