@@ -436,8 +436,8 @@
   },
   {
     "id": "cad-locator",
-    "titleZh": "层间隔块 CAD",
-    "titleEn": "Inter-layer spacer CAD",
+    "titleZh": "历史方块层间隔块 CAD（非当前圆柱）",
+    "titleEn": "Historical block-spacer CAD (not the current cylinder)",
     "type": "STEP",
     "sourceRelativePath": "模型/support_layer.step",
     "url": "/resources/cad-locator.step",
@@ -453,7 +453,10 @@
       "step-09"
     ],
     "visibility": "resources",
-    "updateStatus": "current"
+    "updateStatus": "current",
+    "versionStatus": "legacy-block-reference-not-release-confirmed",
+    "referenceNoteZh": "历史文件是方块形隔块，不符合当前已确认的 18 mm 长圆柱形隔块。仅供旧接口参考；不能据此制造当前圆柱。",
+    "referenceNoteEn": "This historical file contains block-shaped spacers, not the confirmed 18 mm-long cylinders. Use it only as an old interface reference, not to manufacture the current cylinder."
   },
   {
     "id": "print-side-support",
@@ -479,8 +482,8 @@
   },
   {
     "id": "print-interlayer-support",
-    "titleZh": "层间支撑打印参考（原文件名保留）",
-    "titleEn": "Inter-layer support print reference",
+    "titleZh": "历史方块层间支撑打印参考（非当前圆柱）",
+    "titleEn": "Historical block-spacer print reference (not the current cylinder)",
     "type": "3MF",
     "sourceRelativePath": "打印文件/曾与层之间的支撑.3mf",
     "url": "/resources/print-interlayer-support.3mf",
@@ -497,7 +500,9 @@
     ],
     "visibility": "resources",
     "updateStatus": "current",
-    "versionStatus": "print-reference-not-release-confirmed"
+    "versionStatus": "legacy-block-reference-not-release-confirmed",
+    "referenceNoteZh": "历史文件是方块形隔块，不符合当前已确认的 18 mm 长圆柱形隔块。仅供旧接口参考；不能据此制造当前圆柱。",
+    "referenceNoteEn": "This historical file contains block-shaped spacers, not the confirmed 18 mm-long cylinders. Use it only as an old interface reference, not to manufacture the current cylinder."
   },
   {
     "id": "print-holder-v1",
@@ -827,8 +832,8 @@
     "type": "SVG",
     "sourceRelativePath": "public/bom/t-slot-nut.svg",
     "url": "/bom/t-slot-nut.svg",
-    "bytes": 3658,
-    "sha256": "1e3e0c21939eea6e0954a57b2bafc326a9ea6354028c89e40e9559a4b1343f77",
+    "bytes": 108970,
+    "sha256": "576c924cd7dee61ad4ee66bb6a3f8d141d930d7495fdc0801fea5290a783fa0c",
     "category": "fastener-reference",
     "partIds": [
       "t-slot-nut",
@@ -1030,5 +1035,76 @@
     "visibility": "resources",
     "updateStatus": "current",
     "versionStatus": "derived-verified"
+  },
+  {
+    "id": "bom-cad-spacer",
+    "titleZh": "层间隔块 · 提供的 STEP",
+    "titleEn": "Inter-layer spacer · supplied STEP",
+    "type": "STEP",
+    "sourceRelativePath": "模型/层间隔块.step",
+    "url": "/resources/bom-cad-spacer.step",
+    "bytes": 9970,
+    "sha256": "8cf6631c0db006faa9fd0ea49bf8323a1830d164a5e59f7cb46ff2c8606fc62c",
+    "category": "cad",
+    "partIds": [
+      "locator"
+    ],
+    "stepIds": [
+      "step-06",
+      "step-09"
+    ],
+    "visibility": "bom",
+    "updateStatus": "current",
+    "versionStatus": "user-provided-bom-cad",
+    "referenceNoteZh": "与 BOM 示意图采用同一份提供的 STEP；完整装配位置与打印工艺须另行核对。",
+    "referenceNoteEn": "The same supplied STEP used for the BOM rendering; verify full-assembly placement and printing separately."
+  },
+  {
+    "id": "bom-cad-side-support",
+    "titleZh": "左右框架支撑 · 提供的 STEP",
+    "titleEn": "Side frame support · supplied STEP",
+    "type": "STEP",
+    "sourceRelativePath": "模型/左右.step",
+    "url": "/resources/bom-cad-side-support.step",
+    "bytes": 104402,
+    "sha256": "4e0b83e8d5ed2099daee6bdb5f9b87f12c57a8357c3e1f1003770281ba428739",
+    "category": "cad",
+    "partIds": [
+      "ring-support"
+    ],
+    "stepIds": [
+      "step-06",
+      "step-08",
+      "step-09"
+    ],
+    "visibility": "bom",
+    "updateStatus": "current",
+    "versionStatus": "user-provided-bom-cad",
+    "referenceNoteZh": "与 BOM 示意图采用同一份提供的 STEP；完整装配位置与打印工艺须另行核对。",
+    "referenceNoteEn": "The same supplied STEP used for the BOM rendering; verify full-assembly placement and printing separately."
+  },
+  {
+    "id": "bom-cad-bottom-support",
+    "titleZh": "底部框架支撑 · 提供的 STEP",
+    "titleEn": "Bottom frame support · supplied STEP",
+    "type": "STEP",
+    "sourceRelativePath": "模型/下面.step",
+    "url": "/resources/bom-cad-bottom-support.step",
+    "bytes": 126065,
+    "sha256": "50b7e246d3a54980333d96553644a2f590c075d58981042d931f822c96a3bed6",
+    "category": "cad",
+    "partIds": [
+      "ring-support"
+    ],
+    "stepIds": [
+      "step-06",
+      "step-08",
+      "step-09"
+    ],
+    "visibility": "bom",
+    "updateStatus": "current",
+    "versionStatus": "user-provided-bom-cad",
+    "referenceNoteZh": "与 BOM 示意图采用同一份提供的 STEP；完整装配位置与打印工艺须另行核对。",
+    "referenceNoteEn": "The same supplied STEP used for the BOM rendering; verify full-assembly placement and printing separately."
   }
 ]

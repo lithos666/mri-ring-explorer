@@ -36,6 +36,16 @@
 .hack-matlab-update strong{display:block;color:#343c46;font-size:14px;margin-bottom:4px}
 .hack-matlab-update p{font-size:12px;line-height:1.6}
 .hack-part-installation{margin-top:12px}
+.hack-dialog-preview:has(.assembly-stage){min-height:0;max-height:85vh;overflow-y:auto;justify-content:flex-start;overscroll-behavior-y:contain}
+.hack-dialog-preview:has(.assembly-stage)>.assembly-stage{flex:1 0 auto;min-height:460px}
+.hack-bom-thumbnail{width:144px;flex-basis:144px;border-radius:14px}
+.hack-bom-thumbnail img{height:94px}
+@media(max-width:1080px){.hack-bom-thumbnail{width:120px;flex-basis:120px}.hack-bom-thumbnail img{height:78px}}
+.hack-bom-table td[data-supplied-by=organizer]>strong{display:inline-block;font-size:13px;font-weight:550;line-height:1.5;background:#eef5fd;color:#2265a0;border-radius:7px;padding:5px 8px}
+.hack-quantity-breakdown{max-width:190px;line-height:1.6}
+.hack-part-quantity[data-supplied-by=organizer]>strong{font-size:20px;line-height:1.4;color:#2265a0}
+.hack-part-quantity .hack-quantity-breakdown{font-size:12px;color:#626f7b}
+.hack-resource-reference-note{color:#92652d!important;font-size:12px!important;line-height:1.6}
 .basic-lab.workbench-shell{min-height:0;padding:0;margin-bottom:32px}
 .hack-physics-host .basic-lab .basic-lab-workbench{height:calc(100dvh - 155px);min-height:510px;max-height:900px;grid-template-columns:minmax(0,1fr) 340px}
 .basic-lab .design-inspector{padding:18px 16px}

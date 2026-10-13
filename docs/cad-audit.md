@@ -4,9 +4,9 @@
 
 ## 真实零件实例及单位
 
-- 每层 STEP 包含完整圆环的 **4 个底座实例和 4 个盖板实例**。十四层合计为 **56 个底座实例、56 个盖板实例**。这是 CAD 中观察到的实例数量，采购与打印发行清单仍须确认。
+- 每层 STEP 包含完整圆环的 **4 个底座实例和 4 个盖板实例**。十四层合计为 **56 个底座实例、56 个盖板实例**；用户现已独立确认 BOM 数量为各 56 件（4 × 14）。
 - R01/R14 各有 16 个短螺丝实例，R03/R12 没有短螺丝几何，其余十个层文件各有 15 个短螺丝实例，源 CAD 合计 **182 个短螺丝实例**。不能从这个数推定采购数量，也不能自动补齐缺失的螺丝。
-- `surport.step` 包含 **2 个侧支撑和 1 个底部支撑**；`support_layer.step` 包含 **4 个 14 × 14 × 18 mm 定位块实例**。这些独立参考文件不能直接推算一台磁体的支撑、定位件采购数量。
+- `surport.step` 包含 **2 个侧支撑和 1 个底部支撑**；用户独立确认整台数量为 28 件侧支撑与 14 件底部支撑。`support_layer.step` 包含 **4 个 14 × 14 × 18 mm 方块实例**，属于历史参考；当前已确认为 32 件（4 × 8）、长 18 mm、中心通 M6 的圆柱打印件。旧方块 CAD 不代表新圆柱外形或全部安装位置。
 - `new_genneration.step` 包含 2 个扇形底座和 1 个盖板变体，**不是完整十四层磁体**。
 - 导入 OCCT 使用 `linearUnit: millimeter`，三角化公差 0.15 mm、角度公差 0.35 rad。底座厚 15 mm，盖板轴向范围为底座背面起 13–20 mm，盖板厚 7 mm。磁铁槽底位于背面起 3 mm，因此 12 mm 方块的中心为局部 Z=9 mm。
 
@@ -23,19 +23,23 @@ R01、R14 是独立 XY 平面模型；R02–R13 位于源 CAD 的 YZ 平面，�
 1. **R05/R10 最外侧槽名义干涉 0.2 mm。** CAD 槽底径向区间约 169.2–181.4 mm，而 MATLAB R=175 mm 的 12 mm 方块径向面为 169–181 mm。内侧槽壁存在约 0.2 mm 名义干涉。网页不挪动磁铁、不缩小磁铁来隐藏该差异；加工或打印前需修订槽位、公差或确认数据版本。
 2. 其余层名义槽底包含对应磁铁径向面，但这是名义几何检查，不代替打印公差、曲面/完整碰撞、装载夹具和实物配合检查。
 3. 未在提供的 STEP 中独立确认亚克力实体。页面的透明亚克力滑入演示是关系示意；厚度、分段、路径与最终加工文件仍需确认。
-4. 用户已确认壳体盖板、透明盖板与壳体之间使用 **M3 螺丝，不使用 M3 螺母**。CAD 螺丝名称仍为 `2.9×16 BF`；已有参考图标记 `M3×18`，仅作为原始参考保留。M3 螺纹用途已确认，长度、数量和扭矩仍待确认；不能把参考图中的 18 mm 自动设为采购长度。
-5. 用户已确认层间连接使用 **M6** 螺杆和螺母，装配不使用 M10。原 M10 图片已退出网站下载目录及发布文件，没有重新标成 M6。定位块给出的四条轴线仍是孔轴候选；M6 是确认的螺纹规格，不等于已测量的孔径。杆长、孔隙配合、材料、垫片配置和采购数量仍待确认。贯穿杆在十四层全部就位后最后插入。
-6. 26 mm 是相邻层磁铁端面的净距；不能将其当作支撑件厚度。定位块 CAD 厚度是独立测得的 18 mm。
+4. 用户已确认壳体盖板、透明盖板与壳体之间使用 **M3 螺丝，不使用 M3 螺母**；每层 32 个，整台 **448 个**。CAD 螺丝名称仍为 `2.9×16 BF`，共 182 个几何实例，仅是历史展示；参考图 `M3×18` 不确立安装长度。长度、材料和扭矩仍待确认。
+5. 用户已确认整台 **8 根 M6 贯穿螺杆、8 个 M6 螺母**，装配不使用 M10。原 M10 图片已退出网站目录与发布副本。旧定位块只给出四条候选孔轴，未确立全部八根的位置；M6 螺纹不等于实际孔径。杆长、孔隙配合、材料、垫片配置和扭矩仍待确认，数量不再待确认。贯穿杆在十四层全部就位后最后插入。
+6. 当前圆柱隔块数量 **32（4 × 8）**；新提供的 `层间隔块.step` 确认名义长度 **18 mm**、外径 **14 mm**、通孔直径 **6.2 mm**。实际制造公差、M6 配合和安装分布仍需实物核对。26 mm 是磁铁端面净距，不能当作隔块厚度。旧方块 CAD 与 3MF 保留并明确标为历史参考。
 7. 用户指定 **`prototypev4.3mf` 为当前教学打印版本**；`prototypev0`–`prototypev3` 已退出网站目录与发布副本，用户本地原件保留。其他侧支撑、层间支撑、holder v1 和 layer1 打印参考继续保留。`layer1.3mf` 不代表已经取得全部十四层的打印发行包。
-8. BOM 已补入铝型材 **L 型角码、连接螺栓及 T 型槽螺母**，并提供独立用途示意图。角码孔距、外形尺寸、数量以及铝型材切割清单仍未确认；型材连接螺栓与 T 型槽螺母的螺纹、槽系列和材质待确认，不直接套用层间 M6。示意图不能作为加工图。本次未取得框架 CAD、紧固扭矩或经验证的插入夹具。
+8. 用户确认铝型材 **框架、L 型角码、连接螺栓及 T 型槽螺母均由官方提供**。BOM 用供应状态代替待确认数量，不推定数量；具体外形、槽系列、螺纹与材料按提供物料核对，不直接套用层间 M6。用途示意图不是加工图，现有模型不提供切割清单或紧固扭矩。
 
 ## 当前材料与资料展示状态
 
-磁铁按用户确认的 **N52 牌号 NdFeB** 标识，尺寸为 12 × 12 × 12 mm，共 1,736 颗；此材料名称不自动改变现有 Br = 1.43 T 的求场输入。分段磁铁壳体、壳体盖板和框架安装支撑的材料按当前打印文件设置显示为 PLA；层间隔块显示为 PETG，均明确标为打印配置依据、实际制造材料待确认。透明盖板为亚克力（PMMA），框架为铝且合金牌号待确认。紧固件与角码材料未确认，清单保留待确认状态。
+磁铁按用户确认的 **N52 牌号 NdFeB** 标识，尺寸为 12 × 12 × 12 mm，共 1,736 颗；此材料名称不改变 Br = 1.43 T 的求场输入。壳体、盖板和框架安装支撑的 PLA 来自当前打印文件设置，实际制造材料待确认。圆柱隔块未提供新打印文件，历史方块文件设置为 PETG，不等于新圆柱的确认材料。透明盖板为 PMMA，框架为铝且合金牌号待确认。紧固件与角码材料仍待确认。
 
-框架安装支撑对应 `surport.step` 的左、右及底部支撑，连接磁环与铝导轨；层间隔块对应 `support_layer.step`，位于相邻层组件之间。两者在 BOM 提供零件模型及安装位置视图，稳定内部编号继续保留为 `ring-support` 与 `locator`。
+框架安装支撑在 BOM 中分别使用新提供的 `左右.step` 与 `下面.step`，展示侧支撑 28 件和底部支撑 14 件；单件图片与交互 3D 均由同一 STEP 生成。新文件未提供完整装配注册关系，故不把旧 `surport.step` 的安装位置当作新零件的已验证位置。层间隔块使用 `层间隔块.step` 的圆柱几何，旧 `support_layer.step` 只作历史接口参考；圆柱安装位置尚未确认，因此不提供隔块安装位置按钮。稳定编号保留为 `ring-support` 与 `locator`。
 
-当前 BOM 为 13 类物料，删除收料记录界面和 M3 螺母条目。Resources 提供 31 项当前 CAD、打印与排布/尺寸下载；6 项紧固件参考从对应 BOM 详情下载。原 7 份 MATLAB 代码与发布副本逐字节保留，目录标记 `hidden` / `pending-update`，教学网页显示待更新状态且不再提供旧下载入口。收到新版文件后再另行核对；现有求场继续使用已核对模型。
+## 2026-10-13 用户确认的整台 BOM
+
+分段磁铁壳体 56（4 × 14）、壳体盖板 56（4 × 14）、透明盖板 56（4 × 14）、框架支撑 42（侧支撑 28 + 底部 14）、圆柱层间隔块 32（4 × 8）、贯穿螺杆 8、M3 短螺丝 448（32 × 14）、M6 螺母 8。L 型角码、铝型材框架、型材连接螺栓及 T 型槽螺母由官方提供。清单、详情及双语 CSV 共用这些数量、数量构成与供应状态；不从 CAD 实例数反推采购数量。
+
+当前 BOM 为 13 类物料，删除收料记录界面和 M3 螺母条目。Resources 提供 31 项当前 CAD、打印与排布/尺寸下载；6 项紧固件参考和本次 3 项零件 STEP 从对应 BOM 详情下载。原 7 份 MATLAB 代码与发布副本逐字节保留，目录标记 `hidden` / `pending-update`，教学网页显示待更新状态且不再提供旧下载入口。收到新版文件后再另行核对；现有求场继续使用已核对模型。
 
 ## 卡扣与闭环演示路径
 
@@ -61,4 +65,14 @@ R01、R14 是独立 XY 平面模型；R02–R13 位于源 CAD 的 YZ 平面，�
 
 The local teaching assets retain STEP world coordinates in millimetres and apply one proper rigid transform per layer. Each layer contains four actual base and four cover instances; never duplicate them as if the file were a single quadrant. The fourteen files contain 56 base, 56 cover and 182 short-screw instances. These are CAD observations, not released procurement quantities.
 
-All 28 slot columns register to the same MATLAB physical azimuth lattice. Cube centers remain at the MATLAB radii and at local Z=9 mm. The R05/R10 outer pocket has a **0.2 mm nominal inner-wall interference**; the model deliberately preserves and reports this discrepancy. M3 hardware joins the cover, acrylic and base; M6 hardware connects the layers. Through-rods are inserted after all fourteen layers have been positioned. Thread usage is confirmed, but lengths, clearances, quantities and tightening specifications remain pending. Only prototype v4 is published; earlier prototype copies and the obsolete M10 illustration are withdrawn without deleting the user's original files. Independently identified acrylic geometry, frame fabrication data, fixtures and fastening parameters remain pending. Animated motion is instructional, and does not validate mechanical forces or a physical assembly procedure.
+All 28 slot columns register to the same MATLAB physical azimuth lattice. Cube centers remain at the MATLAB radii and at local Z=9 mm. The R05/R10 outer pocket has a **0.2 mm nominal inner-wall interference**; the model preserves this discrepancy. Confirmed one-magnet BOM quantities are 56 housings, 56 caps, 56 clear covers, 42 mounting supports (28 side + 14 bottom), 32 cylindrical spacers (4 × 8), 8 M6 rods, 448 M3 screws and 8 M6 nuts. The organizers provide the extrusion frame, L-brackets, extrusion bolts and T-slot nuts. The supplied spacer STEP defines an 18 mm length, 14 mm OD and 6.2 mm through-hole; manufacturing fit and full mounting distribution remain unverified. Old block-shaped spacer CAD/3MF remain explicitly labeled historical references. Four old candidate rod axes do not establish all eight positions. Hardware lengths, materials and tightening specifications still require confirmation. Through-rods are inserted last. Only prototype v4 is published; original files and magnetic calculations are preserved.
+
+## 本次独立 BOM CAD / Supplied BOM CAD
+
+输入位于 `G:/OneDrive/桌面/MRI/new_generation_prototype/模型`，名称为 `层间隔块.step`、`左右.step` 和 `下面.step`。源文件保持原样。`lib/bom-cad-assets.json` 记录源文件与预览的 SHA-256、毫米包围盒和刚体变换；`public/bom/cad/` 保存三份独立 GLB 和四张白色背景渲染图。圆柱直径取 STEP 的解析圆柱面，避免用离散三角网格包围盒近似圆直径。
+
+这三个零件仅更新 BOM 的单件展示与关联下载。整体装配场景、注册矩阵、磁铁位置和磁场求解器不变。示意材质用于辨认形状，不确立制造材料；完整装配坐标和实物配合仍需另行核对。
+
+复现命令：`node scripts/generate-bom-cad-assets.mjs --source=<模型目录> --toolkit=<occt-import-js.js路径> --browser-toolkit=<playwright/index.mjs路径>`。普通启动与构建直接使用已生成资产。资源刷新会校验源文件与预览的来源哈希，不会将同名的新草稿静默替换为当前示意图的下载文件。
+
+The three provided STEP parts drive both the BOM images and isolated interactive models. Their original geometry and millimetre dimensions are retained; only a rigid centring transform is applied. The complete assembly and magnetic calculations are unchanged. The previews use illustrative polymer materials and do not certify manufacturing fit or installed coordinates. This update is local only; no repository push or deployment was performed.

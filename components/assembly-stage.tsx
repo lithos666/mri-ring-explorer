@@ -11,6 +11,7 @@ import {magnetBasis} from "@/lib/field";
 import {useLanguage,directionEnglish} from "@/lib/language-context";
 import {ASSEMBLY_RUNTIME_MANIFEST_URL} from "@/lib/assembly-assets.generated";
 import {fetchTeachingAsset} from "@/lib/teaching-asset-cache";
+import {ASSEMBLY_DURATION_SECONDS,ASSEMBLY_EASING,assemblyTiming,assemblyEaseInOut,assemblyPhaseProgress,assemblyCameraBlend} from "@/lib/assembly-timing";
 import "./assembly-stage.css";
 
 export interface AssemblyStageProps {
@@ -31,7 +32,7 @@ interface RuntimeOptions {step:number;ring:number;partId?:string;progress:number
 interface Runtime {update:(options:RuntimeOptions)=>void;view:(kind:"recommended"|"whole"|"detail")=>void;dispose:()=>void;}
 
 const cubeModel=models.latest;
-const duration=16;
+const duration=ASSEMBLY_DURATION_SECONDS;
 let manifestPromise:Promise<AssemblyManifest>|null=null;
 const geometryCache=new Map<string,Promise<CADMesh[]>>();
 function manifest(){
@@ -102,8 +103,8 @@ async function loadCAD(asset:CADAsset){
  geometryCache.set(asset.url,task);return task;
 }
 
-const smooth=(value:number)=>{const v=THREE.MathUtils.clamp(value,0,1);return v*v*(3-2*v);};
-const range=(p:number,a:number,b:number)=>smooth((p-a)/(b-a));
+const smooth=assemblyEaseInOut;
+const range=assemblyPhaseProgress;
 const physical=(v:[number,number,number])=>new THREE.Vector3(v[0]*25,-v[2]*25,v[1]*25);
 const physicalDirection=(v:[number,number,number])=>new THREE.Vector3(v[0],-v[2],v[1]);
 function partRole(partId:string|undefined){
@@ -192,6 +193,16 @@ export default function AssemblyStage({step,ring,active=true,partId,initialProgr
    support:new THREE.Color(0xd5c6af),locator:new THREE.Color(0xb9ab96),
    unknown:new THREE.Color(0xadbac6)
   };
+  // The confirmed spacer is an 18 mm hollow cylinder. Only its axial length
+  // is dimensioned here: the 14 mm outside and 6.6 mm bore are display-only
+  // proportions until the actual diameters and clearance are supplied.
+  const spacerPreview=new THREE.Group();root.add(spacerPreview);
+  const spacerSection=new THREE.Shape();spacerSection.absarc(0,0,7,0,Math.PI*2,false);
+  const spacerPassage=new THREE.Path();spacerPassage.absarc(0,0,3.3,0,Math.PI*2,true);spacerSection.holes.push(spacerPassage);
+  const spacerGeometry=ownGeo(new THREE.ExtrudeGeometry(spacerSection,{depth:18,bevelEnabled:false,curveSegments:64,steps:1}));spacerGeometry.translate(0,0,-9);
+  const spacerMaterial=ownMat(materials.locator.clone());
+  const spacerCylinder=new THREE.Mesh(spacerGeometry,spacerMaterial);spacerCylinder.name="confirmed-cylinder-spacer-preview";spacerCylinder.castShadow=true;spacerCylinder.receiveShadow=true;
+  spacerPreview.add(spacerCylinder,new THREE.LineSegments(ownGeo(new THREE.EdgesGeometry(spacerGeometry,35)),edgeMat));spacerPreview.visible=false;
   const display:DisplayMesh[]=[],wholeDisplay:DisplayMesh[]=[];
   let localToken=0,fullToken=0,disposed=false,currentRing=-1,fullLoaded=false,fullComplete=false,ringComplete=-1,assetManifest:AssemblyManifest|null=null;
   let current={...latest.current},raf=0,previousTime=0,reportTime=0,autoCamera=true,lastRodCameraProgress=-1;
@@ -416,21 +427,21 @@ export default function AssemblyStage({step,ring,active=true,partId,initialProgr
     if(current.step===3&&!preview){
      const rowSize=cubeModel.rings[current.ring-1].radii.length;
      const order=magnet.sector===1?magnet.radial-1:rowSize+(magnet.sector-2)*rowSize+magnet.radial-1;
-     const first=range(current.progress,.23,.68)*rowSize;
-     const rest=range(current.progress,.70,.88)*(magnets.length-rowSize);
+     const first=range(current.progress,...assemblyTiming.firstMagnetColumn)*rowSize;
+     const rest=range(current.progress,...assemblyTiming.remainingMagnetColumns)*(magnets.length-rowSize);
      const filled=magnet.sector===1?first:rowSize+rest;
      visible=order<filled+.8;
      if(visible){const arrival=smooth(filled-order);position.z+=(1-arrival)*56;}
     }
     if(current.step===9&&!preview){
-     const arrived=1+range(current.progress,.2,.88)*13;
+     const arrived=1+range(current.progress,...assemblyTiming.layers)*13;
      visible=magnet.ring<=Math.ceil(arrived);
      if(visible&&magnet.ring>Math.floor(arrived))position.z-=smooth(Math.ceil(arrived)-arrived)*65;
     }
     if(current.cutaway&&position.x>0&&!preview)visible=false;
     if(!visible)continue;
     if(current.exploded&&full)position.z+=(7.5-magnet.ring)*18;
-    if(current.step===8&&!preview)position.addScaledVector(liftDirection,(1-range(current.progress,.34,.85))*82);
+    if(current.step===8&&!preview)position.addScaledVector(liftDirection,(1-range(current.progress,...assemblyTiming.frameMount))*82);
     const orientation=orient(magnet).clone(),normal=physicalDirection(magnet.normal);
     dummy.scale.setScalar(1);dummy.position.copy(position);dummy.quaternion.copy(orientation);dummy.updateMatrix();magnetBody.setMatrixAt(k,dummy.matrix);
     dummy.position.copy(position).addScaledVector(normal,3);dummy.updateMatrix();magnetNorth.setMatrixAt(k,dummy.matrix);
@@ -473,23 +484,25 @@ export default function AssemblyStage({step,ring,active=true,partId,initialProgr
    individual.visible=!full;whole.visible=full;frameGroup.visible=(!preview&&(current.step===0||current.step>=7))||preview==="frame";
    floor.visible=full||current.step===8||preview==="frame";
    supportGroup.visible=(!full&&!preview&&current.step>=6)||preview==="support";
-   locatorGroup.visible=(!full&&!preview&&current.step>=6)||preview==="locator";
+   locatorGroup.visible=!full&&!preview&&current.step>=6;
+   spacerPreview.visible=preview==="locator";
+   spacerMaterial.opacity=current.transparent?.5:1;spacerMaterial.transparent=current.transparent;spacerMaterial.depthWrite=!current.transparent;
    // Semantic phase 7 is now the final lesson: mount the frame (8), then all
    // layers (9), and only then insert rods. Never show rods in those two phases.
    rodGroup.visible=(!preview&&(current.step===0||current.step===7))||preview==="rod";
    axisGroup.visible=!preview&&current.step===7;
    acrylicGroup.visible=(!preview&&current.step===5)||preview==="acrylic";
    const z=cubeModel.rings[current.ring-1]?.zMM??247;
-   insertionArrow.visible=!preview&&(current.step===1||current.step===2)&&current.highlight&&current.progress<.87;
-   if(insertionArrow.visible){const direction=current.step===1?jointDirection:closureDirection;insertionArrow.setDirection(direction.clone().negate());insertionArrow.position.copy(direction).multiplyScalar(238+(1-range(current.progress,.4,.83))*70);insertionArrow.position.z=z+20;}
+   insertionArrow.visible=!preview&&(current.step===1||current.step===2)&&current.highlight&&current.progress<assemblyTiming.primary[1];
+   if(insertionArrow.visible){const direction=current.step===1?jointDirection:closureDirection;insertionArrow.setDirection(direction.clone().negate());insertionArrow.position.copy(direction).multiplyScalar(238+(1-range(current.progress,...assemblyTiming.primary))*70);insertionArrow.position.z=z+20;}
    ringLabels.visible=full&&current.exploded;
-   for(const label of ringLabels.children){const ring=Number(label.userData.ring);label.position.z=cubeModel.rings[ring-1].zMM+(current.exploded?(7.5-ring)*18:0);label.visible=current.step!==9||ring<=Math.ceil(1+range(current.progress,.2,.88)*13);}
+   for(const label of ringLabels.children){const ring=Number(label.userData.ring);label.position.z=cubeModel.rings[ring-1].zMM+(current.exploded?(7.5-ring)*18:0);label.visible=current.step!==9||ring<=Math.ceil(1+range(current.progress,...assemblyTiming.layers)*13);}
    // Keep the unverified acrylic guide outside the physical CAD solids. Its
    // floating overlay is not presented as a measured seated layer position.
-   acrylicGroup.position.z=z+17;acrylic.rotation.z=-(1-range(current.progress,.4,.83))*Math.PI*.55;acrylicGuide.visible=!preview;acrylicArrow.visible=!preview;
+   acrylicGroup.position.z=z+17;acrylic.rotation.z=-(1-range(current.progress,...assemblyTiming.acrylicSlide))*Math.PI*.55;acrylicGuide.visible=!preview;acrylicArrow.visible=!preview;
    for(const object of [...display,...wholeDisplay]){
     let visible=true;
-    if(preview)visible=object.role===preview;
+    if(preview)visible=object.role===preview&&preview!=="locator";
     else if(!full){
      if(object.role==="base")visible=current.step!==1||object.quarter===0||object.quarter===1;
      else if(object.role==="cover")visible=current.step>=4;
@@ -497,26 +510,26 @@ export default function AssemblyStage({step,ring,active=true,partId,initialProgr
      else if(object.role==="acrylic")visible=current.step>=5;
      else if(object.role==="support"||object.role==="locator")visible=current.step>=6;
     }
-    if(full&&current.step===9){const n=1+range(current.progress,.2,.88)*13;visible=object.ring<=Math.ceil(n);}
+    if(full&&current.step===9){const n=1+range(current.progress,...assemblyTiming.layers)*13;visible=object.ring<=Math.ceil(n);}
     object.mesh.visible=visible;if(object.edge)object.edge.visible=visible&&!full;
     object.mesh.position.copy(object.home);object.mesh.rotation.set(0,0,0);
     if(current.step===1&&object.role==="base"&&object.quarter===0){
-     const distance=(1-range(current.progress,.4,.83))*100;
+     const distance=(1-range(current.progress,...assemblyTiming.primary))*100;
      object.mesh.position.addScaledVector(jointDirection,distance);
     }
     if(current.step===2&&object.role==="base"){
      // The two final dovetails share the same radial rail axis. Keep the
      // first half fixed and translate the second half along that axis.
-     if(object.quarter>=2)object.mesh.position.addScaledVector(closureDirection,(1-range(current.progress,.4,.84))*100);
+     if(object.quarter>=2)object.mesh.position.addScaledVector(closureDirection,(1-range(current.progress,...assemblyTiming.primary))*100);
     }
-    if(current.step===4&&object.role==="cover")object.mesh.position.z+=(1-range(current.progress,.35,.84))*58;
-    if(current.step===5&&object.role==="fastener")object.mesh.position.z+=(1-range(current.progress,.82,.99))*20;
+    if(current.step===4&&object.role==="cover")object.mesh.position.z+=(1-range(current.progress,...assemblyTiming.primary))*58;
+    if(current.step===5&&object.role==="fastener")object.mesh.position.z+=(1-range(current.progress,...assemblyTiming.coverFasteners))*20;
     if(current.step===6&&(object.role==="support"||object.role==="locator")){
      const v=new THREE.Vector3(object.centroid.x,object.centroid.y,0).normalize();
-     if(object.role==="support")object.mesh.position.addScaledVector(v,(1-range(current.progress,.33,.8))*65);
-     else object.mesh.position.z-=(1-range(current.progress,.64,.9))*52;
+     if(object.role==="support")object.mesh.position.addScaledVector(v,(1-range(current.progress,...assemblyTiming.supports))*65);
+     else object.mesh.position.z-=(1-range(current.progress,...assemblyTiming.spacers))*52;
     }
-    if(full&&current.step===9){const n=1+range(current.progress,.2,.88)*13;if(object.ring>Math.floor(n))object.mesh.position.z-=smooth(Math.ceil(n)-n)*65;}
+    if(full&&current.step===9){const n=1+range(current.progress,...assemblyTiming.layers)*13;if(object.ring>Math.floor(n))object.mesh.position.z-=smooth(Math.ceil(n)-n)*65;}
     if(current.exploded&&full)object.mesh.position.z+=(7.5-object.ring)*18;
     if(current.exploded&&!full&&object.role==="base")object.mesh.position.addScaledVector(new THREE.Vector3(object.centroid.x,object.centroid.y,0).normalize(),23);
     if(current.exploded&&!full&&(object.role==="cover"||object.role==="fastener"))object.mesh.position.z+=object.role==="cover"?42:70;
@@ -532,15 +545,20 @@ export default function AssemblyStage({step,ring,active=true,partId,initialProgr
     material.clippingPlanes=current.cutaway&&!preview?[clippingPlane]:[];material.clipShadows=true;
     if(object.edge){(object.edge.material as THREE.LineBasicMaterial).clippingPlanes=current.cutaway&&!preview?[clippingPlane]:[];object.edge.visible=visible&&!full&&!current.transparent;}
    }
-   const insertion=1-range(current.progress,.35,.84);
+   const insertion=1-range(current.progress,...assemblyTiming.primary);
    if(current.step===7)rodGroup.position.z=-insertion*570;else rodGroup.position.z=0;
    if(current.step===7&&current.progress!==lastRodCameraProgress){lastRodCameraProgress=current.progress;cameraTargets(false);}
-   const drop=current.step===8?(1-range(current.progress,.34,.85))*82:0;
+   const drop=current.step===8?(1-range(current.progress,...assemblyTiming.frameMount))*82:0;
    for(const group of [individual,supportGroup,locatorGroup])group.position.copy(liftDirection).multiplyScalar(drop);
    buildMagnets();
    container!.dataset.magnetCount=String(magnetBody.count);container!.dataset.ring=String(current.ring);container!.dataset.step=String(current.step);
    container!.dataset.cadMeshes=String((full?wholeDisplay:display).filter(d=>d.mesh.visible).length);container!.dataset.progress=current.progress.toFixed(3);
+   container!.dataset.durationSeconds=String(duration);container!.dataset.primaryMotionStartsAtSeconds=String(assemblyTiming.primary[0]*duration);container!.dataset.motionEasing=ASSEMBLY_EASING;
+   const firstAction=current.step===3?assemblyTiming.firstMagnetColumn:current.step===5?assemblyTiming.acrylicSlide:current.step===6?assemblyTiming.supports:current.step===8?assemblyTiming.frameMount:current.step===9?assemblyTiming.layers:assemblyTiming.primary;
+   container!.dataset.firstActionProgress=range(current.progress,firstAction[0],firstAction[1]).toFixed(4);
    container!.dataset.rodsVisible=String(rodGroup.visible);container!.dataset.rodDiameterMM="6";container!.dataset.rodCount=String(rodGroup.children.length);container!.dataset.rodOffsetMM=String(rodGroup.position.z);
+   if(preview==="locator"){container!.dataset.spacerShape="cylinder";container!.dataset.spacerLengthMM="18";container!.dataset.spacerDiameters="illustrative";}
+   else{delete container!.dataset.spacerShape;delete container!.dataset.spacerLengthMM;delete container!.dataset.spacerDiameters;}
   }
 
   function cameraTargets(snap=true){
@@ -553,6 +571,7 @@ export default function AssemblyStage({step,ring,active=true,partId,initialProgr
     if(preview==="acrylic"){targetWhole.set(130,0,z);eyeWhole.set(350,180,z+390);}
     if(preview==="frame"){targetWhole.set(0,0,0);eyeWhole.set(720,480,990);}
     if(preview==="rod"){targetWhole.set(0,0,0);eyeWhole.set(670,410,830);}
+    if(preview==="locator"){targetWhole.set(0,0,0);eyeWhole.set(31,21,53);}
    }
    if(preview==="frame"||!preview&&(current.step===0||current.step>=7)){
     // Fit the display envelope, including the ring's lifted start position.
@@ -584,12 +603,13 @@ export default function AssemblyStage({step,ring,active=true,partId,initialProgr
    targetDetail.applyMatrix4(mountingRotation);eyeDetail.applyMatrix4(mountingRotation);
    if(!full&&current.step!==8&&!preview){targetWhole.applyMatrix4(mountingRotation);eyeWhole.applyMatrix4(mountingRotation);}
    if(preview){targetDetail.copy(targetWhole);eyeDetail.copy(eyeWhole);}
-   if(snap&&autoCamera){camera.position.copy(eyeWhole);controls.target.copy(targetWhole);controls.update();}
+   if(snap&&autoCamera){const blend=current.step===0?0:assemblyCameraBlend(current.progress);camera.position.copy(eyeWhole).lerp(eyeDetail,blend);controls.target.copy(targetWhole).lerp(targetDetail,blend);controls.update();}
   }
   function chooseView(kind:"recommended"|"whole"|"detail"){
    autoCamera=kind==="recommended";
    cameraTargets(false);
-   const detail=kind==="detail";camera.position.copy(detail?eyeDetail:eyeWhole);controls.target.copy(detail?targetDetail:targetWhole);controls.update();
+   const blend=kind==="recommended"&&current.step!==0?assemblyCameraBlend(current.progress):kind==="detail"?1:0;
+   camera.position.copy(eyeWhole).lerp(eyeDetail,blend);controls.target.copy(targetWhole).lerp(targetDetail,blend);controls.update();
   }
   const gesture=()=>{autoCamera=false;setCameraMode("whole");};controls.addEventListener("start",gesture);
   let downPoint:[number,number]=[0,0];
@@ -604,20 +624,26 @@ export default function AssemblyStage({step,ring,active=true,partId,initialProgr
   };
   renderer.domElement.addEventListener("pointerdown",pointerDown);renderer.domElement.addEventListener("pointerup",pointerUp);
   const lost=(event:Event)=>{event.preventDefault();setError(true);};renderer.domElement.addEventListener("webglcontextlost",lost);
-  function resize(){const w=container!.clientWidth,h=container!.clientHeight;if(w<2||h<2)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();if(autoCamera)cameraTargets();}
-  const observer=new ResizeObserver(resize);observer.observe(container);
+  let resizeFrame=0,lastWidth=0,lastHeight=0;
+  function resize(){const w=container!.clientWidth,h=container!.clientHeight;if(disposed||w<2||h<2||w===lastWidth&&h===lastHeight)return;lastWidth=w;lastHeight=h;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();if(autoCamera)cameraTargets();}
+  // Updating the canvas during ResizeObserver delivery can trigger another
+  // layout notification in the same cycle. Coalesce writes into the next frame.
+  const observer=new ResizeObserver(()=>{if(!resizeFrame&&!disposed)resizeFrame=requestAnimationFrame(()=>{resizeFrame=0;resize();});});observer.observe(container);
   function animate(time:number){
    raf=0;if(disposed||!current.active)return;
-   const dt=previousTime?Math.min((time-previousTime)/1000,.1):0;previousTime=time;
+   // Use real elapsed playback time so a slower GPU does not stretch an
+   // eight-second lesson. Hidden scenes reset previousTime in update().
+   const dt=previousTime?Math.max((time-previousTime)/1000,0):0;previousTime=time;
    if(current.playing&&current.step!==0){
     current.progress=Math.min(1,current.progress+dt*current.speed/duration);apply();
     if(time-reportTime>90||current.progress===1){callbacks.current.setProgress(current.progress);reportTime=time;}
     if(current.progress===1){current.playing=false;callbacks.current.setPlaying(false);}
    }
    if(autoCamera&&current.step!==0){
-    const close=range(current.progress,.15,.3)*(1-range(current.progress,.87,1));
-    const eye=eyeWhole.clone().lerp(eyeDetail,close),target=targetWhole.clone().lerp(targetDetail,close);
-    camera.position.lerp(eye,.09);controls.target.lerp(target,.09);
+    const close=assemblyCameraBlend(current.progress);
+    // The same paused or scrubbed time produces the same recommended camera
+    // pose, instead of a frame-rate-dependent trailing interpolation.
+    camera.position.copy(eyeWhole).lerp(eyeDetail,close);controls.target.copy(targetWhole).lerp(targetDetail,close);
    }
    controls.update();renderer.render(scene,camera);
    if(hotspot.current){
@@ -644,7 +670,7 @@ export default function AssemblyStage({step,ring,active=true,partId,initialProgr
    if(next.active&&!raf){previousTime=0;raf=requestAnimationFrame(animate);}else if(!next.active&&raf){cancelAnimationFrame(raf);raf=0;previousTime=0;}
   };
   runtime.current={update,view:chooseView,dispose:()=>{
-   disposed=true;localToken++;fullToken++;if(raf)cancelAnimationFrame(raf);observer.disconnect();controls.removeEventListener("start",gesture);controls.dispose();
+   disposed=true;localToken++;fullToken++;if(raf)cancelAnimationFrame(raf);if(resizeFrame)cancelAnimationFrame(resizeFrame);observer.disconnect();controls.removeEventListener("start",gesture);controls.dispose();
    renderer.domElement.removeEventListener("pointerdown",pointerDown);renderer.domElement.removeEventListener("pointerup",pointerUp);renderer.domElement.removeEventListener("webglcontextlost",lost);
    for(const mesh of [magnetBody,magnetNorth,magnetSouth,glyphN,glyphS])mesh.dispose();
    for(const mesh of [brackets,boltHeads,boltSockets])mesh.dispose();
@@ -656,23 +682,24 @@ export default function AssemblyStage({step,ring,active=true,partId,initialProgr
  },[]);
 
  const chooseView=(kind:"recommended"|"whole"|"detail")=>{setCameraMode(kind);runtime.current?.view(kind);};
- const phase=progress<.18?t("整体定位","Locate"):progress<.4?t("接口特写","Inspect"):progress<.86?t("动作演示","Move"):t("到位检查","Check");
+ const phase=progress<assemblyTiming.orientationEnd?t("整体定位","Locate"):progress<assemblyTiming.inspectionEnd?t("接口特写","Inspect"):progress<assemblyTiming.finalCheckStart?t("动作演示","Move"):t("到位检查","Check");
  const part=partRole(partId),schematic=step===5||step===7||step===8||step===0&&(!part||["acrylic","rod","frame"].includes(part));
  const fitIssue=(ring===5||ring===10)&&!part&&step>=3&&step<=5;
- const note=part==="acrylic"||step===5?t("蓝色悬浮层演示圆周滑动，不表示实际层位。独立亚克力 CAD、厚度及到位位置待确认；先定位盖板，再插入，最后紧固。","The floating blue guide shows circumferential sliding, not a measured layer position. Acrylic CAD, thickness and seating await confirmation; position covers, insert, then secure."):
+ const note=part==="locator"?t("层间隔块为长 18 mm 的中空圆柱，中间供 M6 螺杆通过。此视图的外径和孔径仅为示意，实际尺寸及安装位置待确认。","The inter-layer spacer is an 18 mm hollow cylinder for an M6 rod to pass through. Outside and hole diameters are illustrative; actual diameters and mounting positions await confirmation."):
+  part==="acrylic"||step===5?t("蓝色悬浮层演示圆周滑动，不表示实际层位。独立亚克力 CAD、厚度及到位位置待确认；先定位盖板，再插入，最后紧固。","The floating blue guide shows circumferential sliding, not a measured layer position. Acrylic CAD, thickness and seating await confirmation; position covers, insert, then secure."):
   part==="frame"||step===8?t("铝型材框架为位置示意；具体截面、长度与固定规格待确认。三处支撑接触应在实物中核对。","Frame positioning is schematic; extrusion sections, lengths and fixings await confirmation. Verify all three support contacts on the real assembly."):
-  part==="rod"||step===7?t("十四层全部安装后，最后沿对齐的孔轴插入 M6 贯穿螺杆并用 M6 螺母紧固。候选轴线来自 CAD；杆长、材料、数量和扭矩待确认。","After mounting all fourteen layers, insert the M6 through-rods last along aligned hole axes and secure with M6 nuts. Candidate axes follow CAD; rod lengths, material, quantity and torque await confirmation."):
+  part==="rod"||step===7?t("十四层全部安装后，最后插入 M6 贯穿螺杆并用 M6 螺母紧固。已确认共 8 根螺杆、8 个螺母；图中轴线仍是旧 CAD 候选位置，不代表已核定的全部安装点。杆长、材料和扭矩待确认。","After mounting all fourteen layers, insert the M6 through-rods last and secure with M6 nuts. The confirmed BOM contains 8 rods and 8 nuts. Shown axes remain legacy CAD candidates, not a validated set of all mounting positions. Rod lengths, material and torque await confirmation."):
   step===1?t("蓝色扇形的卡扣沿灰色导槽的径向滑入；路径遵循 CAD 轨道方向，实际夹持与操作需现场确认。","The blue sector's clip slides radially into the grey guide, following the CAD rail direction. Confirm physical restraint and handling at the bench."):
   step===2?t("灰色半环保持固定，蓝色半环沿两处卡扣的共同径向导轨滑入。100 mm 仅为展示行程，现场夹持与闭合工艺待核对。","Keep the grey half fixed and slide the blue half along the common radial axis of both dovetails. The 100 mm travel is for demonstration; confirm workshop restraint and procedure."):
   step===3?t("每个长条由独立 12 mm 方块组成。红／蓝和 N／S 为教学标识；逐块核对环号、层位和磁化方向。","Every strip contains separate 12 mm cubes. Red/blue and N/S are teaching labels. Check each ID, radial position and magnetization."):
   step===4?t("盖板只做定位，还未最终锁紧；准备沿圆周插入亚克力。","Position the covers without final tightening, preparing for circumferential acrylic insertion."):
-  step===6&&(ring===1||ring===14)?t("支撑件使用实际 CAD 外形。R01／R14 为独立导出，支撑与缺口的位置配合仍待确认。26 mm 不是定位件厚度。","Support shapes use actual CAD. R01/R14 are standalone exports; support-to-notch registration awaits confirmation. The 26 mm is not locator thickness."):
-  step===6?t("左、右、下支撑与层间定位件使用实际 CAD。26 mm 是磁铁端面净距，不是定位件厚度；完整机械配合仍需核对。","Left, right, bottom supports and locators use actual CAD. The 26 mm magnet-face gap is not locator thickness; verify the complete mechanical fit."):
+  step===6&&(ring===1||ring===14)?t("支撑件使用实际 CAD；R01／R14 的支撑与缺口配合待确认。场景中的块状隔块是旧 CAD 参考，新隔块为 18 mm 中空圆柱，见 BOM；安装位置待确认。","Supports use actual CAD; R01/R14 support-to-notch registration awaits confirmation. Block spacers in this scene are legacy CAD. The current 18 mm hollow cylinder appears in BOM; mounting positions await confirmation."):
+  step===6?t("左、右、下支撑使用实际 CAD。场景中的块状隔块是旧 CAD 参考，新隔块为 18 mm 中空圆柱，见 BOM；安装位置待确认。","Left, right and bottom supports use actual CAD. Block spacers in this scene are legacy CAD. The current 18 mm hollow cylinder appears in BOM; mounting positions await confirmation."):
   step===9?t("按 R01 → R14 安装全部十四层，每层 28 列，共 1,736 颗磁铁。此时不装贯穿螺杆；所有层到位后，在最后一步插入 M6 螺杆。","Mount all fourteen layers in R01 → R14 order, with 28 columns each and 1,736 magnets total. Do not fit through-rods yet; insert the M6 rods in the final stage after every layer is seated."):
-  schematic?t("环体与支撑来自实际 CAD；框架、贯穿螺杆为位置示意，制造规格待确认。","Ring parts and supports use actual CAD; the frame and through rods are positioning guides with manufacturing specifications pending."):t("毫米单位的 CAD 视图；拖动自由观察，滚轮放大。","CAD in millimetres. Drag to inspect and scroll to zoom.");
+  schematic?t("环体与支撑来自实际 CAD；框架、贯穿螺杆为位置示意。块状隔块为旧 CAD 参考，已确认的新隔块是 18 mm 中空圆柱，见 BOM；安装位置待确认。","Ring parts and supports use actual CAD; the frame and through rods are positioning guides. Block spacers are legacy CAD. The confirmed spacer is an 18 mm hollow cylinder shown in BOM; mounting positions await confirmation."):t("毫米单位的 CAD 视图；拖动自由观察，滚轮放大。","CAD in millimetres. Drag to inspect and scroll to zoom.");
  const selectedDirection=selected?t(({out:"径向朝外",in:"径向朝内",axial:"轴向 −Z",axialUp:"轴向 +Z",tangent:"切向 +θ",tangentNeg:"切向 −θ"})[selected.direction],directionEnglish[selected.direction]):"";
  const hotspots=["",t("卡扣与导槽","Clip and guide"),t("最后两处接口","Final two joints"),t("A01 · 磁化方向","A01 · Magnetization"),t("盖板孔位","Cover holes"),t("弧形导向示意","Curved slide guide"),t("支撑与缺口","Support and notch"),t("M6 螺杆插入轴线","M6 rod insertion axis"),t("支撑接触位置","Support contacts"),"R01 → R14"];
- return <div className="assembly-stage" data-assembly-stage={step} data-active={active}>
+ return <div className="assembly-stage" data-assembly-stage={step} data-active={active} data-duration-seconds={duration} data-motion-easing={ASSEMBLY_EASING} data-playing={playing} data-speed={speed}>
    <div className="assembly-stage__toolbar">
     <div className="assembly-stage__views">
      <button type="button" aria-pressed={cameraMode==="recommended"} onClick={()=>chooseView("recommended")} title={t("返回本步骤推荐镜头","Restore the recommended step camera")}><Focus size={14}/>{t("推荐视角","Recommended")}</button>
@@ -692,9 +719,10 @@ export default function AssemblyStage({step,ring,active=true,partId,initialProgr
      <summary>{fitIssue?`${ringName(ring)} · ${t("槽位需复核","Slot clearance review")}`:t("模型说明","Model notes")}{(part==="frame"||step===8)&&<span> · {t("型材截面为示意，制造规格待确认","Illustrative profiles; manufacturing specifications pending")}</span>}</summary>
      <div>
      {fitIssue?<><strong>{ringName(ring)} · {t("槽位复核","Slot review")}</strong><br/>{t("CAD 与 12 mm 磁块存在约 0.2 mm 名义干涉。保持真实尺寸展示；加工前须确认槽位与余量。","CAD and 12 mm cubes show approximately 0.2 mm nominal interference. True dimensions are preserved; confirm slot clearances before fabrication.")}</>:note}
+     {!part&&[7,8,9].includes(step)&&<p>{t("块状隔块为旧 CAD 参考，不能作为当前清单数量或制造外形的依据。已确认的新隔块为 32 个、长 18 mm 的中空圆柱，详见 BOM；具体安装位置待确认。","Block spacers are legacy CAD, not a source for current quantities or manufacturing geometry. The confirmed BOM contains 32 hollow cylinders, each 18 mm long; see BOM. Exact mounting positions await confirmation.")}</p>}
      </div>
     </details>
-    {(step>=3||step===0)&&<div className="assembly-stage__legend"><span><i/>N</span><span><i data-pole="S"/>S</span>{t("磁极标识","Pole labels")}</div>}
+    {(!part||part==="magnet")&&(step>=3||step===0)&&<div className="assembly-stage__legend"><span><i/>N</span><span><i data-pole="S"/>S</span>{t("磁极标识","Pole labels")}</div>}
    </div>
   <div className="assembly-stage__controls">
    {step!==0&&<div className="assembly-stage__transport">

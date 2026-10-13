@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "presentation": "Offline white-studio product renders from exact CAD or explicitly illustrative native geometry. Colour, finish and unconfirmed hardware geometry are illustrative. The three supplied CAD previews remain independent and unchanged.",
+  "assets": [
+    {
+      "id": "magnet-cube",
+      "provenance": "schematic",
+      "source": null,
+      "note": "True 12 mm cube outer size; metallic surface and small highlight-catching edge treatment are illustrative. N/S orientation is provided by the interactive model, not invented surface markings.",
+      "meshes": 1,
+      "triangles": 1452,
+      "sourceDimensions": [
+        13.85720539171868,
+        12,
+        13.85720539171868
+      ],
+      "sourceURL": null,
+      "sourceSha256": null,
+      "url": "/bom/products/magnet-cube.png",
+      "bytes": 27240,
+      "sha256": "b5a923c569379f30b03715447d5c582a33c36727bea0d6041b26a97fc565580e",
+      "width": 960,
+      "height": 624
+    },
+    {
+      "id": "printed-ring",
+      "provenance": "cad",
+      "source": "模型/layer1.step · base-05",
+      "note": "One actual registered R01 quarter housing. Polymer colour illustrates the current print material setting.",
+      "meshes": 1,
+      "triangles": 2412,
+      "sourceDimensions": [
+        292.28643798828125,
+        15,
+        127.51761627197266
+      ],
+      "sourceURL": "/assembly/layer-01.glb",
+      "sourceSha256": "cf712cec4edf11f5c0171616a8094555cba85919f1d05730ebbe09cd6452d2de",
+      "url": "/bom/products/printed-ring.png",
+      "bytes": 43407,
+      "sha256": "db10e8a48f901bb24330fd123f378de18ba10948e722ffeead60ee91ede95e10",
+      "width": 960,
+      "height": 624
+    },
+    {
+      "id": "ring-cover",
+      "provenance": "cad",
+      "source": "模型/layer1.step · cover-04",
+      "note": "One actual registered R01 cap. Its CAD openings and screw holes are preserved.",
+      "meshes": 1,
+      "triangles": 3158,
+      "sourceDimensions": [
+        289.91162109375,
+        7,
+        127.51822662353516
+      ],
+      "sourceURL": "/assembly/layer-01.glb",
+      "sourceSha256": "cf712cec4edf11f5c0171616a8094555cba85919f1d05730ebbe09cd6452d2de",
+      "url": "/bom/products/ring-cover.png",
+      "bytes": 39019,
+      "sha256": "99b940854c07e26e2e8cbf2e8f912eea773ee1cfb76c5346a40aa928b5d136c8",
+      "width": 960,
+      "height": 624
+    },
+    {
+      "id": "acrylic",
+      "provenance": "schematic",
+      "source": null,
+      "note": "Curved clear-cover illustration only. Independent source CAD, machining thickness and seating remain unconfirmed.",
+      "meshes": 1,
+      "triangles": 1284,
+      "sourceDimensions": [
+        282.84271240234375,
+        2.700000047683716,
+        118.6827163696289
+      ],
+      "sourceURL": null,
+      "sourceSha256": null,
+      "url": "/bom/products/acrylic.png",
+      "bytes": 14393,
+      "sha256": "f482194fe9915fca28b94626dac1f4ee343c0544c2d3d0f2b62f3d1a6e311aa1",
+      "width": 960,
+      "height": 624
+    },
+    {
+      "id": "aluminum-frame",
+      "provenance": "schematic",
+      "source": null,
+      "note": "Detailed illustrative T-slot frame based on the current teaching topology. Supplied extrusion series, cut lengths and joint hardware are not inferred.",
+      "meshes": 17,
+      "triangles": 5968,
+      "sourceDimensions": [
+        510.20001220703125,
+        375,
+        630.0000000000001
+      ],
+      "sourceURL": null,
+      "sourceSha256": null,
+      "url": "/bom/products/aluminum-frame.png",
+      "bytes": 88530,
+      "sha256": "eaeb01536b3f08d107c5e89191f782f5a2e45c110d6c7d77bd46c80e7ca94d3b",
+      "width": 960,
+      "height": 624
+    },
+    {
+      "id": "through-rod",
+      "provenance": "schematic",
+      "source": null,
+      "note": "Native geometry product illustration. Thread pitch, length, head style, finish and connector proportions are illustrative; consult the BOM for confirmed hardware and the supplied parts for exact fit.",
+      "meshes": 2,
+      "triangles": 12700,
+      "sourceDimensions": [
+        95.50668293929193,
+        20.33930140811011,
+        6.481298698191791
+      ],
+      "sourceURL": null,
+      "sourceSha256": null,
+      "url": "/bom/products/through-rod.png",
+      "bytes": 92710,
+      "sha256": "e98942b3965ddc8cd78bff36f694f08f5745a180487c57015d4c4dd6176d0d0e",
+      "width": 960,
+      "height": 624
+    },
+    {
+      "id": "short-screw",
+      "provenance": "schematic",
+      "source": null,
+      "note": "Native geometry product illustration. Thread pitch, length, head style, finish and connector proportions are illustrative; consult the BOM for confirmed hardware and the supplied parts for exact fit.",
+      "meshes": 4,
+      "triangles": 5968,
+      "sourceDimensions": [
+        22.91319087407973,
+        9.138490515117638,
+        8.100713881657153
+      ],
+      "sourceURL": null,
+      "sourceSha256": null,
+      "url": "/bom/products/short-screw.png",
+      "bytes": 102226,
+      "sha256": "3148752071939fcf03daaca307611b3986f64d2dbdac78ad75675d89123f7747",
+      "width": 960,
+      "height": 624
+    },
+    {
+      "id": "m6-nut",
+      "provenance": "schematic",
+      "source": null,
+      "note": "Native geometry product illustration. Thread pitch, length, head style, finish and connector proportions are illustrative; consult the BOM for confirmed hardware and the supplied parts for exact fit.",
+      "meshes": 2,
+      "triangles": 2216,
+      "sourceDimensions": [
+        16.039250439563883,
+        5.260000109672546,
+        14.762461228620197
+      ],
+      "sourceURL": null,
+      "sourceSha256": null,
+      "url": "/bom/products/m6-nut.png",
+      "bytes": 27837,
+      "sha256": "5cb522b9665bcad823ab67db9aef57daa0e6df44f1c40be7bf08ddf2deeb57eb",
+      "width": 960,
+      "height": 624
+    },
+    {
+      "id": "frame-l-bracket",
+      "provenance": "schematic",
+      "source": null,
+      "note": "Native geometry product illustration. Thread pitch, length, head style, finish and connector proportions are illustrative; consult the BOM for confirmed hardware and the supplied parts for exact fit.",
+      "meshes": 4,
+      "triangles": 17864,
+      "sourceDimensions": [
+        40.63999938964844,
+        39.53999968767166,
+        36.63999938964844
+      ],
+      "sourceURL": null,
+      "sourceSha256": null,
+      "url": "/bom/products/frame-l-bracket.png",
+      "bytes": 40443,
+      "sha256": "e0dde53eee0bff375c1cd8ef67df7bcda2e49aa63f699cd3039c9dc0a4776a46",
+      "width": 960,
+      "height": 624
+    },
+    {
+      "id": "extrusion-bolt",
+      "provenance": "schematic",
+      "source": null,
+      "note": "Native geometry product illustration. Thread pitch, length, head style, finish and connector proportions are illustrative; consult the BOM for confirmed hardware and the supplied parts for exact fit.",
+      "meshes": 4,
+      "triangles": 5168,
+      "sourceDimensions": [
+        25.582749886869443,
+        11.750265317093707,
+        10.964255380568808
+      ],
+      "sourceURL": null,
+      "sourceSha256": null,
+      "url": "/bom/products/extrusion-bolt.png",
+      "bytes": 91627,
+      "sha256": "7b5453e870738f1aa21e415797f41ee9f0fc533e88f6a0902a2b2d7e911c9aeb",
+      "width": 960,
+      "height": 624
+    },
+    {
+      "id": "t-slot-nut",
+      "provenance": "schematic",
+      "source": null,
+      "note": "Native geometry product illustration. Thread pitch, length, head style, finish and connector proportions are illustrative; consult the BOM for confirmed hardware and the supplied parts for exact fit.",
+      "meshes": 21,
+      "triangles": 8962,
+      "sourceDimensions": [
+        31.226108746432242,
+        6.950000041723252,
+        21.568339314084675
+      ],
+      "sourceURL": null,
+      "sourceSha256": null,
+      "url": "/bom/products/t-slot-nut.png",
+      "bytes": 81351,
+      "sha256": "937a58b34780769fa344484e83cf0789293b1ee2ac3337580de6a6163540b8f8",
+      "width": 960,
+      "height": 624
+    }
+  ]
+}

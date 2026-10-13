@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "unit": "millimeter",
+  "previewOnly": true,
+  "presentation": "Rigidly centred STEP geometry, neutral illustrative polymer material and a white studio render. Model colour is not a manufacturing material specification.",
+  "assets": [
+    {
+      "id": "spacer",
+      "role": "inter-layer-spacer",
+      "sourceFilename": "层间隔块.step",
+      "sourceSha256": "8cf6631c0db006faa9fd0ea49bf8323a1830d164a5e59f7cb46ff2c8606fc62c",
+      "sourceBytes": 9970,
+      "sourceBoundsMM": {
+        "min": [
+          437.95408383470686,
+          -64.0738465009198,
+          -113.07243492665587
+        ],
+        "max": [
+          455.9540838347071,
+          -50.0738465009195,
+          -99.09296713274013
+        ],
+        "size": [
+          18.000000000000227,
+          14.000000000000298,
+          13.979467793915745
+        ]
+      },
+      "sourceMeshCount": 1,
+      "vertices": 468,
+      "triangles": 464,
+      "url": "/bom/cad/spacer.glb",
+      "bytes": 18056,
+      "sha256": "ba85dc9b2efbd1786a274c5422812fe8ab3729950cde75e9eb706db435571d6d",
+      "centeredBoundsMM": {
+        "min": [
+          -7.000000000000149,
+          -6.989733896957873,
+          -9.000000000000114
+        ],
+        "max": [
+          7.000000000000149,
+          6.989733896957873,
+          9.000000000000114
+        ],
+        "size": [
+          14.000000000000298,
+          13.979467793915745,
+          18.000000000000227
+        ]
+      },
+      "sourceToPreview": [
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        57.07384650091965,
+        106.082701029698,
+        -446.954083834707,
+        1
+      ],
+      "confirmedGeometryMM": {
+        "length": 18,
+        "outerDiameter": 14,
+        "throughHoleDiameter": 6.2,
+        "evidence": "STEP CYLINDRICAL_SURFACE radii 3.1 and 7.0 mm, both aligned with original X; X extent is 18 mm."
+      },
+      "thumbnail": {
+        "url": "/bom/cad/spacer.png",
+        "bytes": 32296,
+        "sha256": "ed0f05a853f827191df2566670b4197b13f7c25bcbad05fe49b3e1023d462925",
+        "width": 800,
+        "height": 520
+      }
+    },
+    {
+      "id": "side-support",
+      "role": "frame-side-support",
+      "sourceFilename": "左右.step",
+      "sourceSha256": "4e0b83e8d5ed2099daee6bdb5f9b87f12c57a8357c3e1f1003770281ba428739",
+      "sourceBytes": 104402,
+      "sourceBoundsMM": {
+        "min": [
+          446.9540838347029,
+          -245.15249250239418,
+          -37.3819805153359
+        ],
+        "max": [
+          484.9540838347047,
+          -149.95249250239357,
+          52.81801948466526
+        ],
+        "size": [
+          38.00000000000182,
+          95.20000000000061,
+          90.20000000000115
+        ]
+      },
+      "sourceMeshCount": 1,
+      "vertices": 4148,
+      "triangles": 4082,
+      "url": "/bom/cad/side-support.glb",
+      "bytes": 149872,
+      "sha256": "d3f92daf67fa13758a718481ec75e0771fa0023cdcc395d9bc8e7e102740c270",
+      "centeredBoundsMM": {
+        "min": [
+          -47.60000000000031,
+          -45.10000000000058,
+          -19.00000000000091
+        ],
+        "max": [
+          47.60000000000031,
+          45.10000000000058,
+          19.00000000000091
+        ],
+        "size": [
+          95.20000000000061,
+          90.20000000000115,
+          38.00000000000182
+        ]
+      },
+      "sourceToPreview": [
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        197.55249250239387,
+        -7.71801948466468,
+        -465.9540838347038,
+        1
+      ],
+      "thumbnail": {
+        "url": "/bom/cad/side-support.png",
+        "bytes": 21085,
+        "sha256": "4d3c68d2d923d4e7fb99ac6d6f616058138fce43e5d44304b28609b34529f494",
+        "width": 800,
+        "height": 520
+      }
+    },
+    {
+      "id": "bottom-support",
+      "role": "frame-bottom-support",
+      "sourceFilename": "下面.step",
+      "sourceSha256": "50b7e246d3a54980333d96553644a2f590c075d58981042d931f822c96a3bed6",
+      "sourceBytes": 126065,
+      "sourceBoundsMM": {
+        "min": [
+          446.9540838347075,
+          -30.052492502394266,
+          -247.48198051533757
+        ],
+        "max": [
+          484.9540838347093,
+          60.14750749760684,
+          -151.01555096531968
+        ],
+        "size": [
+          38.00000000000182,
+          90.2000000000011,
+          96.46642955001789
+        ]
+      },
+      "sourceMeshCount": 1,
+      "vertices": 1506,
+      "triangles": 1450,
+      "url": "/bom/cad/bottom-support.glb",
+      "bytes": 54864,
+      "sha256": "ee06421578d940df638db03bc16985e60d559da9a60a1b6ea2b64c0b0ee02318",
+      "centeredBoundsMM": {
+        "min": [
+          -45.10000000000055,
+          -48.233214775008946,
+          -19.00000000000091
+        ],
+        "max": [
+          45.10000000000055,
+          48.233214775008946,
+          19.00000000000091
+        ],
+        "size": [
+          90.2000000000011,
+          96.46642955001789,
+          38.00000000000182
+        ]
+      },
+      "sourceToPreview": [
+        0,
+        0,
+        1,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        -15.047507497606286,
+        199.24876574032862,
+        -465.9540838347084,
+        1
+      ],
+      "thumbnail": {
+        "url": "/bom/cad/bottom-support.png",
+        "bytes": 14270,
+        "sha256": "9b5d10317073bebcba3547b6b6584729d4abfc10e6ee5d2c4d62ff4cdcd1e3a2",
+        "width": 800,
+        "height": 520
+      }
+    },
+    {
+      "id": "frame-supports",
+      "roles": [
+        "frame-side-support",
+        "frame-bottom-support"
+      ],
+      "thumbnail": {
+        "url": "/bom/cad/frame-supports.png",
+        "bytes": 31047,
+        "sha256": "9ea6ec34f8831e36d53be89025c1ffb0ee7b1ca6c9a780f55a4814bc3489aec1",
+        "width": 800,
+        "height": 520
+      }
+    }
+  ]
+}

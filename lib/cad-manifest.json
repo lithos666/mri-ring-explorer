@@ -36046,7 +36046,8 @@
       ],
       "unit": "millimeter",
       "placement": "ring-local",
-      "procurementQuantityStatus": "pending"
+      "procurementQuantityStatus": "user-confirmed",
+      "confirmedQuantity": 42
     },
     {
       "id": "cad-locator",
@@ -36266,7 +36267,9 @@
       ],
       "unit": "millimeter",
       "placement": "ring-local-negative-z-gap",
-      "procurementQuantityStatus": "pending"
+      "procurementQuantityStatus": "user-confirmed",
+      "confirmedQuantity": 32,
+      "geometryStatus": "historical-block-reference-not-current-cylinder"
     },
     {
       "id": "cad-template",
@@ -36926,8 +36929,8 @@
     },
     {
       "id": "cad-locator",
-      "titleZh": "层间隔块 CAD",
-      "titleEn": "Inter-layer spacer CAD",
+      "titleZh": "历史方块层间隔块 CAD（非当前圆柱）",
+      "titleEn": "Historical block-spacer CAD (not the current cylinder)",
       "type": "STEP",
       "sourceRelativePath": "模型/support_layer.step",
       "url": "/resources/cad-locator.step",
@@ -36943,7 +36946,10 @@
         "step-09"
       ],
       "visibility": "resources",
-      "updateStatus": "current"
+      "updateStatus": "current",
+      "versionStatus": "legacy-block-reference-not-release-confirmed",
+      "referenceNoteZh": "历史文件是方块形隔块，不符合当前已确认的 18 mm 长圆柱形隔块。仅供旧接口参考；不能据此制造当前圆柱。",
+      "referenceNoteEn": "This historical file contains block-shaped spacers, not the confirmed 18 mm-long cylinders. Use it only as an old interface reference, not to manufacture the current cylinder."
     },
     {
       "id": "print-side-support",
@@ -36969,8 +36975,8 @@
     },
     {
       "id": "print-interlayer-support",
-      "titleZh": "层间支撑打印参考（原文件名保留）",
-      "titleEn": "Inter-layer support print reference",
+      "titleZh": "历史方块层间支撑打印参考（非当前圆柱）",
+      "titleEn": "Historical block-spacer print reference (not the current cylinder)",
       "type": "3MF",
       "sourceRelativePath": "打印文件/曾与层之间的支撑.3mf",
       "url": "/resources/print-interlayer-support.3mf",
@@ -36987,7 +36993,9 @@
       ],
       "visibility": "resources",
       "updateStatus": "current",
-      "versionStatus": "print-reference-not-release-confirmed"
+      "versionStatus": "legacy-block-reference-not-release-confirmed",
+      "referenceNoteZh": "历史文件是方块形隔块，不符合当前已确认的 18 mm 长圆柱形隔块。仅供旧接口参考；不能据此制造当前圆柱。",
+      "referenceNoteEn": "This historical file contains block-shaped spacers, not the confirmed 18 mm-long cylinders. Use it only as an old interface reference, not to manufacture the current cylinder."
     },
     {
       "id": "print-holder-v1",
@@ -37317,8 +37325,8 @@
       "type": "SVG",
       "sourceRelativePath": "public/bom/t-slot-nut.svg",
       "url": "/bom/t-slot-nut.svg",
-      "bytes": 3658,
-      "sha256": "1e3e0c21939eea6e0954a57b2bafc326a9ea6354028c89e40e9559a4b1343f77",
+      "bytes": 108970,
+      "sha256": "576c924cd7dee61ad4ee66bb6a3f8d141d930d7495fdc0801fea5290a783fa0c",
       "category": "fastener-reference",
       "partIds": [
         "t-slot-nut",
@@ -37520,6 +37528,77 @@
       "visibility": "resources",
       "updateStatus": "current",
       "versionStatus": "derived-verified"
+    },
+    {
+      "id": "bom-cad-spacer",
+      "titleZh": "层间隔块 · 提供的 STEP",
+      "titleEn": "Inter-layer spacer · supplied STEP",
+      "type": "STEP",
+      "sourceRelativePath": "模型/层间隔块.step",
+      "url": "/resources/bom-cad-spacer.step",
+      "bytes": 9970,
+      "sha256": "8cf6631c0db006faa9fd0ea49bf8323a1830d164a5e59f7cb46ff2c8606fc62c",
+      "category": "cad",
+      "partIds": [
+        "locator"
+      ],
+      "stepIds": [
+        "step-06",
+        "step-09"
+      ],
+      "visibility": "bom",
+      "updateStatus": "current",
+      "versionStatus": "user-provided-bom-cad",
+      "referenceNoteZh": "与 BOM 示意图采用同一份提供的 STEP；完整装配位置与打印工艺须另行核对。",
+      "referenceNoteEn": "The same supplied STEP used for the BOM rendering; verify full-assembly placement and printing separately."
+    },
+    {
+      "id": "bom-cad-side-support",
+      "titleZh": "左右框架支撑 · 提供的 STEP",
+      "titleEn": "Side frame support · supplied STEP",
+      "type": "STEP",
+      "sourceRelativePath": "模型/左右.step",
+      "url": "/resources/bom-cad-side-support.step",
+      "bytes": 104402,
+      "sha256": "4e0b83e8d5ed2099daee6bdb5f9b87f12c57a8357c3e1f1003770281ba428739",
+      "category": "cad",
+      "partIds": [
+        "ring-support"
+      ],
+      "stepIds": [
+        "step-06",
+        "step-08",
+        "step-09"
+      ],
+      "visibility": "bom",
+      "updateStatus": "current",
+      "versionStatus": "user-provided-bom-cad",
+      "referenceNoteZh": "与 BOM 示意图采用同一份提供的 STEP；完整装配位置与打印工艺须另行核对。",
+      "referenceNoteEn": "The same supplied STEP used for the BOM rendering; verify full-assembly placement and printing separately."
+    },
+    {
+      "id": "bom-cad-bottom-support",
+      "titleZh": "底部框架支撑 · 提供的 STEP",
+      "titleEn": "Bottom frame support · supplied STEP",
+      "type": "STEP",
+      "sourceRelativePath": "模型/下面.step",
+      "url": "/resources/bom-cad-bottom-support.step",
+      "bytes": 126065,
+      "sha256": "50b7e246d3a54980333d96553644a2f590c075d58981042d931f822c96a3bed6",
+      "category": "cad",
+      "partIds": [
+        "ring-support"
+      ],
+      "stepIds": [
+        "step-06",
+        "step-08",
+        "step-09"
+      ],
+      "visibility": "bom",
+      "updateStatus": "current",
+      "versionStatus": "user-provided-bom-cad",
+      "referenceNoteZh": "与 BOM 示意图采用同一份提供的 STEP；完整装配位置与打印工艺须另行核对。",
+      "referenceNoteEn": "The same supplied STEP used for the BOM rendering; verify full-assembly placement and printing separately."
     }
   ],
   "confirmedCADInstanceCounts": {
@@ -37529,14 +37608,14 @@
   },
   "pending": [
     "Independent acrylic CAD and thickness",
-    "Profile cut list and connectors",
-    "Procurement quantities and materials",
     "R05/R10 outer-pocket nominal 0.2 mm radial interference",
     "R01/R14 support-notch mating registration",
     "Physical fixtures, insertion paths and fastening sequence",
-    "M3 thread confirmed; screw length pending (CAD 2.9×16 BF versus supplied M3×18 reference)",
-    "M6 layer-connection thread confirmed; rod length, hole clearance and quantities pending",
-    "L-bracket dimensions and procurement quantities"
+    "M3 quantity confirmed at 448 (32 per layer); screw length, material and torque pending (historical CAD 2.9×16 BF versus M3×18 reference)",
+    "Organizer provides aluminium frame, L-brackets, extrusion bolts and T-slot nuts; use supplied specifications",
+    "Manufacturing materials and tolerances not established by BOM quantity confirmation",
+    "Eight M6 rods and eight M6 nuts confirmed; rod length, material, torque, hole clearance and complete mounting positions pending",
+    "Cylindrical spacers: supplied CAD has 18 mm length, 14 mm outer diameter and 6.2 mm passage; physical printing fit and complete mounting distribution pending"
   ],
   "registrationNotes": [
     "Layer1 and layer14 are standalone XY-plane exports; other layers are YZ-plane exports with assembly translations.",
@@ -37545,14 +37624,16 @@
     "Displayed magnets remain at MATLAB radii; nominal pocket discrepancies are reported, never hidden by shifting magnets."
   ],
   "hardware": {
-    "confirmation": "user-confirmed-thread-and-use",
+    "confirmation": "user-confirmed-thread-use-and-quantities",
     "coverAcrylicBase": {
       "thread": "M3",
       "partIds": [
         "short-screw"
       ],
       "lengthStatus": "pending",
-      "quantityStatus": "pending",
+      "quantity": 448,
+      "quantityPerLayer": 32,
+      "quantityStatus": "user-confirmed",
       "materialStatus": "pending"
     },
     "interLayer": {
@@ -37562,23 +37643,81 @@
         "m6-nut"
       ],
       "rodLengthStatus": "pending",
-      "quantityStatus": "pending"
+      "rodQuantity": 8,
+      "nutQuantity": 8,
+      "quantityStatus": "user-confirmed",
+      "completePlacementStatus": "pending-cad-has-only-four-candidate-axes"
+    },
+    "spacers": {
+      "partId": "locator",
+      "shape": "cylinder",
+      "lengthMM": 18,
+      "passageFor": "M6",
+      "quantity": 32,
+      "quantityBreakdown": [
+        4,
+        8
+      ],
+      "quantityStatus": "user-confirmed",
+      "outerDiameterStatus": "provided-cad-nominal",
+      "boreDiameterStatus": "provided-cad-nominal",
+      "mountingDistributionStatus": "pending",
+      "sourceCADStatus": "historical-block-reference-not-current-cylinder",
+      "nominalGeometryMM": {
+        "length": 18,
+        "outerDiameter": 14,
+        "throughHoleDiameter": 6.2,
+        "evidence": "STEP CYLINDRICAL_SURFACE radii 3.1 and 7.0 mm, both aligned with original X; X extent is 18 mm."
+      },
+      "bomSourceCADStatus": "provided-cylindrical-cad-render",
+      "manufacturingFitStatus": "pending"
     },
     "frameBrackets": {
       "partId": "frame-l-bracket",
-      "dimensionsStatus": "pending",
-      "quantityStatus": "pending",
+      "suppliedBy": "organizer",
+      "dimensionsStatus": "supplied-part-reference",
+      "quantityStatus": "organizer-provided",
       "materialStatus": "pending"
+    },
+    "extrusionFrame": {
+      "partId": "aluminum-frame",
+      "suppliedBy": "organizer",
+      "quantityStatus": "organizer-provided",
+      "material": "aluminium",
+      "alloyGradeStatus": "pending"
     },
     "extrusionConnections": {
       "partIds": [
         "extrusion-bolt",
         "t-slot-nut"
       ],
+      "suppliedBy": "organizer",
       "threadStatus": "pending",
       "slotSeriesStatus": "pending",
-      "quantityStatus": "pending",
+      "quantityStatus": "organizer-provided",
       "materialStatus": "pending"
     }
+  },
+  "confirmedBOMQuantities": {
+    "magnetCube": 1736,
+    "segmentedHousing": 56,
+    "housingCap": 56,
+    "clearCover": 56,
+    "mountingSupports": {
+      "total": 42,
+      "side": 28,
+      "bottom": 14
+    },
+    "cylindricalSpacers": {
+      "total": 32,
+      "breakdown": [
+        4,
+        8
+      ],
+      "lengthMM": 18
+    },
+    "throughRods": 8,
+    "m3ShortScrews": 448,
+    "m6Nuts": 8
   }
 }

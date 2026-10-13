@@ -8,6 +8,14 @@ This teaching edition has five sections: Overview, BOM, Assembly, Principles & L
 
 The final three stages are: mount in the frame → mount all fourteen layers → insert through-rods last. M3 screws secure the housing cap, clear cover and magnet housing; M6 is used between layers. The 13-category BOM includes material descriptions and images, N52 grade NdFeB magnets, L-brackets, extrusion mounting bolts and T-slot nuts. Only prototype v4 is offered. All seven MATLAB programs remain unchanged; their teaching download entry is pending update.
 
+每台最新确认的物料数量：分段磁铁壳体、壳体盖板、透明盖板各 56 件（4 × 14）；框架安装支撑 42 件（左右 28 件，底部 14 件）；圆柱层间隔块 32 件（4 × 8）；贯穿螺杆 8 根；M3 短螺丝 448 个（32 × 14）；M6 螺母 8 个。L 型角码、铝型材框架、T 型槽螺母和型材连接螺栓由官方提供。新隔块 STEP 的名义尺寸为长 18 mm、外径 14 mm、通孔 6.2 mm，实际配合公差与安装位置仍需核对。
+
+Confirmed quantities per unit: 56 segmented magnet housings, 56 housing caps and 56 clear covers (4 × 14 each); 42 frame supports (28 side, 14 bottom); 32 cylindrical inter-layer spacers (4 × 8); 8 through-rods; 448 M3 short screws (32 × 14); and 8 M6 nuts. L-brackets, the aluminium frame, T-slot nuts and extrusion mounting bolts are supplied by the organizers. The new spacer STEP defines an 18 mm length, 14 mm outer diameter and 6.2 mm through-hole; verify actual tolerances and installed locations separately.
+
+BOM 的左右支撑、底部支撑和圆柱隔块采用新提供的独立 STEP 示意图与可旋转模型。其余零件统一为白色背景立体示意；壳体与盖板保留真实 CAD 几何，欧式 T 型槽螺母外形按用户参考图绘制。页首 logo 使用透明背景。九个装配阶段在 1× 下均为 8 秒，主要动作约从 0.44 秒开始，使用参考 Apple Core Animation 的加减速曲线；机械路径保持原样，动作无回弹越位。
+
+BOM side supports, bottom supports and cylindrical spacers use the supplied standalone STEP previews and interactive models. Other parts share white-studio product illustrations; housing/cap images retain actual CAD geometry, and the European-style T-slot nut follows the supplied picture. The header logo has a transparent background. All nine assembly stages run for 8 seconds at 1×, with primary motion starting around 0.44 seconds. Apple Core Animation-inspired easing changes speed along the existing mechanical paths without spring overshoot.
+
 公开网页沿用下方链接。运行本地版请使用 `npm.cmd run dev`（Windows PowerShell），打开终端显示的本地地址。详细说明见 [教学版本地预览说明.txt](教学版本地预览说明.txt)、[CAD 核对记录](docs/cad-audit.md) 和 [教学版性能检查](docs/teaching-performance.md)。
 
 The public teaching website uses the link below. On Windows PowerShell, run `npm.cmd run dev` and open the local address shown in the terminal.
@@ -16,9 +24,13 @@ The public teaching website uses the link below. On Windows PowerShell, run `npm
 
 Principles & Lab opens with the interactive workbench, followed by the explanations. CAD assets use lossless compression and content-versioned caching. Field computation remains in each participant's browser; performance changes do not alter the formulas or model parameters.
 
-装配完成项由参赛者人工确认。BOM 用于查阅零件和材料；装配学习进度与磁铁设计独立。基础实验仅展示新版模型的 3D 与磁场两个视图，按整层修改 28 颗磁铁；初始场自动载入，修改后手动计算。保存与文件操作位于折叠入口，切换教学板块会保留设计、撤销历史和已计算结果。
+装配完成项由参赛者人工确认。BOM 用于查阅零件和材料；装配学习进度与磁铁设计独立。基础实验展示新版模型的 3D、纵向磁场和横向剖面／FOV 三个视图，按整层修改 28 颗磁铁；初始场自动载入，修改后手动计算。保存与文件操作位于折叠入口，切换教学板块会保留设计、撤销历史和已计算结果。
 
-Completion checks are manual. The BOM is a parts and materials reference; assembly progress remains separate from magnet designs. The basic Lab offers the latest model with 3D and Field views and edits all 28 magnets at a selected radial position. The initial field loads automatically; edits require Compute. Save and file operations are folded, and changing teaching sections preserves edits, undo history and completed results.
+Completion checks are manual. The BOM is a parts and materials reference; assembly progress remains separate from magnet designs. The basic Lab offers the latest model with 3D, longitudinal Field and Transverse/FOV views, editing all 28 magnets at a selected radial position. Initial fields load automatically; edits require Compute. Save and file operations are folded, and changing teaching sections preserves edits, undo history and completed results.
+
+横向视图采用 1 mm XY 网格，Z = −2、−1、0、1、2 mm 五切片，支持 Bz／|B|、逐点平均与独立切片，以及圆形区域的平均场强、峰峰值和标准差。FOV 直径为 20–200 mm；输入自己的 ppm 上限，可筛选满足上限的最大采样直径。结果只覆盖这五个中心平面，不代替完整手／脚范围的实测或临床验证。[方法与核对数据](docs/transverse-field-fov.md)。
+
+The transverse view uses a 1 mm XY grid on five Z planes (−2, −1, 0, 1, 2 mm), with Bz/|B|, pixel averages or individual slices, and circular-ROI mean, peak-to-peak and standard-deviation statistics. FOV diameters span 20–200 mm. Enter a user-defined ppm limit to select the largest qualifying sampled diameter. These five central planes do not establish complete hand/foot coverage or clinical validation. See [methods and numerical checks](docs/transverse-field-fov.md).
 
 工程参数待确认项集中记录在材料清单、对应步骤及 CAD 核对记录。章节封面为 Imagegen 示意图，操作场景使用 CAD 与磁铁数据；[视觉来源与生成提示](docs/teaching-visuals.md) 包含封面的完整提示。
 

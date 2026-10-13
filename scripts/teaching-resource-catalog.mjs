@@ -36,14 +36,15 @@ export function buildTeachingResources({ project, source, matlabDirectory, prese
   for (let ring = 1; ring <= 14; ring++) addSource(`模型/layer${ring}.step`, `cad-layer-${String(ring).padStart(2, '0')}`, 'cad', `R${String(ring).padStart(2, '0')} 原始装配 CAD`, `R${String(ring).padStart(2, '0')} source assembly CAD`, ['printed-ring', 'ring-cover', 'short-screw'], ['step-01', 'step-02', 'step-03', 'step-04', 'step-05', 'step-09'], ring, { versionStatus: 'source-reference' });
   addSource('模型/new_genneration.step', 'cad-template', 'cad', '分段磁铁壳体与盖板模板', 'Segmented magnet housing and cap template', ['printed-ring', 'ring-cover'], ['step-01', 'step-02', 'step-04']);
   addSource('模型/surport.step', 'cad-ring-support', 'cad', '框架安装支撑 CAD', 'Frame mounting support CAD', ['ring-support'], ['step-06', 'step-08', 'step-09']);
-  addSource('模型/support_layer.step', 'cad-locator', 'cad', '层间隔块 CAD', 'Inter-layer spacer CAD', ['locator'], ['step-06', 'step-07', 'step-09']);
+  const legacySpacer = { versionStatus: 'legacy-block-reference-not-release-confirmed', referenceNoteZh: '历史文件是方块形隔块，不符合当前已确认的 18 mm 长圆柱形隔块。仅供旧接口参考；不能据此制造当前圆柱。', referenceNoteEn: 'This historical file contains block-shaped spacers, not the confirmed 18 mm-long cylinders. Use it only as an old interface reference, not to manufacture the current cylinder.' };
+  addSource('模型/support_layer.step', 'cad-locator', 'cad', '历史方块层间隔块 CAD（非当前圆柱）', 'Historical block-spacer CAD (not the current cylinder)', ['locator'], ['step-06', 'step-07', 'step-09'], undefined, legacySpacer);
   for (const [filename, id, zh, en, partIds] of [
     ['侧边支撑.3mf', 'print-side-support', '侧边支撑打印参考', 'Side-support print reference', ['ring-support']],
-    ['曾与层之间的支撑.3mf', 'print-interlayer-support', '层间支撑打印参考（原文件名保留）', 'Inter-layer support print reference', ['locator']],
+    ['曾与层之间的支撑.3mf', 'print-interlayer-support', '历史方块层间支撑打印参考（非当前圆柱）', 'Historical block-spacer print reference (not the current cylinder)', ['locator']],
     ['holderv1.3mf', 'print-holder-v1', 'holder v1 打印参考', 'holder v1 print reference', ['ring-support']],
     ['layer1.3mf', 'print-layer-01', 'layer1 打印参考', 'layer1 print reference', ['printed-ring', 'ring-cover']],
     ['prototypev4.3mf', 'print-prototype-v4', 'prototype v4 · 当前教学打印版本', 'prototype v4 · current teaching print version', ['printed-ring', 'ring-cover']],
-  ]) addSource(`打印文件/${filename}`, id, 'print', zh, en, partIds, ['step-01', 'step-04', 'step-06'], filename === 'layer1.3mf' ? 1 : undefined, { versionStatus: filename === 'prototypev4.3mf' ? 'user-selected-teaching-version' : 'print-reference-not-release-confirmed' });
+  ]) addSource(`打印文件/${filename}`, id, 'print', zh, en, partIds, ['step-01', 'step-04', 'step-06'], filename === 'layer1.3mf' ? 1 : undefined, id === 'print-interlayer-support' ? legacySpacer : { versionStatus: filename === 'prototypev4.3mf' ? 'user-selected-teaching-version' : 'print-reference-not-release-confirmed' });
 
   for (const [index, filename] of fs.readdirSync(path.join(source, '磁铁放置信息')).entries()) addSource(`磁铁放置信息/${filename}`, `placement-${String(index + 1).padStart(2, '0')}`, 'placement', filename, filename.includes('1736') ? '1,736 magnet coordinates' : filename.endsWith('.txt') ? '14-layer magnet placement notes' : filename.includes('边缘') ? '14-layer edge dimensions' : 'Magnet-layout source reference', ['magnet-cube'], ['step-03', 'step-09']);
   addSource('M3螺丝尺寸.png', 'fastener-m3-reference', 'fastener-reference', 'M3 螺丝参考图（长度待确认）', 'M3 screw reference (length to confirm)', ['short-screw'], ['step-05'], undefined, { versionStatus: 'reference-thread-confirmed-length-pending', referenceNoteZh: '原图标记 M3×18；M3 螺纹已确认，实际长度尚未确认。', referenceNoteEn: 'The supplied image is labeled M3×18. M3 thread is confirmed; the installed length remains unconfirmed.' });
@@ -63,20 +64,64 @@ export function buildTeachingResources({ project, source, matlabDirectory, prese
     const relative = `diagrams/mri-14-layer-edge-dimensions-${language}.svg`;
     addFile({ filename: path.join(project, 'public', relative), relative: `public/${relative}`, url: `/${relative}` }, `edge-dimensions-${language}`, 'placement', language === 'zh' ? '新版十四层边缘尺寸 · 中文' : '新版十四层边缘尺寸 · 英文', language === 'zh' ? '14-layer edge dimensions · Chinese' : '14-layer edge dimensions · English', ['magnet-cube'], ['step-03', 'step-09'], undefined, { versionStatus: 'derived-verified' });
   }
+  const bomCADFile = path.join(project, 'lib/bom-cad-assets.json');
+  if (fs.existsSync(bomCADFile)) {
+    const bomCAD = JSON.parse(fs.readFileSync(bomCADFile, 'utf8'));
+    for (const asset of bomCAD.assets.filter(item => item.sourceFilename)) {
+      const id = `bom-cad-${asset.id}`;
+      const relative = `模型/${asset.sourceFilename}`;
+      const original = path.join(source, relative);
+      const published = path.join(resourceDirectory, `${id}.step`);
+      // Downloads must match the exact source used for this BOM render. A
+      // later draft with the same filename must not silently replace it.
+      const matches = file => fs.existsSync(file) && sha256(fs.readFileSync(file)) === asset.sourceSha256;
+      const input = matches(original) ? original : matches(published) ? published : null;
+      if (!input) throw new Error(`Matching source CAD is unavailable for ${asset.id}; regenerate its BOM render first.`);
+      const labels = {
+        spacer: ['层间隔块 · 提供的 STEP', 'Inter-layer spacer · supplied STEP', ['locator'], ['step-06', 'step-09']],
+        'side-support': ['左右框架支撑 · 提供的 STEP', 'Side frame support · supplied STEP', ['ring-support'], ['step-06', 'step-08', 'step-09']],
+        'bottom-support': ['底部框架支撑 · 提供的 STEP', 'Bottom frame support · supplied STEP', ['ring-support'], ['step-06', 'step-08', 'step-09']],
+      };
+      const label = labels[asset.id];
+      if (!label) throw new Error(`Unknown BOM CAD asset ${asset.id}`);
+      addFile({ filename: input, relative }, id, 'cad', ...label, undefined, { visibility: 'bom', versionStatus: 'user-provided-bom-cad', referenceNoteZh: '与 BOM 示意图采用同一份提供的 STEP；完整装配位置与打印工艺须另行核对。', referenceNoteEn: 'The same supplied STEP used for the BOM rendering; verify full-assembly placement and printing separately.' });
+    }
+  }
   return resources;
 }
 
 export function updateConfirmedHardwareMetadata(manifest) {
   manifest.rodAxes = manifest.rodAxes.map(axis => ({ ...axis, hardwareThread: 'M6', hardwareStatus: 'user-confirmed', status: 'axis-candidate-hole-diameter-pending' }));
+  manifest.confirmedBOMQuantities = { magnetCube: 1736, segmentedHousing: 56, housingCap: 56, clearCover: 56, mountingSupports: { total: 42, side: 28, bottom: 14 }, cylindricalSpacers: { total: 32, breakdown: [4, 8], lengthMM: 18 }, throughRods: 8, m3ShortScrews: 448, m6Nuts: 8 };
+  for (const part of manifest.parts) {
+    if (part.role === 'support') { part.procurementQuantityStatus = 'user-confirmed'; part.confirmedQuantity = 42; }
+    if (part.role === 'locator') { part.procurementQuantityStatus = 'user-confirmed'; part.confirmedQuantity = 32; part.geometryStatus = 'historical-block-reference-not-current-cylinder'; }
+  }
   manifest.hardware = {
-    confirmation: 'user-confirmed-thread-and-use',
-    coverAcrylicBase: { thread: 'M3', partIds: ['short-screw'], lengthStatus: 'pending', quantityStatus: 'pending', materialStatus: 'pending' },
-    interLayer: { thread: 'M6', partIds: ['through-rod', 'm6-nut'], rodLengthStatus: 'pending', quantityStatus: 'pending' },
-    frameBrackets: { partId: 'frame-l-bracket', dimensionsStatus: 'pending', quantityStatus: 'pending', materialStatus: 'pending' },
-    extrusionConnections: { partIds: ['extrusion-bolt', 't-slot-nut'], threadStatus: 'pending', slotSeriesStatus: 'pending', quantityStatus: 'pending', materialStatus: 'pending' },
+    confirmation: 'user-confirmed-thread-use-and-quantities',
+    coverAcrylicBase: { thread: 'M3', partIds: ['short-screw'], lengthStatus: 'pending', quantity: 448, quantityPerLayer: 32, quantityStatus: 'user-confirmed', materialStatus: 'pending' },
+    interLayer: { thread: 'M6', partIds: ['through-rod', 'm6-nut'], rodLengthStatus: 'pending', rodQuantity: 8, nutQuantity: 8, quantityStatus: 'user-confirmed', completePlacementStatus: 'pending-cad-has-only-four-candidate-axes' },
+    spacers: { partId: 'locator', shape: 'cylinder', lengthMM: 18, passageFor: 'M6', quantity: 32, quantityBreakdown: [4, 8], quantityStatus: 'user-confirmed', outerDiameterStatus: 'pending', boreDiameterStatus: 'pending', mountingDistributionStatus: 'pending', sourceCADStatus: 'historical-block-reference-not-current-cylinder' },
+    frameBrackets: { partId: 'frame-l-bracket', suppliedBy: 'organizer', dimensionsStatus: 'supplied-part-reference', quantityStatus: 'organizer-provided', materialStatus: 'pending' },
+    extrusionFrame: { partId: 'aluminum-frame', suppliedBy: 'organizer', quantityStatus: 'organizer-provided', material: 'aluminium', alloyGradeStatus: 'pending' },
+    extrusionConnections: { partIds: ['extrusion-bolt', 't-slot-nut'], suppliedBy: 'organizer', threadStatus: 'pending', slotSeriesStatus: 'pending', quantityStatus: 'organizer-provided', materialStatus: 'pending' },
   };
-  const obsolete = manifest.pending.filter(item => /Screw conflict|rod specifications|Rod specifications|hardware thread/i.test(item));
-  manifest.pending = [...manifest.pending.filter(item => !obsolete.includes(item)), 'M3 thread confirmed; screw length pending (CAD 2.9×16 BF versus supplied M3×18 reference)', 'M6 layer-connection thread confirmed; rod length, hole clearance and quantities pending', 'L-bracket dimensions and procurement quantities'];
+  const bomCADFile = path.join(path.resolve(import.meta.dirname, '..'), 'lib/bom-cad-assets.json');
+  if (fs.existsSync(bomCADFile)) {
+    const spacerCAD = JSON.parse(fs.readFileSync(bomCADFile, 'utf8')).assets.find(asset => asset.id === 'spacer');
+    if (spacerCAD?.confirmedGeometryMM) {
+      manifest.hardware.spacers.nominalGeometryMM = spacerCAD.confirmedGeometryMM;
+      manifest.hardware.spacers.bomSourceCADStatus = 'provided-cylindrical-cad-render';
+      manifest.hardware.spacers.outerDiameterStatus = 'provided-cad-nominal';
+      manifest.hardware.spacers.boreDiameterStatus = 'provided-cad-nominal';
+      manifest.hardware.spacers.manufacturingFitStatus = 'pending';
+    }
+  }
+  const obsolete = manifest.pending.filter(item => /Screw conflict|rod specifications|hardware thread|M3 thread confirmed|M6 layer-connection thread confirmed|L-bracket dimensions|Procurement quantities|Profile cut list and connectors|Cylindrical spacers|Eight M6 rods/i.test(item));
+  const spacerPending = manifest.hardware.spacers.nominalGeometryMM
+    ? 'Cylindrical spacers: supplied CAD has 18 mm length, 14 mm outer diameter and 6.2 mm passage; physical printing fit and complete mounting distribution pending'
+    : 'Cylindrical spacers: 32 pieces (4 × 8), length 18 mm, passage for M6 confirmed; OD, bore diameter, mounting distribution and current manufacturing file pending';
+  manifest.pending = [...manifest.pending.filter(item => !obsolete.includes(item)), 'M3 quantity confirmed at 448 (32 per layer); screw length, material and torque pending (historical CAD 2.9×16 BF versus M3×18 reference)', 'Eight M6 rods and eight M6 nuts confirmed; rod length, material, torque, hole clearance and complete mounting positions pending', spacerPending, 'Organizer provides aluminium frame, L-brackets, extrusion bolts and T-slot nuts; use supplied specifications', 'Manufacturing materials and tolerances not established by BOM quantity confirmation'];
   manifest.pending = [...new Set(manifest.pending)];
   return manifest;
 }
