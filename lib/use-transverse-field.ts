@@ -5,60 +5,64 @@ import type {FieldSnapshot} from "./use-live-field";
 import {sourcesFor,FIELD_KERNEL_VERSION} from "./field";
 import {sourceSignature} from "./live-field";
 import {TransverseFieldClient} from "./transverse-field-client";
-import {decodeTransverseField,sameTransverseGrid,DEFAULT_TRANSVERSE_GRID,TRANSVERSE_DATA_VERSION,type TransverseFieldResult,type TransverseFieldProgress} from "./transverse-field";
+import {decodeTransverseField,sameTransverseGrid,type TransverseFieldResult,type TransverseFieldProgress} from "./transverse-field";
+import {TRANSVERSE_RANGES,type TransverseRangeId} from "./transverse-ranges";
 
 interface CompletedTransverse {data:TransverseFieldResult;model:MRIModel;}
 type Status="idle"|"loading"|"computing"|"ready"|"error";
-const INITIAL_URL="/transverse-field-initial-latest.bin";
 
 /** Only the last explicitly computed design is an input; draft edits never solve. */
-export function useTransverseField(snapshot:FieldSnapshot|null,active:boolean){
- const [completed,setCompleted]=useState<CompletedTransverse|null>(null),[baseline,setBaseline]=useState<TransverseFieldResult|null>(null);
- const [status,setStatus]=useState<Status>("idle"),[progress,setProgress]=useState<TransverseFieldProgress|null>(null),[retryCount,setRetryCount]=useState(0);
- const initialRef=useRef<TransverseFieldResult|null>(null),completedRef=useRef<CompletedTransverse|null>(null);
- const pending=useRef<{model:MRIModel;signature:string}|null>(null),client=useRef<TransverseFieldClient|null>(null);
+export function useTransverseField(snapshot:FieldSnapshot|null,active:boolean,rangeId:TransverseRangeId="explore"){
+ const [results,setResults]=useState<Partial<Record<TransverseRangeId,CompletedTransverse>>>({});
+ const [baselines,setBaselines]=useState<Partial<Record<TransverseRangeId,TransverseFieldResult>>>({});
+ const [state,setState]=useState<{rangeId:TransverseRangeId;status:Status}>({rangeId,status:"idle"});
+ const [progressState,setProgress]=useState<{rangeId:TransverseRangeId;value:TransverseFieldProgress}|null>(null),[retryCount,setRetryCount]=useState(0);
+ const initialRef=useRef(new Map<TransverseRangeId,TransverseFieldResult>()),completedRef=useRef(new Map<TransverseRangeId,CompletedTransverse>());
+ const pending=useRef<{model:MRIModel;signature:string;rangeId:TransverseRangeId}|null>(null),client=useRef<TransverseFieldClient|null>(null);
  useEffect(()=>{
   const solver=new TransverseFieldClient(reply=>{
    const request=pending.current;if(!request)return;
    if(reply.type==="result"){
-    if(reply.sourceSignature!==request.signature||reply.schemeId!==request.model.id)return;
-    const next={data:reply,model:request.model};completedRef.current=next;setCompleted(next);pending.current=null;setStatus("ready");setProgress(null);
-   }else if(reply.type==="progress")setProgress(reply);
-   else{pending.current=null;setStatus("error");setProgress(null);}
+    const config=TRANSVERSE_RANGES[request.rangeId];
+    if(reply.sourceSignature!==request.signature||reply.schemeId!==request.model.id||reply.generationSignature!==config.generationSignature||!sameTransverseGrid(reply.grid,config.grid))return;
+    const next={data:reply,model:request.model};completedRef.current.set(request.rangeId,next);setResults(previous=>({...previous,[request.rangeId]:next}));pending.current=null;setState({rangeId:request.rangeId,status:"ready"});setProgress(null);
+   }else if(reply.type==="progress")setProgress({rangeId:request.rangeId,value:reply});
+   else{pending.current=null;setState({rangeId:request.rangeId,status:"error"});setProgress(null);}
   });client.current=solver;
   return()=>{solver.dispose();client.current=null;pending.current=null;};
  },[]);
  useEffect(()=>{
   const solver=client.current;solver?.cancel();pending.current=null;
-  if(!active||!snapshot){setStatus(completedRef.current?"ready":"idle");setProgress(null);return;}
+  if(!active||!snapshot){setState({rangeId,status:completedRef.current.has(rangeId)?"ready":"idle"});setProgress(null);return;}
   let cancelled=false;const controller=new AbortController();
-  const current=snapshot.model,baseModel=snapshot.baseline;
-  setStatus("loading");setProgress(null);
+  const current=snapshot.model,baseModel=snapshot.baseline,config=TRANSVERSE_RANGES[rangeId];
+  setState({rangeId,status:"loading"});setProgress(null);
   void(async()=>{
    try{
     const [baselineSignature,signature]=await Promise.all([sourceSignature(sourcesFor(baseModel)),sourceSignature(sourcesFor(current))]);
     if(cancelled)return;
-    let initial=initialRef.current;
+    let initial=initialRef.current.get(rangeId);
     if(!initial){
-     const response=await fetch(INITIAL_URL+"?source="+baselineSignature,{signal:controller.signal,cache:"default"});
+     const response=await fetch(config.assetURL+"?source="+baselineSignature,{signal:controller.signal,cache:"default"});
      if(!response.ok)throw new Error("Initial transverse map is unavailable.");
      initial=decodeTransverseField(await response.arrayBuffer());
-     if(initial.sourceSignature!==baselineSignature||initial.sourceCount!==baseModel.magnets.length||initial.schemeId!==baseModel.id||initial.unitMM!==baseModel.unitMM||initial.remanenceT!==baseModel.remanenceT||initial.fieldKernelVersion!==FIELD_KERNEL_VERSION||initial.generationSignature!==TRANSVERSE_DATA_VERSION||!sameTransverseGrid(initial.grid,DEFAULT_TRANSVERSE_GRID))throw new Error("Initial transverse map differs from the physical model.");
-     if(cancelled)return;initialRef.current=initial;setBaseline(initial);
+     if(initial.sourceSignature!==baselineSignature||initial.sourceCount!==baseModel.magnets.length||initial.schemeId!==baseModel.id||initial.unitMM!==baseModel.unitMM||initial.remanenceT!==baseModel.remanenceT||initial.fieldKernelVersion!==FIELD_KERNEL_VERSION||initial.generationSignature!==config.generationSignature||!sameTransverseGrid(initial.grid,config.grid))throw new Error("Initial transverse map differs from the physical model.");
+     if(cancelled)return;initialRef.current.set(rangeId,initial);setBaselines(previous=>({...previous,[rangeId]:initial!}));
     }
     if(cancelled)return;
-    const known=completedRef.current;
+    const known=completedRef.current.get(rangeId);
     if(signature===initial.sourceSignature||known?.data.sourceSignature===signature){
-     const next={data:signature===initial.sourceSignature?initial:known!.data,model:current};completedRef.current=next;setCompleted(next);setStatus("ready");return;
+     const next={data:signature===initial.sourceSignature?initial:known!.data,model:current};completedRef.current.set(rangeId,next);setResults(previous=>({...previous,[rangeId]:next}));setState({rangeId,status:"ready"});return;
     }
     if(!solver||!current.unitMM)throw new Error("Transverse field client is unavailable.");
-    pending.current={model:current,signature};setStatus("computing");
-    solver.solve({schemeId:current.id,current:sourcesFor(current),baseline:sourcesFor(baseModel),unitMM:current.unitMM,remanenceT:current.remanenceT,baselineAssetURL:INITIAL_URL});
+    pending.current={model:current,signature,rangeId};setState({rangeId,status:"computing"});
+    solver.solve({schemeId:current.id,current:sourcesFor(current),baseline:sourcesFor(baseModel),unitMM:current.unitMM,remanenceT:current.remanenceT,spec:config.grid,generationSignature:config.generationSignature,baselineAssetURL:config.assetURL});
    }catch{
-    if(!cancelled&&!controller.signal.aborted){pending.current=null;setStatus("error");setProgress(null);}
+    if(!cancelled&&!controller.signal.aborted){pending.current=null;setState({rangeId,status:"error"});setProgress(null);}
    }
   })();
   return()=>{cancelled=true;controller.abort();solver?.cancel();pending.current=null;};
- },[snapshot,active,retryCount]);
- return {completed,baseline,status,progress,matchesSnapshot:completed?.model===snapshot?.model,retry:()=>setRetryCount(value=>value+1)};
+ },[snapshot,active,rangeId,retryCount]);
+ const completed=results[rangeId]??null,baseline=baselines[rangeId]??null,status=state.rangeId===rangeId?state.status:"idle";
+ return {completed,baseline,status,progress:progressState?.rangeId===rangeId?progressState.value:null,matchesSnapshot:completed?.model===snapshot?.model,retry:()=>setRetryCount(value=>value+1)};
 }

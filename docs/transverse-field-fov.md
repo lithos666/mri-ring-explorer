@@ -1,10 +1,31 @@
 # 横向磁场与 FOV / Transverse field and FOV
 
-本地教学版新增设备 XY 横向场图。使用已核对的有限磁块解析场，对完整 14 层、1,736 块磁铁求三维矢量和；不从原纵向截面插值，也不修改 MATLAB、磁铁位置或 Br = 1.43 T。设备坐标与既有网页一致：`(X,Y,Z)=(world.x,-world.z,world.y)`，是一组正交旋转。网页与 MATLAB 的整个阵列观察坐标相差 90°，圆形区域及正方形网格的统计不受该转动影响。
+教学版提供设备 XY 横向场图。使用已核对的有限磁块解析场，对完整 14 层、1,736 块磁铁求三维矢量和；不从原纵向截面插值，也不修改 MATLAB、磁铁位置或 Br = 1.43 T。设备坐标与既有网页一致：`(X,Y,Z)=(world.x,-world.z,world.y)`，是一组正交旋转。网页与 MATLAB 的整个阵列观察坐标相差 90°，圆形区域及正方形网格的统计不受该转动影响。
+
+## 轴向探索与近中心核对
+
+现在提供两个独立采样范围，切换范围不会修改磁铁排布：
+
+- **宽范围 ±100 mm**：Z = −100、−75、−50、−25、0、25、50、75、100 mm，共九个 XY 截面，每隔 25 mm；默认逐层查看 Z=0，不提供跨这九层的平均图。各截面使用同一初始排布、当前 FOV 的参考色标，切换 Z 不重新缩放颜色。
+- **MATLAB ±2 mm**：保留原始五个截面 −2、−1、0、1、2 mm、逐点平均及单层查看，保持原脚本的核对语义和数据不变。
+
+原五层只覆盖 4 mm。初始排布的中心场从 Z=0 的 37.3435689364 mT 到 Z=±2 的 37.3434462426 mT，仅相差约 3.286 ppm；这是真实的小变化。更宽范围能显示轴向变化：
+
+| \|Z\| / mm | 中心 \|B\| / mT | 相对 Z=0 |
+|---:|---:|---:|
+| 0 | 37.3435689364 | 0% |
+| 25 | 37.3139860421 | −0.079218% |
+| 50 | 37.0532687834 | −0.777377% |
+| 75 | 35.8183354208 | −4.084327% |
+| 100 | 32.2594489247 | −13.614446% |
+
+初始 IO 排布具有轴向镜像对称性：相同 (X,Y) 下，+Z 与 −Z 的 Bz、\|B\| 相同，横向分量反向；图像相同符合物理规律。修改磁铁方向后，设计可能不再对称。离轴场的变化并不单调，不能把中心曲线当作整个圆内的场差。
+
+宽范围的 FOV 筛选对**全部九个截面的原始 \|B\|**求极值；MATLAB 范围仍对全部五个截面求极值。两种结果的轴向采样范围不同，不能互相替代。九个离散截面不是对整个 200 mm 轴向长度的连续均匀性证明；真正的三维成像 FOV 还需指定半径和轴向长度、加密采样并结合实测及 RF/梯度覆盖。
 
 ## 采样与 MATLAB 对照
 
-默认 XY 网格为 1 mm，X/Y 各 −100…100 mm（201 × 201）；只使用半径 100 mm 内的空气节点。每点求 Z = −2、−1、0、1、2 mm 五个平面上的完整 Bx、By、Bz。记录 Float64 的 mT 值，避免 Float32 舍入影响较小的 ppm 差异。图形可选择轴向分量 Bz 或场强 |B|，选择一个平面或五个平面的逐点平均。
+两种范围的 XY 网格均为 1 mm，X/Y 各 −100…100 mm（201 × 201）；只使用半径 100 mm 内的空气节点。各实际 Z 平面均求完整 Bx、By、Bz。记录 Float64 的 mT 值，避免 Float32 舍入影响较小的 ppm 差异。图形可选择轴向分量 Bz 或场强 |B|。下面的五平面平均与核对数值专指 MATLAB ±2 mm 范围。
 
 默认 FOV 直径 150 mm，对应 MATLAB 的 `Fov_half = 75`。MATLAB 对照图先对五个平面的 Bz 逐点平均，再在所选圆内取闭区间节点统计；它不是对整个三维区域先统计再平均。平均 |B| 模式取各平面的场强均值，不等于先平均矢量再取模。
 
@@ -33,13 +54,17 @@
 
 直径可调 20–200 mm，5 mm 一档。调直径只改变采样区域、图形遮罩和统计，不改磁铁或重新求场。所选圆外的图像留白，颜色范围取**初始排布在当前 FOV 内**的五切片数值；同一 FOV 下比较不同设计时保持固定。超出这个范围的值会显示色标饱和说明，读数仍为真实采样值。
 
-FOV 曲线对各候选圆内的五个平面全部 |B| 值求最大、最小值，以该已计算排布的固定中心场强为分母：`(max(|B|)-min(|B|))/|Bcenter| × 10^6`。这是嵌套区域可比较的采样峰峰值，区别于上方显示图使用其区域均值的指标。使用者输入自己的上限，再选取满足该上限的最大候选直径；不预设医用合格限值。
+FOV 曲线对各候选圆内、当前范围的全部平面 |B| 值求最大、最小值，以该已计算排布的固定 Z=0 中心场强为分母：`(max(|B|)-min(|B|))/|Bcenter| × 10^6`。这是嵌套区域可比较的采样峰峰值，区别于上方显示图使用其区域均值的指标。使用者输入自己的上限，再选取满足该上限的最大候选直径；不预设医用合格限值。宽范围通常有更大的场差，原近中心范围的筛选直径不能直接当作宽范围的结果。
 
-这里只评估中心 ±2 mm 的五个平面，不能推定整只手或脚的轴向覆盖，也不能保证离散点之间没有更大的场差。通孔直径是 220 mm，当前分析上限是 200 mm。完整成像 FOV 还需结合 RF 覆盖与带宽、梯度、序列和实测磁场。AAPM TG 325 强调明确评估区域和统计定义，且性能要求与系统及应用有关：[AAPM Report 325](https://www.aapm.org/pubs/MPPG/detail.asp?docid=289)。IO 磁环研究同样分别评估横向和轴向平面：[IO-ring research](https://arxiv.org/html/2411.03249v1)。本教学图沿用用户 MATLAB 的采样定义，并未声明临床验证。
+这里只评估所选范围的五个或九个离散平面，不能推定整只手或脚的轴向覆盖，也不能保证离散点之间没有更大的场差。通孔直径是 220 mm，当前横向分析上限是 200 mm。完整成像 FOV 还需结合 RF 覆盖与带宽、梯度、序列和实测磁场。AAPM TG 325 强调明确评估区域和统计定义，且性能要求与系统及应用有关：[AAPM Report 325](https://www.aapm.org/pubs/MPPG/detail.asp?docid=289)。IO 磁环研究同样分别评估横向和轴向平面：[IO-ring research](https://arxiv.org/html/2411.03249v1)。近中心模式沿用用户 MATLAB 的采样定义，宽范围用于探索；两者均未声明临床验证。
 
 ## 计算与结果归属
 
 初始横向数据由 `scripts/generate-transverse-field.ts` 离线生成（4,888,992 字节），首次打开横向视图只载入并解码，不启动浏览器求场。构建校验模型签名、磁块数量、单位、Br、内核版本和采样网格后复用文件。生成过程用有内存上限的本地线程分段完整求和；转换不依赖外部计算服务。
+
+宽范围使用独立文件 `public/transverse-field-initial-wide.bin` 与独立采样签名，按需载入。生成时仅可复制经完整签名核对、坐标完全一致的 Z=0 平面，其余八个平面逐点进行完整磁块解析求和；不沿 Z 插值，不借用近中心的掩膜。两套基线及完成的设计结果分别缓存，过期的范围任务不得覆盖当前范围。
+
+新增九截面文件为 8,767,512 字节。原五截面文件 SHA256 不变；Z=0 的向量数据逐字节一致。初始九截面的 45 个探针位置、135 个向量分量与完整 1,736 块磁铁解析求和一致；37 个候选直径的全部九层极值指标保持嵌套单调性。直径 150 mm 的九层 \|B\| 峰峰差 / 中心场强约 324,083.54 ppm，显示扩大轴向范围后均匀性要求更难满足，而不是继续使用近中心的约 399 ppm 结果。
 
 方向编辑本身不触发横向求场。只有主实验台完成手动计算后，该不可变设计快照才进入横向 Worker。更新使用上一份经验证的完整网格加每个实际变化磁块的精确场差；不使用偶极近似或纵向图插值。缓存、过期任务取消和模型快照一起管理，更新期间保留上一图并明确标记，失败时不把旧图称为新结果。切换教学板块保留设计与结果，隐藏时停止绘制和未完成的横向任务。
 
@@ -70,4 +95,4 @@ FOV 曲线对各候选圆内的五个平面全部 |B| 值求最大、最小值�
 
 这次稀疏检查没有改变以用户自行指定的 1,000 ppm 为例得到的最大候选直径 155 mm，但已经显示非网格位置可能产生更大的场差。它仍不是连续空间收敛证明，不把 1,000 ppm 设为默认要求，也不代表医用合格标准。五平面逐点平均图与五平面未经平均的场强筛选保持分开，±2 mm 轴向范围始终明确。
 
-The transverse view solves full finite-cuboid vectors on five device-XY planes. Its default 150 mm disk reproduces the MATLAB pixel-averaged Bz definition, while a separate all-plane |B| check prevents averaging from hiding axial variations. The user-defined diameter filter is a sampled model estimate, not a clinical acceptance claim or a continuous-volume bound. Initial data are precomputed; edited data belong only to the explicitly computed design snapshot. Publishing the verified source and assets does not change these physical definitions or their limits.
+The transverse view solves full finite-cuboid vectors on two separately identified device-XY ranges: nine individual exploratory planes over ±100 mm, and the original five MATLAB planes over ±2 mm. The 150 mm disk in MATLAB mode reproduces the pixel-averaged Bz definition; all-plane |B| checks use the complete raw plane set of the selected range. The user-defined diameter filter is a sampled model estimate, not a clinical acceptance claim or a continuous-volume bound. Initial data are precomputed; edited data belong only to the explicitly computed design snapshot. Publishing the verified source and assets does not change these physical definitions or their limits.

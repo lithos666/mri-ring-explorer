@@ -15,6 +15,7 @@ import {useLanguage} from "@/lib/language-context";
 import {useLiveField} from "@/lib/use-live-field";
 import {useTransverseField} from "@/lib/use-transverse-field";
 import TransverseFieldPanel,{type TransversePanelState} from "@/components/transverse-field-panel";
+import type {TransverseRangeId} from "@/lib/transverse-ranges";
 
 /** Keep this provider mounted when the teaching portal changes sections. */
 export default function PhysicsWorkbench({active=true}:{active?:boolean}){
@@ -26,10 +27,11 @@ function BasicLab(){
  const [selectedRing,setSelectedRing]=useState(1);
  const [selected,setSelected]=useState<string|null>("R01-L1-A01");
  const [view,setView]=useState<"assembly"|"field"|"transverse">("assembly");
+ const [transverseRange,setTransverseRange]=useState<TransverseRangeId>("explore");
  const [reset,setReset]=useState(0);
  const {status,progress,lastCompleted,needsCompute,compute}=useLiveField();
  const snapshot=lastCompleted;
- const sceneActive=useSceneActivity(),transverse=useTransverseField(snapshot,sceneActive&&view==="transverse");
+ const sceneActive=useSceneActivity(),transverse=useTransverseField(snapshot,sceneActive&&view==="transverse",transverseRange);
  const selectMagnet=useCallback((id:string)=>{
   const magnet=model.magnetById.get(id);if(!magnet)return;
   setSelectedRing(magnet.ring);setSelected(id);
@@ -62,7 +64,7 @@ function BasicLab(){
     <TabsContent value={view} className={view==="transverse"?"scene-panel transverse-scene-panel":"scene-panel"}>
      <div className="scene-topline"><div><h2>{view==="assembly"?t("14 层磁体阵列","14-layer magnet array"):view==="transverse"?t("横向磁场与 FOV","Transverse field & FOV"):t("全阵列磁场截面","Full-array field slice")}</h2></div><span className="scene-selection">{view==="transverse"?"XY · 14 × 28":ringName(selectedRing)}</span></div>
      {view==="assembly"?<MRIScene basic layers={DEFAULT_LAYERS} gradientAxis="all" rfPhase={0} field={false} fieldData={null} ring={selectedRing} selected={selected} mode="assembly" expansion={0} arrows={true} reset={reset} onSelect={selectMagnet}/>
-      :view==="transverse"?<><TransverseFieldPanel result={transverse.completed?.data??null} baseline={transverse.baseline} displayModel={transverse.completed?.model??null} state={transverseState} progress={transverse.progress}/>{transverse.status==="error"&&<button className="transverse-retry" onClick={transverse.retry}>{t("重新载入横向场","Retry transverse field")}</button>}</>
+      :view==="transverse"?<><TransverseFieldPanel rangeId={transverseRange} onRangeChange={setTransverseRange} result={transverse.completed?.data??null} baseline={transverse.baseline} displayModel={transverse.completed?.model??null} state={transverseState} progress={transverse.progress}/>{transverse.status==="error"&&<button className="transverse-retry" onClick={transverse.retry}>{t("重新载入横向场","Retry transverse field")}</button>}</>
       :snapshot?<FieldSection compact key={snapshot.model.id} data={snapshot.data} displayModel={snapshot.model} readOnly={status==="computing"} onSelect={selectMagnet}/>
        :<div className="scene-message">{status==="loading"?t("初始磁场自动载入，无需点击计算。","The initial field loads automatically; no Compute click is needed."):t("点击「计算磁场」重试。","Click Compute field to retry.")}</div>}
      {view==="assembly"&&<div className="scene-bottomline"><div className="legend-poles"><span><i className="north-swatch"/>{t("N 极侧","N pole")}</span><span><i className="south-swatch"/>{t("S 极侧","S pole")}</span></div><span className="scene-units">14 × 28 · 1,736</span></div>}

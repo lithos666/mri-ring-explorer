@@ -28,9 +28,9 @@ Principles & Lab opens with the interactive workbench, followed by the explanati
 
 Completion checks are manual. The BOM is a parts and materials reference; assembly progress remains separate from magnet designs. The basic Lab offers the latest model with 3D, longitudinal Field and Transverse/FOV views, editing all 28 magnets at a selected radial position. Initial fields load automatically; edits require Compute. Save and file operations are folded, and changing teaching sections preserves edits, undo history and completed results.
 
-横向视图采用 1 mm XY 网格，Z = −2、−1、0、1、2 mm 五切片，支持 Bz／|B|、逐点平均与独立切片，以及圆形区域的平均场强、峰峰值和标准差。FOV 直径为 20–200 mm；输入自己的 ppm 上限，可筛选满足上限的最大采样直径。结果只覆盖这五个中心平面，不代替完整手／脚范围的实测或临床验证。[方法与核对数据](docs/transverse-field-fov.md)。
+横向视图采用 1 mm XY 网格，默认探索 Z = −100…+100 mm 的九个截面（25 mm 间隔），逐层比较 Bz／|B|。原 MATLAB 的 −2…+2 mm 五切片及逐点平均保留为独立核对模式。FOV 直径为 20–200 mm，显示所选截面的平均场强、峰峰值和标准差；输入自己的 ppm 上限，可筛选满足当前范围全部截面场差上限的最大采样直径。九个离散截面并不证明完整 200 mm 轴向区域均匀，也不代替手／脚范围的实测或临床验证。[方法与核对数据](docs/transverse-field-fov.md)。
 
-The transverse view uses a 1 mm XY grid on five Z planes (−2, −1, 0, 1, 2 mm), with Bz/|B|, pixel averages or individual slices, and circular-ROI mean, peak-to-peak and standard-deviation statistics. FOV diameters span 20–200 mm. Enter a user-defined ppm limit to select the largest qualifying sampled diameter. These five central planes do not establish complete hand/foot coverage or clinical validation. See [methods and numerical checks](docs/transverse-field-fov.md).
+The transverse view uses a 1 mm XY grid and defaults to nine Z planes spanning −100…+100 mm at 25 mm intervals, viewed individually as Bz/|B|. The original MATLAB five-slice ±2 mm average remains a separate check mode. FOV diameters span 20–200 mm, with per-slice mean, peak-to-peak and standard-deviation statistics. A user-defined ppm limit selects the largest diameter within the variation limit across every sampled plane in the current range. Nine discrete planes do not prove homogeneity throughout the continuous 200 mm axial region or clinical hand/foot coverage. See [methods and numerical checks](docs/transverse-field-fov.md).
 
 工程参数待确认项集中记录在材料清单、对应步骤及 CAD 核对记录。章节封面为 Imagegen 示意图，操作场景使用 CAD 与磁铁数据；[视觉来源与生成提示](docs/teaching-visuals.md) 包含封面的完整提示。
 
