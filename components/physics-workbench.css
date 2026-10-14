@@ -1,0 +1,42 @@
+.transverse-subviews{display:flex;align-items:center;gap:4px;padding:5px 14px;border-bottom:1px solid #e5e5ea;flex:0 0 auto;background:#fff}
+.transverse-subviews button{border:0;background:transparent;border-radius:7px;padding:6px 12px;font-size:12px;line-height:1.25;color:#626973;cursor:pointer;min-height:30px}
+.transverse-subviews button[aria-selected=true]{background:#f0f7ff;color:#0071e3;font-weight:600}
+.transverse-subviews button:focus-visible{outline:2px solid #0071e3;outline-offset:1px}
+.transverse-viewport{height:100%;min-height:0;min-width:0;display:flex;flex-direction:column}
+@media(min-width:900px){
+ .hack-physics-host .basic-lab[data-view=transverse] .basic-lab-workbench{height:calc(100dvh - 138px);min-height:0;max-height:none}
+ .basic-lab[data-view=transverse] .design-inspector{overflow:visible;scrollbar-gutter:auto;padding:12px 14px}
+ .basic-lab[data-view=transverse] .magnet-design-heading{margin-bottom:8px}
+ .basic-lab[data-view=transverse] .magnet-design-heading h2{font-size:17px}
+ .basic-lab[data-view=transverse] .basic-ring-picker{margin:8px 0 10px;font-size:12px}
+ .basic-lab[data-view=transverse] .basic-ring-picker select{height:36px;min-height:36px;min-width:144px;font-size:13px}
+ .basic-lab[data-view=transverse] .layer-strip-heading{font-size:12px;margin-bottom:5px}
+ .basic-lab[data-view=transverse] .edit-layer-strip button{min-height:48px;padding:5px 2px}
+ .basic-lab[data-view=transverse] .edit-layer-strip b{font-size:14px}
+ .basic-lab[data-view=transverse] .target-summary{font-size:12px;margin:6px 0}
+ .basic-lab[data-view=transverse] .mixed-direction-counts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 6px;padding:0;margin:5px 0;font-size:11px;list-style:none}
+ .basic-lab[data-view=transverse] .orientation-editor{margin-top:10px}
+ .basic-lab[data-view=transverse] .orientation-editor-title{font-size:13px;margin-bottom:6px}
+ .basic-lab[data-view=transverse] .orientation-presets{gap:6px}
+ .basic-lab[data-view=transverse] .orientation-presets button{min-height:36px;font-size:13px;padding:5px 4px}
+ .basic-lab[data-view=transverse] .design-edit-hint{font-size:12px;line-height:1.4;margin:7px 0}
+ .basic-lab[data-view=transverse] .compute-field-button{min-height:38px;height:38px;margin-top:8px;font-size:14px}
+ .basic-lab[data-view=transverse] .magnet-design-toolbar{margin:8px 0}
+ .basic-lab[data-view=transverse] .magnet-design-toolbar button{min-height:34px;font-size:12px;padding:5px 3px}
+ .basic-lab[data-view=transverse] .interaction-hint{padding-top:4px;padding-bottom:4px;font-size:11px}
+}
+.design-file-trigger{width:100%;border:1px solid #e5e5ea;border-radius:8px;background:#fff;min-height:36px;padding:6px 10px;display:flex;align-items:center;justify-content:space-between;color:#0071e3;font-size:12px;cursor:pointer}
+.design-file-trigger span{font-size:11px;color:#986417}
+.design-file-dialog{width:min(520px,calc(100vw - 40px));border:1px solid #dce0e5;border-radius:16px;padding:20px 22px;color:#1d1d1f;background:#fff;max-height:none;overflow:visible;box-shadow:0 15px 70px #0002}
+.design-file-dialog::backdrop{background:#1d1d1f55}
+.design-file-dialog>header{display:flex;justify-content:space-between;align-items:center;gap:20px;margin-bottom:16px}
+.design-file-dialog h3{font-size:18px;margin:0}
+.design-file-dialog-close{width:32px;height:32px;border:1px solid #e5e5ea;border-radius:8px;background:#fff;font-size:22px;color:#626973;cursor:pointer}
+.design-file-dialog .design-file-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.design-file-dialog .magnet-design-note{font-size:12px;line-height:1.6;margin:15px 0 0}
+.design-file-dialog button:focus-visible,.design-file-trigger:focus-visible{outline:2px solid #0071e3;outline-offset:2px}
+@media(max-height:790px){
+ .basic-lab[data-view=transverse] .field-derivation{padding-top:12px;padding-bottom:12px;gap:8px}
+ .basic-lab[data-view=transverse] .field-derivation-body{gap:8px}
+ .basic-lab[data-view=transverse] .field-derivation-footer{padding-top:8px}
+}

@@ -1,0 +1,147 @@
+{
+  "schemeId": "latest",
+  "geometrySignature": "mri-geometry-v1-0c45374f91179365",
+  "sourceSignature": "3386f4865cefb1d12b5de9eb98861dc7014ed446c84fa1907c1961862c3c3a40",
+  "sourceCount": 1736,
+  "fieldKernelVersion": "uniform-cube-poles-v2",
+  "unitMM": 25,
+  "remanenceT": 1.43,
+  "region": {
+    "diameterMM": 150,
+    "lengthMM": 200,
+    "centerMM": [
+      0,
+      0,
+      0
+    ],
+    "axis": "Z"
+  },
+  "algorithm": "equal-volume-midpoint-cylinder-v1",
+  "resolutions": [
+    {
+      "radial": 16,
+      "angular": 64,
+      "axial": 40
+    },
+    {
+      "radial": 32,
+      "angular": 128,
+      "axial": 80
+    }
+  ],
+  "version": "cylinder-fov-report-v1",
+  "createdAt": "2026-10-13T16:18:09.132Z",
+  "quantity": "magnitude",
+  "units": {
+    "length": "mm",
+    "field": "mT",
+    "homogeneity": "ppm"
+  },
+  "analysisSignature": "48a5f764c0d5aa008f9fb9a7951d19032d629aa17382e2629d9bec28e91afd97",
+  "center": {
+    "pointMM": [
+      0,
+      0,
+      0
+    ],
+    "vectorMT": [
+      -6.798180555544608e-17,
+      2.3452019586311527e-16,
+      37.343568936442715
+    ],
+    "magnitudeMT": 37.343568936442715
+  },
+  "levels": [
+    {
+      "resolution": {
+        "radial": 16,
+        "angular": 64,
+        "axial": 40
+      },
+      "volumeSampleCount": 40960,
+      "boundarySampleCount": 4714,
+      "meanMT": 37.787185584173855,
+      "stdMT": 1.4755584205401555,
+      "stdPPM": 39049.17494459163,
+      "min": {
+        "pointMM": [
+          0,
+          0,
+          100
+        ],
+        "domain": "axis",
+        "vectorMT": [
+          -1.130961366377169e-13,
+          -1.3557631164850723e-13,
+          32.25944892467525
+        ],
+        "magnitudeMT": 32.25944892467525
+      },
+      "max": {
+        "pointMM": [
+          -53.03300858899106,
+          53.033008588991066,
+          -100
+        ],
+        "domain": "sidewall",
+        "vectorMT": [
+          4.668446208967756,
+          -4.668446208968036,
+          43.86788299964198
+        ],
+        "magnitudeMT": 44.36191991880346
+      },
+      "peakToPeakMT": 12.102470994128211,
+      "peakToPeakPPM": 320279.766990559,
+      "deltaFromPrevious": null
+    },
+    {
+      "resolution": {
+        "radial": 32,
+        "angular": 128,
+        "axial": 80
+      },
+      "volumeSampleCount": 327680,
+      "boundarySampleCount": 18642,
+      "meanMT": 37.78600375537979,
+      "stdMT": 1.4786626880826315,
+      "stdPPM": 39132.5501806236,
+      "min": {
+        "pointMM": [
+          0,
+          0,
+          100
+        ],
+        "domain": "axis",
+        "vectorMT": [
+          -1.130961366377169e-13,
+          -1.3557631164850723e-13,
+          32.25944892467525
+        ],
+        "magnitudeMT": 32.25944892467525
+      },
+      "max": {
+        "pointMM": [
+          -53.03300858899107,
+          -53.03300858899106,
+          97.50000000000001
+        ],
+        "domain": "sidewall",
+        "vectorMT": [
+          -3.848979355232994,
+          -3.8489793552322498,
+          44.071040190547194
+        ],
+        "magnitudeMT": 44.405921537907986
+      },
+      "peakToPeakMT": 12.146472613232739,
+      "peakToPeakPPM": 321454.2795228348,
+      "deltaFromPrevious": {
+        "meanMT": -0.0011818287940670302,
+        "peakToPeakMT": 0.04400161910452738,
+        "peakToPeakPPM": 1174.5125322758104
+      }
+    }
+  ],
+  "classification": "sampling-and-integration-estimate"
+}

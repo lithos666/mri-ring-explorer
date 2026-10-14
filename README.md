@@ -32,9 +32,17 @@ Completion checks are manual. The BOM is a parts and materials reference; assemb
 
 The transverse view uses a 1 mm XY grid and defaults to nine Z planes spanning −100…+100 mm at 25 mm intervals, viewed individually as Bz/|B|. The original MATLAB five-slice ±2 mm average remains a separate check mode. FOV diameters span 20–200 mm, with per-slice mean, peak-to-peak and standard-deviation statistics. A user-defined ppm limit selects the largest diameter within the variation limit across every sampled plane in the current range. Nine discrete planes do not prove homogeneity throughout the continuous 200 mm axial region or clinical hand/foot coverage. See [methods and numerical checks](docs/transverse-field-fov.md).
 
-场图默认使用“局部细节（MATLAB）”自动色标，突出当前截面/FOV 内的细微变化；另可选择“跨截面场强”固定参考色标。两者使用实际 MATLAB 图导出的 256 色 jet，不改变计算或均匀性指标。实际 MATLAB R2022a 运行原始新版脚本，核对全部圆内节点和五平面三维矢量，与网页的最大差异约 1.54×10⁻¹¹ mT。[实际运行与显示对照](docs/matlab-field-display-audit.md)。
+本地更新的场图默认使用“固定细节色标”，来自初始 Z=0、直径150 mm区域；改变FOV、切片或已计算设计不会自动改变色标。可主动重新适配当前图并继续锁定，或恢复初始值。“跨截面场强”固定使用初始九截面、直径200 mm范围。两种物理量分别保存色标，探针保留XY坐标，缩小FOV后仍可读取圆外位置。两者继续使用实际MATLAB导出的256色jet，原核对结果保持一致。[实际运行与显示对照](docs/matlab-field-display-audit.md)。
 
-Field maps default to automatic **Local detail (MATLAB)** limits that reveal variations within the current slice/FOV, with a separate fixed **Across slices** reference scale. Both use the actual MATLAB figure's 256-entry jet palette without changing the computed field or homogeneity. Running the original big-ring script in MATLAB R2022a and comparing every disk point in all five vector planes gives a maximum difference of about 1.54×10⁻¹¹ mT. See [actual runtime and display comparison](docs/matlab-field-display-audit.md).
+The local update defaults to **Locked detail scale**, taken from the initial Z=0 plane and 150 mm disk. FOV, slice and completed-design changes do not automatically rescale it. Fit current scale explicitly adapts and relocks it; Restore initial resets it. **Across slices** uses the initial nine planes over the full 200 mm disk. Quantities retain separate limits, and probes retain XY coordinates outside a smaller FOV. Both modes retain the actual MATLAB 256-color jet and the verified numerical results. See [actual runtime and display comparison](docs/matlab-field-display-audit.md).
+
+本地版新增独立的三维圆柱评估：默认直径150 mm、长度200 mm，以等体积中点积分求体积平均 |B| 和总体标准差，侧壁、端面和轴线另外检查极值。“三维评估”页面仅展示与已计算设计一致的报告。`npm.cmd run analyze:cylinder` 按需离线生成两级加密报告，不加入构建或首次打开过程；`--fine` 可增加第三级。支持保存的设计JSON输入和离线报告载入。[三维评估与使用说明](docs/cylinder-field-fov.md)。
+
+The local version adds an independent 150 mm diameter × 200 mm long cylinder assessment. Equal-volume midpoint integration estimates volume mean |B| and population standard deviation; separate sidewall, endcap and axis probes check extrema. The 3D assessment page only shows reports matching the completed design. `npm.cmd run analyze:cylinder` runs two offline refinement levels on demand; `--fine` adds a third. It is excluded from builds and browser startup, and accepts existing design JSON files. See [3D methods and usage](docs/cylinder-field-fov.md).
+
+横向实验采用一屏内容页：场图与FOV、三维评估和公式推导通过点击切换。场图右侧有区域结果、轴向截面和FOV筛选；每页完整呈现，不靠区域内滚动。实际场强范围与固定色标范围分别显示，避免将颜色饱和理解为场差消失。公式推导从Maxwell方程、有限磁块两面解析积分和全阵列矢量叠加讲起，提供[完整双语推导](docs/field-derivation.md)。横向实验的保存与文件在独立窗口中操作。
+
+The transverse experiment uses click-switched, single-screen pages: Map & FOV, 3D assessment and Derivation. Result/axial/FOV pages show complete active content without inner scrolling. Actual field extrema are distinct from locked color limits. The derivation covers Maxwell equations, finite charged-face integrals and full-array vector superposition, with a [complete bilingual document](docs/field-derivation.md). Save and file actions use a separate dialog in the transverse experiment.
 
 工程参数待确认项集中记录在材料清单、对应步骤及 CAD 核对记录。章节封面为 Imagegen 示意图，操作场景使用 CAD 与磁铁数据；[视觉来源与生成提示](docs/teaching-visuals.md) 包含封面的完整提示。
 

@@ -8,7 +8,7 @@ import {ringName,type Direction} from "@/lib/mri";
 import {EDIT_DIRECTIONS,MAX_IMPORT_BYTES,selectionTargets} from "@/lib/design";
 import type {LiveStatus} from "@/lib/live-field-client";
 
-interface Props{selectedRing:number;selected:string|null;onRing:(ring:number)=>void;onSelect:(id:string)=>void;onCompute:()=>void;status:LiveStatus;}
+interface Props{selectedRing:number;selected:string|null;onRing:(ring:number)=>void;onSelect:(id:string)=>void;onCompute:()=>void;status:LiveStatus;filesInDialog?:boolean;}
 const orientationCopy:Record<Direction,[string,string]>={
  out:["径向朝外","Radially outward"],in:["径向朝内","Radially inward"],
  axial:["轴向朝下 · −Z","Axial down · −Z"],axialUp:["轴向朝上 · +Z","Axial up · +Z"],
@@ -19,9 +19,10 @@ const orientationShort:Record<Direction,[string,string]>={
 };
 const stripShort:Record<Direction,[string,string]>={out:["朝外","Out"],in:["朝内","In"],axial:["−Z","−Z"],axialUp:["+Z","+Z"],tangent:["+θ","+θ"],tangentNeg:["−θ","−θ"]};
 
-export default function DesignControls({selectedRing,selected,onRing,onSelect,onCompute,status}:Props){
+export default function DesignControls({selectedRing,selected,onRing,onSelect,onCompute,status,filesInDialog=false}:Props){
  const {t,language}=useLanguage(),model=useMRIModel(),baseline=useBaselineMRIModel(),design=useMRIDesign();
  const fileInput=useRef<HTMLInputElement>(null);
+ const fileDialog=useRef<HTMLDialogElement>(null);
  const [fileError,setFileError]=useState<[string,string]|null>(null);
  const selectedMagnet=selected?model.magnetById.get(selected):null;
  const ring=selectedMagnet?.ring??selectedRing,radial=selectedMagnet?.radial??1;
@@ -44,6 +45,21 @@ export default function DesignControls({selectedRing,selected,onRing,onSelect,on
   if(file.size>MAX_IMPORT_BYTES){setFileError(["文件过大，最大为 512 KB。","The file is too large; the maximum size is 512 KB."]);return;}
   try{design.importJSON(await file.text());}catch{setFileError(["无法读取此文件。当前设计未改变。","The file could not be read. The current design was not changed."]);}
  }
+ const fileContent=<>
+  <div className="design-file-actions">
+   <Button onClick={action(design.save)} disabled={!design.storageReady} aria-label={t("保存设计","Save design")}><Save size={15}/>{t("保存设计","Save design")}</Button>
+   <Button variant="outline" disabled={!design.storageReady||!design.hasSaved} onClick={action(design.restore)}><FolderOpen size={15}/>{t("加载已保存","Load saved")}</Button>
+   <Button variant="outline" onClick={action(download)}><Download size={15}/>{t("下载 JSON","Download JSON")}</Button>
+   <Button variant="outline" onClick={()=>fileInput.current?.click()}><Upload size={15}/>{t("导入 JSON","Import JSON")}</Button>
+  </div>
+  {design.notice?.type==="success"&&<p className="design-notice success" role="status">{t(design.notice.zh,design.notice.en)}</p>}
+  {filesInDialog&&design.notice?.type==="error"&&<p className="design-notice error" role="alert">{t(design.notice.zh,design.notice.en)}</p>}
+  {filesInDialog&&fileError&&<p className="design-notice error" role="alert">{t(...fileError)}</p>}
+  <p className="magnet-design-note">{t("初始场自动载入。修改后点击计算；结果对应点击时的排布，后续修改需要再次计算。保存只记录方向，保存在此浏览器；JSON 可分享和恢复。","The initial field loads automatically. After editing, click Compute. Results use the layout at that click; later changes need another Compute. Save stores orientations in this browser; JSON files can be shared and restored.")}</p>
+  <p className="magnet-original-direction">{t("此磁铁初始方向：","This magnet's initial direction: ")}{copy(original.direction)} · {id}</p>
+  <p className="magnet-design-note">{t("导入文件可以保留同层的单块差异；方向按钮会统一所选径向位置。加载、导入和重置均可撤销。","Imports can preserve individual differences within a layer. Direction buttons unify the selected radial position. Loading, importing and resetting can be undone.")}</p>
+  {design.savedAt&&<p className="magnet-design-storage">{t("上次保存：","Last saved: ")}{new Date(design.savedAt).toLocaleString(language==="zh"?"zh-CN":"en-US")}</p>}
+ </>;
  return <section className="magnet-design" aria-label={t("磁铁方向设计","Magnet orientation designer")} data-edit-scope="layer">
   <div className="magnet-design-heading"><h2>{t("修改磁铁方向","Edit magnet direction")}</h2><span className={"design-save-state "+(design.isSaved?"is-saved":"is-dirty")} data-modified-count={design.modifiedCount}>{design.modifiedCount}{t(" 块已改"," edited")}</span></div>
   <div className="magnet-design-editor">
@@ -67,21 +83,15 @@ export default function DesignControls({selectedRing,selected,onRing,onSelect,on
    <Button variant="outline" disabled={!design.canRedo} onClick={action(design.redo)} aria-label={t("重做","Redo")}><Redo2 size={15}/>{t("重做","Redo")}</Button>
    <Button variant="outline" disabled={design.modifiedCount===0} onClick={action(design.reset)} aria-label={t("重置设计","Reset design")}><RotateCcw size={15}/>{t("重置","Reset")}</Button>
   </div>
-  {design.notice?.type==="error"&&<p className="design-notice error" role="alert">{t(design.notice.zh,design.notice.en)}</p>}
-  {fileError&&<p className="design-notice error" role="alert">{t(...fileError)}</p>}
-  <details className="workbench-disclosure design-file-details"><summary>{t("保存与文件","Save & files")}{!design.isSaved&&<span className="basic-file-unsaved"> · {t("未保存","Unsaved")}</span>}</summary>
-   <div className="design-file-actions">
-    <Button onClick={action(design.save)} disabled={!design.storageReady} aria-label={t("保存设计","Save design")}><Save size={15}/>{t("保存设计","Save design")}</Button>
-    <Button variant="outline" disabled={!design.storageReady||!design.hasSaved} onClick={action(design.restore)}><FolderOpen size={15}/>{t("加载已保存","Load saved")}</Button>
-    <Button variant="outline" onClick={action(download)}><Download size={15}/>{t("下载 JSON","Download JSON")}</Button>
-    <Button variant="outline" onClick={()=>fileInput.current?.click()}><Upload size={15}/>{t("导入 JSON","Import JSON")}</Button>
-   </div>
-   {design.notice?.type==="success"&&<p className="design-notice success" role="status">{t(design.notice.zh,design.notice.en)}</p>}
-   <p className="magnet-design-note">{t("初始场自动载入。修改后点击计算；结果对应点击时的排布，后续修改需要再次计算。保存只记录方向，保存在此浏览器；JSON 可分享和恢复。","The initial field loads automatically. After editing, click Compute. Results use the layout at that click; later changes need another Compute. Save stores orientations in this browser; JSON files can be shared and restored.")}</p>
-   <p className="magnet-original-direction">{t("此磁铁初始方向：","This magnet's initial direction: ")}{copy(original.direction)} · {id}</p>
-   <p className="magnet-design-note">{t("导入文件可以保留同层的单块差异；方向按钮会统一所选径向位置。加载、导入和重置均可撤销。","Imports can preserve individual differences within a layer. Direction buttons unify the selected radial position. Loading, importing and resetting can be undone.")}</p>
-   {design.savedAt&&<p className="magnet-design-storage">{t("上次保存：","Last saved: ")}{new Date(design.savedAt).toLocaleString(language==="zh"?"zh-CN":"en-US")}</p>}
-  </details>
+  {!filesInDialog&&design.notice?.type==="error"&&<p className="design-notice error" role="alert">{t(design.notice.zh,design.notice.en)}</p>}
+  {!filesInDialog&&fileError&&<p className="design-notice error" role="alert">{t(...fileError)}</p>}
+  {filesInDialog?<>
+   <button className="design-file-trigger" type="button" onClick={()=>fileDialog.current?.showModal()}>{t("保存与文件","Save & files")}{!design.isSaved&&<span>{t("未保存","Unsaved")}</span>}</button>
+   <dialog ref={fileDialog} className="design-file-dialog" aria-labelledby="transverse-design-files-title">
+    <header><h3 id="transverse-design-files-title">{t("保存与文件","Save & files")}</h3><button type="button" className="design-file-dialog-close" aria-label={t("关闭文件窗口","Close file window")} onClick={()=>fileDialog.current?.close()}>×</button></header>
+    {fileContent}
+   </dialog>
+  </>:<details className="workbench-disclosure design-file-details"><summary>{t("保存与文件","Save & files")}{!design.isSaved&&<span className="basic-file-unsaved"> · {t("未保存","Unsaved")}</span>}</summary>{fileContent}</details>}
   <input ref={fileInput} type="file" accept=".json,application/json" hidden aria-label={t("选择设计 JSON 文件","Choose design JSON file")} onChange={event=>{void importFile(event.currentTarget.files?.[0]);event.currentTarget.value="";}}/>
  </section>;
 }

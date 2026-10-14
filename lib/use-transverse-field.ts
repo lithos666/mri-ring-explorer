@@ -41,14 +41,20 @@ export function useTransverseField(snapshot:FieldSnapshot|null,active:boolean,ra
    try{
     const [baselineSignature,signature]=await Promise.all([sourceSignature(sourcesFor(baseModel)),sourceSignature(sourcesFor(current))]);
     if(cancelled)return;
-    let initial=initialRef.current.get(rangeId);
-    if(!initial){
-     const response=await fetch(config.assetURL+"?source="+baselineSignature,{signal:controller.signal,cache:"default"});
+    async function loadInitial(id:TransverseRangeId){
+     let initial=initialRef.current.get(id);
+     if(initial)return initial;
+     const target=TRANSVERSE_RANGES[id];
+     const response=await fetch(target.assetURL+"?source="+baselineSignature,{signal:controller.signal,cache:"default"});
      if(!response.ok)throw new Error("Initial transverse map is unavailable.");
      initial=decodeTransverseField(await response.arrayBuffer());
-     if(initial.sourceSignature!==baselineSignature||initial.sourceCount!==baseModel.magnets.length||initial.schemeId!==baseModel.id||initial.unitMM!==baseModel.unitMM||initial.remanenceT!==baseModel.remanenceT||initial.fieldKernelVersion!==FIELD_KERNEL_VERSION||initial.generationSignature!==config.generationSignature||!sameTransverseGrid(initial.grid,config.grid))throw new Error("Initial transverse map differs from the physical model.");
-     if(cancelled)return;initialRef.current.set(rangeId,initial);setBaselines(previous=>({...previous,[rangeId]:initial!}));
+     if(initial.sourceSignature!==baselineSignature||initial.sourceCount!==baseModel.magnets.length||initial.schemeId!==baseModel.id||initial.unitMM!==baseModel.unitMM||initial.remanenceT!==baseModel.remanenceT||initial.fieldKernelVersion!==FIELD_KERNEL_VERSION||initial.generationSignature!==target.generationSignature||!sameTransverseGrid(initial.grid,target.grid))throw new Error("Initial transverse map differs from the physical model.");
+     if(!cancelled){initialRef.current.set(id,initial);setBaselines(previous=>({...previous,[id]:initial!}));}
+     return initial;
     }
+    // Both display modes use immutable reference data. MATLAB mode needs the
+    // nine-plane reference too; changing FOV must never redefine its limits.
+    const [initial]=await Promise.all(rangeId==="explore"?[loadInitial(rangeId)]:[loadInitial(rangeId),loadInitial("explore")]);
     if(cancelled)return;
     const known=completedRef.current.get(rangeId);
     if(signature===initial.sourceSignature||known?.data.sourceSignature===signature){
@@ -64,5 +70,5 @@ export function useTransverseField(snapshot:FieldSnapshot|null,active:boolean,ra
   return()=>{cancelled=true;controller.abort();solver?.cancel();pending.current=null;};
  },[snapshot,active,rangeId,retryCount]);
  const completed=results[rangeId]??null,baseline=baselines[rangeId]??null,status=state.rangeId===rangeId?state.status:"idle";
- return {completed,baseline,status,progress:progressState?.rangeId===rangeId?progressState.value:null,matchesSnapshot:completed?.model===snapshot?.model,retry:()=>setRetryCount(value=>value+1)};
+ return {completed,baseline,baselineWide:baselines.explore??null,status,progress:progressState?.rangeId===rangeId?progressState.value:null,matchesSnapshot:completed?.model===snapshot?.model,retry:()=>setRetryCount(value=>value+1)};
 }

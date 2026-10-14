@@ -26,15 +26,15 @@
 
 旧网页为了比较九个远近截面，使用初始九截面的固定 Bz 范围 **32.25944892467525–43.8678567091 mT**，跨度约 11.6084 mT。Z=0 截面的场差只占它的约 **0.1196%**，平均图约 **0.1238%**，因此被压缩到极少几种颜色。场差数值本身没有消失，展示方式却不适合检查中心截面内的均匀性细节。
 
-## 修正后的显示模式
+## 本地锁定显示模式（2026-10-14）
 
-- 默认 **局部细节（MATLAB）**：使用当前实际显示的 Bz 或 |B|、截面或近中心平均图、所选 FOV 的真实最大最小值，自动展开色标。低场差也可以清楚看到空间分布，但颜色不能直接跨截面或跨设计比较；必须看 mT、ppm 或切换固定色标。
-- **跨截面场强**：保留初始模型在当前采样范围/FOV 的固定色标，适合比较不同 Z 或设计的绝对场强变化。
+- 默认 **固定细节色标**：初始范围为基准模型Z=0、直径150 mm的真实极值，Bz与 |B| 分别保存；改变FOV、切片或已计算设计后不自动变化。主动“重新适配色标”使用当前图极值并继续锁定；“恢复初始色标”恢复所选物理量初始范围。
+- **跨截面场强**：使用初始九截面、完整直径200 mm范围，不随FOV或MATLAB/宽范围切换变化；数据超出色标时说明饱和，读数仍为真实值。
 - 两种模式使用实际源图导出的 **256 项 jet RGB 数组**和 MATLAB 式离散颜色索引；窄范围色标至少显示六位小数。常量数据不引入虚构的百分比差异，只为避免除零保留浮点精度量级的渲染区间，原始极值和统计不变。
 - 切换色标不修改磁铁方向、磁场数组、场强、均匀性、FOV 筛选、历史或计算状态，也不触发求场。
 
-要对照脚本的默认图，请选择 **MATLAB ±2 mm → 5 个截面均值 → Bz → FOV 直径 150 mm → 局部细节（MATLAB）**。网页按格点中心绘制像素；MATLAB 的 `pcolor/shading flat` 按网格单元绘制，最后一行/列没有独立面，因此边界栅格可能略有不同，数值节点与圆内统计已经逐点核对：[pcolor 文档](https://www.mathworks.com/help/matlab/ref/pcolor.html)。
+要对照脚本的默认图，请选择 **MATLAB ±2 mm → 5 个截面均值 → Bz → FOV直径150 mm → 重新适配色标**。网页按格点中心绘制像素；MATLAB的 `pcolor/shading flat` 按网格单元绘制，最后一行/列没有独立面，因此边界栅格可能略有不同，数值节点与圆内统计已经逐点核对：[pcolor 文档](https://www.mathworks.com/help/matlab/ref/pcolor.html)。
 
 运行日志、MAT 数组、实际 jet 色表和比较报告保存在本地 `work/qa/matlab-display-audit/`。`same-data-color-scale-comparison.png` 使用实际 MATLAB Bz 数组重绘同数据在两种色标下的效果，是科学对照图而非原生窗口截图。
 
-Actual MATLAB R2022a execution confirms the website's field values for every sampled disk point and all five vector planes. The apparent discrepancy came from a many-mT shared color range and from comparing a single Z=0 plane with a five-plane mean. The display now offers automatic current-map limits and a separate fixed reference scale, using the source figure's exact jet palette. The magnetic model and MATLAB files remain unchanged.
+Actual MATLAB R2022a execution confirms the website's field values for every sampled disk point and all five vector planes. The apparent discrepancy came from a many-mT shared color range and comparing Z=0 with a five-plane mean. The local update now locks detail limits to the initial Z=0/D150 plane, offers explicit Fit/Restore, and fixes the wide reference to the initial nine-plane/D200 region. It retains the exact jet palette and the original magnetic model and MATLAB files.

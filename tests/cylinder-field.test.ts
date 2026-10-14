@@ -1,0 +1,67 @@
+import assert from "node:assert/strict";
+import {models} from "../lib/mri.ts";
+import {applyOverrides,exportDesign,geometrySignature,validateDesign} from "../lib/design.ts";
+import {fieldAt,sourcesFor,cuboidField,type Source} from "../lib/field.ts";
+import {devicePointToWorld,worldFieldToDevice} from "../lib/transverse-field.ts";
+import {CYLINDER_REPORT_VERSION,CYLINDER_ALGORITHM,DEFAULT_CYLINDER_REGION,CYLINDER_LEVELS,analyzeCylinderFunction,cylinderSampleAt,cylinderSampleCounts,emptyCylinderPartial,addCylinderSample,mergeCylinderPartials,finishCylinderLevel,cylinderIdentity,cylinderAnalysisSignature,validateCylinderRegion,validateCylinderResolution,validateCylinderAirRegion,validateCylinderReport,type CylinderFieldReport} from "../lib/cylinder-field.ts";
+
+const close=(a:number,b:number,tol=1e-10)=>assert.ok(Math.abs(a-b)<=tol*Math.max(1,Math.abs(a),Math.abs(b)),`${a} != ${b}`);
+const region={...DEFAULT_CYLINDER_REGION,diameterMM:20,lengthMM:30},resolution={radial:8,angular:16,axial:12};
+const constant=analyzeCylinderFunction(region,resolution,()=>[0,0,10]);
+assert.equal(constant.meanMT,10);assert.equal(constant.stdMT,0);assert.equal(constant.peakToPeakMT,0);assert.equal(constant.peakToPeakPPM,0);
+assert.equal(constant.volumeSampleCount,8*16*12);assert.equal(constant.boundarySampleCount,cylinderSampleCounts(resolution).boundary);
+const base=7,a=.03,b=.02,R=region.diameterMM/2,L=region.lengthMM;
+const f=([x,y,z]:number[])=>base+a*(x*x+y*y)+b*z*z;
+const analytic=analyzeCylinderFunction(region,resolution,p=>[0,0,f(p)]);
+const mean=base+a*R**2/2+b*L**2/12*(1-1/resolution.axial**2);
+const variance=a*a*R**4/12*(1-1/resolution.radial**2)+b*b*L**4*(1/180-1/(36*resolution.axial**2)+1/(45*resolution.axial**4));
+close(analytic.meanMT,mean);close(analytic.stdMT,Math.sqrt(variance));close(analytic.min.magnitudeMT,base);close(analytic.max.magnitudeMT,base+a*R**2+b*(L/2)**2);
+close(analytic.peakToPeakPPM!,(a*R**2+b*(L/2)**2)/mean*1e6);
+assert.deepEqual(analytic.min.pointMM,[0,0,0]);assert.ok(analytic.max.domain!=="volume");
+const refined=analyzeCylinderFunction(region,{radial:16,angular:32,axial:24},p=>[0,0,f(p)]);
+const exactMean=base+a*R**2/2+b*L**2/12;
+assert.ok(Math.abs(refined.meanMT-exactMean)<Math.abs(analytic.meanMT-exactMean));
+// A radically different surface field must never contaminate volume moments.
+const boundaryOnly=emptyCylinderPartial(),counts=cylinderSampleCounts(resolution);
+for(let i=0;i<counts.total;i++){const sample=cylinderSampleAt(i,region,resolution);addCylinderSample(boundaryOnly,sample,[0,0,sample.domain==="volume"?2:1000]);}
+const boundaryResult=finishCylinderLevel(boundaryOnly,resolution);assert.equal(boundaryResult.meanMT,2);assert.equal(boundaryResult.stdMT,0);assert.equal(boundaryResult.max.magnitudeMT,1000);
+assert.throws(()=>finishCylinderLevel(emptyCylinderPartial(),resolution),/Incomplete/);
+assert.throws(()=>addCylinderSample(emptyCylinderPartial(),{pointMM:[0,0,0],domain:"volume"},[NaN,0,1]),/Non-finite/);
+assert.throws(()=>validateCylinderRegion({...region,diameterMM:201}),/Cylinder/);
+assert.throws(()=>validateCylinderRegion({...region,lengthMM:0}),/Cylinder/);
+assert.throws(()=>validateCylinderRegion({...region,centerMM:[1,0,0]}),/Cylinder/);
+assert.throws(()=>validateCylinderResolution({...resolution,axial:161}),/Invalid/);
+assert.throws(()=>cylinderSampleAt(counts.total,region,resolution),/bounds/);
+const halves=[emptyCylinderPartial(),emptyCylinderPartial()];
+for(let i=0;i<counts.total;i++){const sample=cylinderSampleAt(i,region,resolution);addCylinderSample(halves[i<counts.total/2?0:1],sample,[0,0,f(sample.pointMM)]);}
+const merged=finishCylinderLevel(mergeCylinderPartials(halves[0],halves[1]),resolution);
+close(merged.meanMT,analytic.meanMT);close(merged.stdMT,analytic.stdMT);close(merged.peakToPeakMT,analytic.peakToPeakMT);
+// Independent closed-form axial field of one uniformly magnetized cube, outside material.
+const cube:Source={center:[0,0,0],u:[1,0,0],v:[0,1,0],n:[0,0,1],half:1};
+assert.throws(()=>validateCylinderAirRegion([cube],region,1),/coverage/);
+assert.throws(()=>validateCylinderAirRegion([{...cube,center:[NaN,0,0]}],region,1),/geometry/);
+const z=3,solid=(d:number)=>Math.atan(1/(d*Math.sqrt(2+d*d))),axial=(solid(z-1)-solid(z+1))/Math.PI;
+const cubeB=cuboidField([0,0,z],cube);close(cubeB[0],0);close(cubeB[1],0);close(cubeB[2],axial);
+const baseModel=models.latest,source=sourcesFor(baseModel),centre=worldFieldToDevice(fieldAt([0,0,0],source),baseModel.remanenceT);
+validateCylinderAirRegion(source,DEFAULT_CYLINDER_REGION,baseModel.unitMM!);
+close(Math.hypot(...centre),37.343568936442715,1e-11);
+const probe=worldFieldToDevice(fieldAt(devicePointToWorld(30,-20,40,baseModel.unitMM!),source),baseModel.remanenceT);
+assert.ok(probe.every(Number.isFinite));
+const validated=validateDesign(exportDesign(baseModel,{[baseModel.magnets[0].id]:"in"}),baseModel),edited=applyOverrides(baseModel,validated.overrides);
+assert.equal(edited.magnets.length,1736);assert.equal(geometrySignature(baseModel),validated.document.geometrySignature);
+const identity=await cylinderIdentity({schemeId:baseModel.id,geometrySignature:geometrySignature(baseModel),sources:source,unitMM:baseModel.unitMM!,remanenceT:baseModel.remanenceT,region,resolutions:[resolution]});
+const signature=await cylinderAnalysisSignature(identity);
+assert.notEqual(signature,await cylinderAnalysisSignature({...identity,remanenceT:identity.remanenceT+.01}));
+assert.notEqual(signature,await cylinderAnalysisSignature({...identity,region:{...region,lengthMM:20}}));
+assert.notEqual(signature,await cylinderAnalysisSignature({...identity,resolutions:[{...resolution,angular:32}]}));
+const editedIdentity=await cylinderIdentity({...identity,sources:sourcesFor(edited)});
+assert.notEqual(editedIdentity.sourceSignature,identity.sourceSignature);
+const report:CylinderFieldReport={...identity,version:CYLINDER_REPORT_VERSION,createdAt:"2026-10-14T00:00:00.000Z",quantity:"magnitude",units:{length:"mm",field:"mT",homogeneity:"ppm"},analysisSignature:signature,center:{pointMM:[0,0,0],vectorMT:[0,0,10],magnitudeMT:10},levels:[constant],classification:"sampling-and-integration-estimate"};
+assert.equal(validateCylinderReport(report,{sourceSignature:identity.sourceSignature}),report);
+assert.equal(await cylinderAnalysisSignature(report),signature,"Report metadata cannot change physical analysis identity.");
+assert.throws(()=>validateCylinderReport(report,{sourceSignature:editedIdentity.sourceSignature}),/does not match/);
+assert.throws(()=>validateCylinderReport({...report,levels:[{...constant,volumeSampleCount:1}]}),/Incomplete|incomplete/);
+assert.throws(()=>validateCylinderReport({...report,levels:[{...constant,meanMT:NaN}]}),/Incomplete|incomplete/);
+assert.throws(()=>validateCylinderReport({...report,levels:[{...constant,peakToPeakPPM:123}]}),/normalization/);
+assert.equal(CYLINDER_ALGORITHM,"equal-volume-midpoint-cylinder-v1");assert.equal(CYLINDER_LEVELS.length,3);
+console.log("PASS cylinder: equal-volume analytic moments and refinement, independent cube field, boundary exclusion, full coverage, finite input, signatures, design compatibility and report validation.");

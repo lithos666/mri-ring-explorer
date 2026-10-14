@@ -1,0 +1,41 @@
+.cylinder-report-card{margin:0 20px 18px;border:1px solid #e5e5ea;border-radius:12px;background:#fff;color:#1d1d1f;min-width:0}
+.cylinder-report-card>summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;cursor:pointer;font-size:14px;font-weight:650;list-style:none}
+.cylinder-report-card>summary>span::before{content:'›';display:inline-block;margin-right:9px;color:#0071e3;transition:transform .15s}
+.cylinder-report-card[open]>summary>span::before{transform:rotate(90deg)}
+.cylinder-report-card>summary small{font-size:11px;font-weight:400;color:#626973}
+.cylinder-report-content{padding:0 16px 16px;font-size:12px;line-height:1.6;min-width:0}
+.cylinder-report-content>p{margin:0 0 12px;color:#626973}
+.cylinder-report-content .cylinder-report-status{color:#487563}.cylinder-report-content .cylinder-report-status--previous{color:#976313}
+.cylinder-report-metrics{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px}
+.cylinder-report-metrics>div{background:#f5f5f7;border-radius:9px;padding:10px 12px;min-width:0}
+.cylinder-report-metrics span{display:block;font-size:11px;color:#626973;margin-bottom:4px}
+.cylinder-report-metrics strong{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}.cylinder-report-metrics small{font-size:11px;font-weight:400}
+.cylinder-report-extrema{font-size:11px;overflow-wrap:anywhere}.cylinder-report-extrema p{margin:7px 0}.cylinder-report-extrema b{font-weight:600}
+.cylinder-report-table{width:100%;overflow:auto;margin:12px 0;border-top:1px solid #e5e5ea}
+.cylinder-report-table table{width:100%;border-collapse:collapse;font-size:10px;font-variant-numeric:tabular-nums}
+.cylinder-report-table caption{text-align:left;font-size:12px;padding:9px 0;font-weight:600}
+.cylinder-report-table th{color:#626973;font-weight:500;white-space:normal}.cylinder-report-table th,.cylinder-report-table td{padding:7px 5px;text-align:right;border-bottom:1px solid #eee;vertical-align:top}.cylinder-report-table th:first-child,.cylinder-report-table td:first-child{text-align:left}
+.cylinder-report-content .cylinder-report-method{font-size:11px;color:#86868b}
+.cylinder-report-downloads,.cylinder-report-import{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cylinder-report-import{margin-top:12px}.cylinder-report-import small{font-size:10px;color:#86868b}
+.cylinder-report-content button{display:flex;align-items:center;gap:5px;border:1px solid #d9dde1;border-radius:7px;padding:7px 10px;background:#fff;color:#0071e3;font-size:11px;cursor:pointer}.cylinder-report-content button:hover{background:#f0f7ff}.cylinder-report-content button:focus-visible{outline:2px solid #0071e3;outline-offset:2px}
+.cylinder-report-content .cylinder-report-error{color:#b42318;margin:9px 0 0;font-size:11px}
+.cylinder-report-card--standalone{margin:10px 14px;flex:1;min-height:0}
+.cylinder-report-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 16px 8px;font-size:15px;font-weight:600}
+.cylinder-report-heading small{font-size:12px;font-weight:400;color:#626973}
+.cylinder-report-pages{display:flex;gap:5px;margin:8px 0 12px}
+.cylinder-report-pages button[aria-pressed=true]{background:#f0f7ff;border-color:#9cc8f7}
+.cylinder-report-card--standalone .cylinder-report-content{font-size:12px;padding-bottom:12px;line-height:1.45}
+.cylinder-report-card--standalone .cylinder-report-content>p{margin-bottom:8px}
+.cylinder-report-card--standalone .cylinder-report-metrics{gap:8px;margin-bottom:10px}
+.cylinder-report-card--standalone .cylinder-report-metrics>div{padding:8px 10px}
+.cylinder-report-card--standalone .cylinder-report-metrics span{font-size:12px}
+.cylinder-report-card--standalone .cylinder-report-metrics strong{font-size:21px}
+.cylinder-report-card--standalone .cylinder-report-extrema{font-size:12px}
+.cylinder-report-card--standalone .cylinder-report-table{overflow:visible}
+.cylinder-report-card--standalone .cylinder-report-table table{font-size:12px}
+.cylinder-report-card--standalone .cylinder-report-method{font-size:12px;line-height:1.55}
+.cylinder-report-card--standalone .cylinder-report-downloads{display:inline-flex;margin-top:8px}
+.cylinder-report-card--standalone .cylinder-report-import{display:inline-flex;margin-left:10px;margin-top:8px}
+.cylinder-report-card--standalone .cylinder-report-import small{display:none}
+.cylinder-report-card--standalone .cylinder-report-content button{font-size:12px;min-height:32px}

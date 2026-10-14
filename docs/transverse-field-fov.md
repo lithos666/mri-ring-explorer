@@ -1,12 +1,16 @@
 # 横向磁场与 FOV / Transverse field and FOV
 
+横向实验现有“场图与FOV／三维评估／公式推导”三个内容页；场图右侧的区域结果、轴向截面和FOV筛选通过点击切换。常用读数和操作保持一屏可见。当前区域的实际最大最小值及场差单独列出，固定色标只表示颜色映射范围。初始Z=0的D150 Bz场差为0.013886403692 mT（371.777 ppm），D200为4.070096431688 mT（110,128.242 ppm）；扩大FOV后，色标外的蓝色不能被理解为相同场强。[完整数学推导](field-derivation.md)。
+
+The transverse workspace uses click-switched Map & FOV, 3D assessment and Derivation pages. Actual extrema and variation are shown separately from locked color limits. In the initial Z=0 Bz map, D150 varies by 0.013886403692 mT while D200 varies by 4.070096431688 mT. Saturated blue is not a claim of identical field strength.
+
 教学版提供设备 XY 横向场图。使用已核对的有限磁块解析场，对完整 14 层、1,736 块磁铁求三维矢量和；不从原纵向截面插值，也不修改 MATLAB、磁铁位置或 Br = 1.43 T。设备坐标与既有网页一致：`(X,Y,Z)=(world.x,-world.z,world.y)`，是一组正交旋转。网页与 MATLAB 的整个阵列观察坐标相差 90°，圆形区域及正方形网格的统计不受该转动影响。
 
 ## 轴向探索与近中心核对
 
 现在提供两个独立采样范围，切换范围不会修改磁铁排布：
 
-- **宽范围 ±100 mm**：Z = −100、−75、−50、−25、0、25、50、75、100 mm，共九个 XY 截面，每隔 25 mm；默认逐层查看 Z=0，不提供跨这九层的平均图。默认局部色标突出各截面内的变化；需要直接比较不同 Z 的绝对颜色时，切换为“跨截面场强”固定参考色标。
+- **宽范围 ±100 mm**：Z = −100、−75、−50、−25、0、25、50、75、100 mm，共九个 XY 截面，每隔 25 mm；默认逐层查看 Z=0，不提供跨这九层的平均图。默认色标锁定为初始Z=0、直径150 mm的范围；跨截面场强模式则锁定初始九截面、完整直径200 mm的范围，两者均不随FOV变化。
 - **MATLAB ±2 mm**：保留原始五个截面 −2、−1、0、1、2 mm、逐点平均及单层查看，保持原脚本的核对语义和数据不变。
 
 原五层只覆盖 4 mm。初始排布的中心场从 Z=0 的 37.3435689364 mT 到 Z=±2 的 37.3434462426 mT，仅相差约 3.286 ppm；这是真实的小变化。更宽范围能显示轴向变化：
@@ -52,7 +56,13 @@
 
 ## FOV 筛选
 
-直径可调 20–200 mm，5 mm 一档。调直径只改变采样区域、图形遮罩和统计，不改磁铁或重新求场。所选圆外的图像留白。默认“局部细节（MATLAB）”按**当前所显示截面或五层平均、当前 FOV 内的真实极值**自动设置色标，突出很小的场差；不能仅凭这种局部颜色比较不同截面或设计。“跨截面场强”则使用**初始排布、当前轴向范围和 FOV 内所有切片的极值**，同一范围/FOV 的设计比较保持固定。两种模式均使用实际 MATLAB R2022a 图 2 导出的 256 色 jet 调色板，切换模式不改变磁场数组、mT 数值、均匀性或 FOV 筛选。固定范围外的值会显示色标饱和说明，读数仍为真实采样值。
+直径可调20–200 mm，5 mm一档。调直径只改变采样区域、图形遮罩和统计，不改磁铁或重新求场。默认“固定细节色标”来自**初始排布、Z=0、直径150 mm**的真实极值；Bz与 |B| 独立保存范围。改变FOV、切片或已计算设计时不自动重设色标。“重新适配色标”主动使用当前已完成图、切片和FOV的极值，然后继续锁定；“恢复初始色标”恢复对应物理量的初始值。“跨截面场强”固定使用**初始九截面、完整直径200 mm**的极值，即使在MATLAB模式也保持相同参考。两种模式均保留实际MATLAB的256色jet，不改变磁场数组、统计或求场状态。超范围颜色饱和，读数不截断。
+
+探针仅保存真实XY网格坐标；FOV缩小后仍可读出圆外点并标注“当前区域外”。切换单截面时保持XY，Z跟随所选平面且明确显示；平均图标为平均值探针。读数从对应的已完成结果取得，不保存过期的value，更新期间明确是上一结果。显示设置由实验台持有，切换教学板块或3D/场图视图后仍保留。
+
+The default detail scale is locked to the initial Z=0, D150 plane. Fit current scale explicitly relocks the current completed plot; Restore initial resets the selected quantity. Across slices always uses the initial nine planes over D200. FOV changes preserve both point values and locked colors. Probes retain XY outside a smaller ROI, read the current completed map, and label their Z or averaging definition.
+
+另外提供独立的[三维圆柱评估](cylinder-field-fov.md)，默认D150×L200。体积平均采用等体积中点积分，与本页二维/FOV采样统计分别展示；二维直径滑块不改变固定三维报告区域。
 
 当前脚本在实际 MATLAB 中的逐点核对、自动色标及注释差异见 [MATLAB 运行与显示核对](matlab-field-display-audit.md)。
 
