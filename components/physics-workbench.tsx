@@ -77,14 +77,14 @@ function BasicLab(){
        {transversePage==="map"?<><TransverseFieldPanel rangeId={transverseRange} onRangeChange={setTransverseRange} result={transverse.completed?.data??null} baseline={transverse.baseline} baselineWide={transverse.baselineWide} displayState={transverseDisplay} onDisplayStateChange={setTransverseDisplay} displayModel={transverse.completed?.model??null} state={transverseState} progress={transverse.progress}/>{transverse.status==="error"&&<button className="transverse-retry" onClick={transverse.retry}>{t("重新载入横向场","Retry transverse field")}</button>}</>
         :transversePage==="report"?<CylinderFieldReportCard standalone model={snapshot?.model??null} baseline={snapshot?.baseline??null} state={snapshotState}/>
         :<FieldDerivation language={language}/>}</div>
-      :snapshot?<FieldSection compact key={snapshot.model.id} data={snapshot.data} displayModel={snapshot.model} readOnly={status==="computing"} onSelect={selectMagnet}/>
+      :snapshot?<FieldSection compact key={snapshot.model.id} data={snapshot.data} displayModel={snapshot.model} selected={selected} readOnly={status==="computing"} onSelect={selectMagnet}/>
        :<div className="scene-message">{status==="loading"?t("初始磁场自动载入，无需点击计算。","The initial field loads automatically; no Compute click is needed."):t("点击「计算磁场」重试。","Click Compute field to retry.")}</div>}
      {view==="assembly"&&<div className="scene-bottomline"><div className="legend-poles"><span><i className="north-swatch"/>{t("N 极侧","N pole")}</span><span><i className="south-swatch"/>{t("S 极侧","S pole")}</span></div><span className="scene-units">14 × 28 · 1,736</span></div>}
     </TabsContent>
     <div className="interaction-hint"><span><Move size={13}/>{view==="assembly"?t("拖动旋转 · 滚轮缩放 · 右键平移","Drag to rotate · Scroll to zoom · Right-drag to pan"):view==="transverse"?t("1 mm 网格 · 全 14 层叠加 · 调整 FOV 不改变磁铁","1 mm grid · All 14 layers · FOV changes do not edit magnets"):t("全 14 层 · 固定色标 · 点击空气区域读取磁场","All 14 layers · Fixed color scale · Click an air point to probe")}</span></div>
    </Tabs>
    <aside className="design-inspector" aria-label={t("磁铁方向修改","Edit magnet orientations")}>
-    <DesignControls filesInDialog={view==="transverse"} selectedRing={selectedRing} selected={selected} onRing={selectRing} onSelect={selectMagnet} onCompute={computeField} status={status}/>
+    <DesignControls filesInDialog={view!=="assembly"} selectedRing={selectedRing} selected={selected} onRing={selectRing} onSelect={selectMagnet} onCompute={computeField} status={status}/>
    </aside>
   </div>
  </section>;

@@ -1,16 +1,22 @@
 "use client";
-import {useMemo,useState} from "react";
+import {useId,useMemo,useRef,useState} from "react";
 import {Button} from "@/components/ui/button";
 import {directionNames,type ViewMode,type MRIModel} from "@/lib/mri";
 import {useMRIModel,useBaselineMRIModel} from "@/lib/mri-context";
 import {useLanguage,directionEnglish} from "@/lib/language-context";
 import {fieldAt,nearMagnet,sourcesFor,toMillitesla,type Vec3} from "@/lib/field";
 import {planePoint,planeComponents,type LiveFieldResult} from "@/lib/live-field";
+import FieldMagnetDetail,{MagnetPolarityGlyph} from "./field-magnet-detail";
+import "./field-view.css";
 const magnitude=(b:Vec3)=>Math.hypot(...b);
 function heatColor(r:number){const v=Math.max(0,Math.min(2,r));return v<1?"rgb("+Math.round(43+202*v)+","+Math.round(113+132*v)+",245)":"rgb(245,"+Math.round(245-164*(v-1))+","+Math.round(245-172*(v-1))+")";}
-export function FieldSection({data,onSelect,compact=false,displayModel,readOnly=false}:{data:LiveFieldResult|null;onSelect:(id:string)=>void;compact?:boolean;displayModel?:MRIModel;readOnly?:boolean}){
+export function FieldSection({data,onSelect,compact=false,displayModel,readOnly=false,selected}:{data:LiveFieldResult|null;onSelect:(id:string)=>void;compact?:boolean;displayModel?:MRIModel;readOnly?:boolean;selected?:string|null}){
  const {t}=useLanguage(),contextModel=useMRIModel(),baseline=useBaselineMRIModel(); const model=displayModel??contextModel;
  const [point,setPoint]=useState<[number,number]>([0,0]),[surface,setSurface]=useState(false);
+ const [inspectedId,setInspectedId]=useState("R01-L1-A01");
+ const inspected=model.magnetById.get(selected??inspectedId)??model.magnets[0];
+ const componentDialog=useRef<HTMLDialogElement>(null),componentTitle=useId();
+ const inspect=(id:string)=>{setInspectedId(id);if(!readOnly)onSelect(id);};
  const sources=useMemo(()=>sourcesFor(model),[model]),baseSources=useMemo(()=>sourcesFor(baseline),[baseline]);
  const angle=model.angularOffset,scale=16,size=model.blockSize*scale,units=model.unitMM??1;
  const world=planePoint(point[0],point[1],angle),b=useMemo(()=>data?fieldAt(world,sources):[0,0,0] as Vec3,[data,sources,point[0],point[1],angle]),baseB=useMemo(()=>data?fieldAt(world,baseSources):[0,0,0] as Vec3,[data,baseSources,point[0],point[1],angle]);
@@ -36,8 +42,8 @@ export function FieldSection({data,onSelect,compact=false,displayModel,readOnly=
   }
  }
  const px=point[0]*scale,py=-point[1]*scale;
- return <div className={"field-section"+(compact?" field-compact":"")}>
- <div className="field-projection-note">{t("截面场强与 B 矢量投影 · 虚线为三维轨迹投影，不是平面磁感线","Slice magnitude and projected B vectors · Dashed curves are projections of 3D paths, not planar field lines")}</div>
+ return <div className={"field-section readable-field"+(compact?" field-compact":"")}>
+ <div className="field-direction-key" aria-label={t("箭头图例","Arrow legend")}><span><svg viewBox="0 0 28 16" aria-hidden="true"><path d="M2 6H17V1L27 8 17 15V10H2Z" fill="#1d1d1f"/></svg>{t("M · 磁化方向 S → N","M · Magnetization S → N")}</span><span><svg viewBox="0 0 28 16" aria-hidden="true"><path d="M2 8H24M18 2 25 8 18 14" fill="none" stroke="#255a44" strokeWidth="2"/></svg>{t("B · 空气中的合磁场","B · Total field in air")}</span><span className="field-path-caption">{t("虚线：三维轨迹投影","Dashed: 3D path projection")}</span></div>
  <svg viewBox="-215 -218 430 450" aria-label={t("已计算排布的磁场截面。点击空气区域，读取三维磁场及截面外分量。","Field slice of the computed layout. Click an air region to read the 3D field and its out-of-plane component.")} onClick={e=>{if(readOnly)return;const svg=e.currentTarget,p=svg.createSVGPoint();p.x=e.clientX;p.y=e.clientY;const matrix=svg.getScreenCTM();if(!matrix)return;const c=p.matrixTransform(matrix.inverse());if(Math.abs(c.x)<=192&&Math.abs(c.y)<=192)probe([c.x/scale,-c.y/scale]);}}>
  <defs><marker id="live-b-arrow" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0 0L5 2.5L0 5" fill="#255a44"/></marker><marker id="live-probe-arrow" markerWidth="5" markerHeight="5" refX="4" refY="2.5" orient="auto"><path d="M0 0L5 2.5L0 5" fill="#1d1d1f"/></marker><clipPath id="live-map-clip"><rect x="-192" y="-192" width="384" height="384"/></clipPath></defs>
  <rect x="-192" y="-192" width="384" height="384" fill="#fff" stroke="#d2d8de"/>
@@ -47,22 +53,25 @@ export function FieldSection({data,onSelect,compact=false,displayModel,readOnly=
  {[-10,-5,0,5,10].map(v=><g key={v}><line x1={v*scale} x2={v*scale} y1="-192" y2="192" stroke="#8f969f" opacity=".3" strokeDasharray="2 5"/><line y1={v*scale} y2={v*scale} x1="-192" x2="192" stroke="#8f969f" opacity=".3" strokeDasharray="2 5"/><text x={v*scale} y="210" fill="#59636f" textAnchor="middle" fontSize="12">{v*units}</text></g>)}
  <text x="-184" y="-201" fill="#59636f" fontSize="12">{t("R01 端 ↑ · 设备 Z 轴 ↑","R01 end ↑ · Device Z axis ↑")}</text>
  {section.map(m=>{
-  const x=(m.sector===1?m.radius:-m.radius)*scale,y=-model.ringY(m.ring)*scale,n=planeComponents(m.normal,angle),planar=Math.hypot(n[0],n[1]),rotation=Math.atan2(-n[1],n[0])*180/Math.PI,label=m.id+" · "+t(directionNames[m.direction],directionEnglish[m.direction]);
-  return <g key={m.id} className="field-magnet" role="button" tabIndex={readOnly?-1:0} aria-disabled={readOnly} aria-label={label} onClick={e=>{e.stopPropagation();if(!readOnly)onSelect(m.id);}} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();if(!readOnly)onSelect(m.id);}}} transform={"translate("+x+" "+y+") rotate("+(planar>.1?rotation:0)+")"}><title>{label}</title>
-   <rect x={-size/2} y={-size/2} width={size} height={size} fill={planar>.1?"#fff":n[2]>0?"#e03d34":"#0071e3"} stroke="#505761" strokeWidth=".5"/>
-   {planar>.1?<><rect x={-size/2} y={-size/2} width={size*.2} height={size} fill="#0071e3"/><rect x={size*.3} y={-size/2} width={size*.2} height={size} fill="#e03d34"/><line x1={-size*.2} x2={size*.25} y1="0" y2="0" stroke="#1d1d1f" strokeWidth=".6" markerEnd="url(#live-probe-arrow)"/></>:<text x="0" y={size*.28} fontSize={size*.85} fill="#fff" textAnchor="middle">{n[2]>0?"⊙":"⊗"}</text>}
+  const x=(m.sector===1?m.radius:-m.radius)*scale,y=-model.ringY(m.ring)*scale,n=planeComponents(m.normal,angle),label=m.id+" · "+t(directionNames[m.direction],directionEnglish[m.direction]);
+  return <g key={m.id} className="field-magnet" data-magnet-id={m.id} data-selected={m.id===inspected.id} role="button" tabIndex={readOnly?-1:0} aria-disabled={readOnly} aria-label={label} onClick={e=>{e.stopPropagation();inspect(m.id);}} onKeyDown={e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();inspect(m.id);}}} transform={"translate("+x+" "+y+")"}><title>{label}</title>
+   {m.id===inspected.id&&<rect className="field-selection-halo" x={-size*.58} y={-size*.58} width={size*1.16} height={size*1.16} rx={size*.12} fill="none" stroke="#0071e3" strokeWidth="1"/>}
+   <MagnetPolarityGlyph normal={n} size={size}/>
   </g>;
  })}
  <g pointerEvents="none"><circle cx={px} cy={py} r="5" fill="#fff" stroke="#1d1d1f" strokeWidth="1.5"/>{planarLength>directionThreshold&&<line x1={px} y1={py} x2={px+projected[0]/length*25} y2={py-projected[1]/length*25} stroke="#1d1d1f" strokeWidth="1.4" markerEnd="url(#live-probe-arrow)"/>}</g>
  <text x="0" y="226" fill="#59636f" fontSize="12" textAnchor="middle">X′ / mm · {t("R14 端在下","R14 end below")}</text>
  </svg>
  <div className="field-map-legend"><span>0</span><i/><span>1</span><i/><span>≥ 2 · |B| / |Bref|</span></div>
- <div className="field-trace-key"><i/>{t("虚线：三维轨迹投影","Dashed: 3D path projection")}</div>
+ <div className="field-readout-column">
+ <FieldMagnetDetail model={model} magnet={inspected} onSelect={inspect} readOnly={readOnly}/>
  <div className="probe-readout" aria-live="polite" data-probe-vector={JSON.stringify(b)}>
- <div><span>{t("取点","Probe")} · X′ {(point[0]*units).toFixed(1)} / Z {(point[1]*units).toFixed(1)}</span><strong>|B| = {magnitude(physical).toFixed(3)} mT</strong><small>{t("截面外分量占 |B|：","Out-of-plane component / |B|: ")}{perpendicular.toFixed(3)}% · {perpendicularSymbol}</small><details className="probe-components"><summary>{t("探针分量","Probe components")}</summary><small>|B| / |Bref| = {relative.toFixed(6)}</small><small>{t("相对初始场的矢量变化：","Vector change from initial field: ")}{delta.toFixed(4)}%</small><small>(Bx, By, Bz) / mT = ({[physical[0],-physical[2],physical[1]].map(v=>v.toFixed(6)).join(", ")})</small></details>{length<=reference*1e-8&&<small>{t("近零场：方向未定义","Near-zero field: direction undefined")}</small>}</div>
+ <div><span>{t("取点","Probe")} · X′ {(point[0]*units).toFixed(1)} / Z {(point[1]*units).toFixed(1)}</span><strong>|B| = {magnitude(physical).toFixed(3)} mT</strong><small>{t("截面外分量占 |B|：","Out-of-plane component / |B|: ")}{perpendicular.toFixed(3)}% · {perpendicularSymbol}</small><button type="button" className="probe-components-trigger" onClick={()=>componentDialog.current?.showModal()}>{t("探针分量","Probe components")} ↗</button>{length<=reference*1e-8&&<small>{t("近零场：方向未定义","Near-zero field: direction undefined")}</small>}</div>
  <div className="probe-buttons"><Button variant="ghost" disabled={readOnly} onClick={()=>probe([0,0])}>{t("中心","Center")}</Button><Button variant="ghost" disabled={readOnly} onClick={()=>probe([0,6])}>{t("轴上","On axis")}</Button><Button variant="ghost" disabled={readOnly} onClick={()=>probe([2.5,0])}>{t("孔内侧","Inside bore")}</Button></div>
  {surface&&<p>{t("此处靠近磁体表面，请在通孔或外部空气中取点。","This point is near a magnet surface. Probe in the bore or surrounding air.")}</p>}
  </div>
+ </div>
+ <dialog ref={componentDialog} className="field-probe-dialog" aria-labelledby={componentTitle}><header><h3 id={componentTitle}>{t("合磁场探针","Total-field probe")}</h3><button type="button" aria-label={t("关闭","Close")} onClick={()=>componentDialog.current?.close()}>×</button></header><p>X′ {(point[0]*units).toFixed(1)} / Z {(point[1]*units).toFixed(1)} mm</p><p>|B| = {magnitude(physical).toFixed(6)} mT</p><p>|B| / |Bref| = {relative.toFixed(6)}</p><p>{t("相对初始场的矢量变化：","Vector change from initial field: ")}{delta.toFixed(4)}%</p><p>(Bx, By, Bz) / mT = ({[physical[0],-physical[2],physical[1]].map(v=>v.toFixed(6)).join(", ")})</p></dialog>
  <p className="field-projection-note">{t("⊙ 表示指向截面外，⊗ 表示指向截面内。探针使用全部磁铁的解析场；热图是网格采样，色标固定以便比较修改前后。","⊙ points out of the slice; ⊗ points into it. Probes use the analytical field from all magnets. The heatmap is sampled on a grid, with a fixed scale for comparison.")}</p>
  </div>;
 }

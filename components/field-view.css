@@ -1,0 +1,55 @@
+.field-direction-key{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:6px 18px;font-size:12px;line-height:1.35;color:#59636f}
+.field-direction-key>span{display:inline-flex;align-items:center;gap:5px}
+.field-direction-key svg{width:24px;height:16px;flex:none}
+.field-direction-key>span:first-child{font-weight:600;color:#1d1d1f}
+.field-direction-key>span:nth-child(2){color:#255a44}
+.field-readout-column{display:flex;flex-direction:column;justify-content:center;gap:8px;min-width:0}
+.field-probe-dialog{width:min(480px,calc(100vw - 40px));padding:20px;border:1px solid #dce0e5;border-radius:16px;background:#fff;color:#1d1d1f;box-shadow:0 18px 70px #0003}
+.field-probe-dialog::backdrop{background:#1d1d1f55}
+.field-probe-dialog header{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.field-probe-dialog h3{font-size:18px;margin:0}
+.field-probe-dialog header button{width:32px;height:32px;border:1px solid #dce0e5;border-radius:8px;background:#fff;font-size:22px;cursor:pointer}
+.field-probe-dialog p{font-size:13px;line-height:1.6;margin:12px 0 0;overflow-wrap:anywhere}
+.probe-components-trigger{border:0;background:transparent;color:#0071e3;font-size:12px;padding:3px 0;text-align:left;cursor:pointer}
+.field-probe-dialog button:focus-visible,.probe-components-trigger:focus-visible{outline:2px solid #0071e3;outline-offset:2px}
+.field-selection-halo{pointer-events:none}
+@media(min-width:900px){
+ .mri-workbench .readable-field{display:grid;grid-template-columns:minmax(0,1fr) 218px;grid-template-rows:auto minmax(0,1fr) auto;gap:6px 12px}
+ .mri-workbench .readable-field>.field-direction-key{grid-column:1 / -1;grid-row:1}
+ .mri-workbench .readable-field>svg{grid-column:1;grid-row:2}
+ .mri-workbench .readable-field>.field-map-legend{grid-column:1;grid-row:3}
+ .mri-workbench .readable-field>.field-readout-column{grid-column:2;grid-row:2 / span 2;align-self:center}
+ .mri-workbench .readable-field .field-magnet-detail{display:grid;grid-template-columns:76px minmax(0,1fr);gap:4px 8px;min-height:0;max-height:none;padding:8px}
+ .mri-workbench .readable-field .field-magnet-detail-text strong{font-size:12px;overflow-wrap:anywhere}
+ .mri-workbench .readable-field .field-magnet-detail-text>span{font-size:12px;overflow-wrap:anywhere}
+ .mri-workbench .readable-field .field-magnet-magnify{grid-column:1 / -1;min-height:28px;flex-direction:row;gap:6px;padding:4px 6px;font-size:12px}
+ .mri-workbench .readable-field .probe-readout{position:static!important;display:block;inset:auto!important;align-self:stretch;margin:0!important;padding:8px 10px!important;grid-column:auto;grid-row:auto}
+ .mri-workbench .readable-field .probe-readout>div:first-child{gap:3px}
+ .mri-workbench .readable-field .probe-readout strong{font-size:15px}
+ .mri-workbench .readable-field .probe-readout small,.mri-workbench .readable-field .probe-readout span{font-size:11px;line-height:1.3}
+ .mri-workbench .readable-field .probe-buttons{margin-top:5px;gap:2px}
+ .mri-workbench .readable-field .probe-buttons button{min-height:28px;font-size:11px;padding:3px 5px}
+ .hack-physics-host .basic-lab[data-view=field] .basic-lab-workbench{height:calc(100dvh - 138px);min-height:0;max-height:none}
+ .basic-lab[data-view=field] .readable-field{inset:43px 10px 12px!important}
+ .basic-lab[data-view=field] .design-inspector{overflow:visible;scrollbar-gutter:auto;padding:12px 14px}
+ .basic-lab[data-view=field] .magnet-design-heading{margin-bottom:8px}
+ .basic-lab[data-view=field] .magnet-design-heading h2{font-size:17px}
+ .basic-lab[data-view=field] .basic-ring-picker{margin:8px 0 10px;font-size:12px}
+ .basic-lab[data-view=field] .basic-ring-picker select{height:36px;min-height:36px;min-width:144px;font-size:13px}
+ .basic-lab[data-view=field] .layer-strip-heading{font-size:12px;margin-bottom:5px}
+ .basic-lab[data-view=field] .edit-layer-strip button{min-height:48px;padding:5px 2px}
+ .basic-lab[data-view=field] .edit-layer-strip b{font-size:14px}
+ .basic-lab[data-view=field] .target-summary{font-size:12px;margin:6px 0}
+ .basic-lab[data-view=field] .mixed-direction-counts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:3px 6px;padding:0;margin:5px 0;font-size:11px;list-style:none}
+ .basic-lab[data-view=field] .orientation-editor{margin-top:10px}
+ .basic-lab[data-view=field] .orientation-editor-title{font-size:13px;margin-bottom:6px}
+ .basic-lab[data-view=field] .orientation-presets{gap:6px}
+ .basic-lab[data-view=field] .orientation-presets button{min-height:36px;font-size:13px;padding:5px 4px}
+ .basic-lab[data-view=field] .design-edit-hint{font-size:12px;line-height:1.4;margin:7px 0}
+ .basic-lab[data-view=field] .compute-field-button{min-height:38px;height:38px;margin-top:8px;font-size:14px}
+ .basic-lab[data-view=field] .magnet-design-toolbar{margin:8px 0}
+ .basic-lab[data-view=field] .magnet-design-toolbar button{min-height:34px;font-size:12px;padding:5px 3px}
+ .basic-lab[data-view=field] .interaction-hint{padding-top:4px;padding-bottom:4px;font-size:11px}
+}
+@media(min-width:900px) and (max-width:1100px){.mri-workbench .readable-field{grid-template-columns:minmax(0,1fr) 204px;column-gap:8px}.readable-field .field-path-caption{display:none}}
+@media(max-width:899px){.readable-field>.field-readout-column{display:grid;grid-template-columns:1fr 1fr;gap:8px}.readable-field .field-direction-key{font-size:10px;gap:3px 8px}.readable-field .field-path-caption{display:none}}
