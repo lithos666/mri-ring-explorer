@@ -829,7 +829,6 @@ export default function AssemblyStage({step,ring,active=true,partId,initialProgr
  const chooseView=(kind:"recommended"|"whole"|"detail")=>{setCameraMode(kind);runtime.current?.view(kind);};
  const phase=progress<assemblyTiming.orientationEnd?t("整体定位","Locate"):progress<assemblyTiming.inspectionEnd?t("接口特写","Inspect"):progress<assemblyTiming.finalCheckStart?t("动作演示","Move"):t("到位检查","Check");
  const part=partRole(partId),ringRetainerView=!part&&[4,5,10].includes(step),schematic=[4,5,7,8,10].includes(step)||step===0&&(!part||["acrylic","rod","frame"].includes(part));
- const fitIssue=(ring===5||ring===10)&&!part&&step>=3&&step<=5;
  const note=part==="locator"?t("层间隔块为长 18 mm 的中空圆柱，中间供 M6 螺杆通过。此视图的外径和孔径仅为示意，实际尺寸及安装位置待确认。","The inter-layer spacer is an 18 mm hollow cylinder for an M6 rod to pass through. Outside and hole diameters are illustrative; actual diameters and mounting positions await confirmation."):
   part==="temporary-clip"||step===10?t("每片透明盖板使用 3 个临时卡扣，四片共 12 个。卡扣外形来自提供的 STEP，按整环规则位置展示；安装上盖时依次取下，完成后不留卡扣。具体卡点为教学示意。","Use 3 temporary clips per clear-cover quarter, 12 for the complete ring. The supplied STEP provides the clip shape; regular teaching positions show the sequence. Remove clips during cap installation and leave none in the finished assembly. Exact positions are illustrative."):
   part==="acrylic"||step===5?t("四片透明盖板依次放入，始终保留完整磁环。盖板位置和厚度用于教学展示；制造尺寸按加工文件核对。盖好后，每片先用 3 个临时卡扣固定，再装上盖。","Fit the four clear-cover quarters in sequence while keeping the complete ring visible. Cover positions and thickness illustrate assembly; use the machining files for manufacturing. Temporarily retain each quarter with 3 clips before fitting the cap."):
@@ -863,10 +862,10 @@ export default function AssemblyStage({step,ring,active=true,partId,initialProgr
    {ringRetainerView&&<div className="assembly-stage__interface-status"><strong>{interfaceState}</strong><span>{t("完整磁环 · 实际卡扣 CAD，规则卡点与交接动作为教学示意","Complete ring · supplied clip CAD; regular clip positions and handover motion are illustrative")}</span><div><i data-material="clip"/>{t("临时卡扣","Temporary clip")}<i data-material="acrylic"/>{t("透明盖板","Clear cover")}<i data-material="housing"/>{t(step===4?"底盖与上盖":"底盖",step===4?"Base and cap":"Base")}</div></div>}
    {selected&&<div className="assembly-stage__selected"><b>{selected.id}</b>{selectedDirection} · {t("中心半径","Center radius")} {Math.round(selected.radius*25)} mm<br/>{t("N 极箭头表示磁化方向，不是该处合场方向。","The N arrow indicates magnetization, not the local resultant field.")}</div>}
    <div className="assembly-stage__callout">
-    <details className={"assembly-stage__note"+(fitIssue?" assembly-stage__note--warning":"")}>
-     <summary>{fitIssue?`${ringName(ring)} · ${t("槽位需复核","Slot clearance review")}`:t("模型说明","Model notes")}{(part==="frame"||step===8)&&<span> · {t("型材截面为示意，制造规格待确认","Illustrative profiles; manufacturing specifications pending")}</span>}</summary>
+    <details className="assembly-stage__note">
+     <summary>{t("模型说明","Model notes")}{(part==="frame"||step===8)&&<span> · {t("型材截面为示意，制造规格待确认","Illustrative profiles; manufacturing specifications pending")}</span>}</summary>
      <div>
-     {fitIssue?<><strong>{ringName(ring)} · {t("槽位复核","Slot review")}</strong><br/>{t("CAD 与 12 mm 磁块存在约 0.2 mm 名义干涉。保持真实尺寸展示；加工前须确认槽位与余量。","CAD and 12 mm cubes show approximately 0.2 mm nominal interference. True dimensions are preserved; confirm slot clearances before fabrication.")}</>:note}
+     {note}
      {!part&&[7,8,9].includes(step)&&<p>{t("块状隔块为旧 CAD 参考，不能作为当前清单数量或制造外形的依据。已确认的新隔块为 32 个、长 18 mm 的中空圆柱，详见 BOM；具体安装位置待确认。","Block spacers are legacy CAD, not a source for current quantities or manufacturing geometry. The confirmed BOM contains 32 hollow cylinders, each 18 mm long; see BOM. Exact mounting positions await confirmation.")}</p>}
      </div>
     </details>

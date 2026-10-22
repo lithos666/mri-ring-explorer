@@ -20,8 +20,6 @@
 .assembly-stage__note summary span { font-size: 10px; color: #7b838f; }
 .assembly-stage__note > div { padding: 8px 0 3px; max-width: 720px; }
 .assembly-stage__note strong { color: #3a4149; font-weight: 600; }
-.assembly-stage__note--warning { color: #956725; }
-.assembly-stage__note--warning summary { color: #956725; font-weight: 600; }
 .assembly-stage__legend { display: flex; align-items: center; gap: 8px; padding: 7px 0; font-size: 11px; color: #777d86; white-space: nowrap; }
 .assembly-stage__legend i { display: inline-block; width: 9px; height: 9px; border-radius: 3px; margin-right: 4px; background: #e83c3d; }
 .assembly-stage__legend i[data-pole="S"] { background: #0071e3; }
