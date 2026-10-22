@@ -6,3 +6,5 @@ public/assembly/** -text
 public/diagrams/** -text
 public/bom/** -text
 public/brand/** -text
+# Keep the supplied clip CAD byte-exact when Git applies Windows line endings.
+assets/cad/acrylic-clip.step -text -diff

@@ -22,7 +22,18 @@ assert.equal(manifest.layers.length,14);
 const resourceIDs=new Set(manifest.resources.map(r=>r.id));assert.equal(resourceIDs.size,manifest.resources.length);
 assert.deepEqual(manifest.resources,JSON.parse(fs.readFileSync(path.join(project,'lib/teaching-resources.json'),'utf8')),'CAD and teaching resource catalogs differ');
 const partIDs=new Set(teachingParts.map(p=>p.id)),stepIDs=new Set(teachingSteps.map(s=>s.id));
-assert.equal(teachingParts.length,13,'The reference BOM has thirteen part categories');
+assert.equal(teachingParts.length,14,'The reference BOM includes thirteen components and one temporary acrylic-clip tool');
+const clipPart=teachingParts.find(part=>part.id==='acrylic-clip');
+assert.equal(clipPart.quantity,null,'Do not invent a quantity for the temporary clip');
+assert.match(clipPart.material.en,/to confirm/);
+assert.equal(clipPart.cadViews[0].quantity,null);
+assert.equal(clipPart.cadViews[0].modelURL,'/assembly/tools/acrylic-clip.glb');
+assert.deepEqual(clipPart.stepIds,['step-10','step-04']);
+assert.deepEqual(teachingSteps.map(step=>[step.id,step.sceneStep]),[['step-01',1],['step-02',2],['step-03',3],['step-05',5],['step-10',10],['step-04',4],['step-06',6],['step-08',8],['step-09',9],['step-07',7]],'Clip the acrylic before cap installation; insert through-rods last');
+assert.deepEqual(teachingSteps.map(step=>step.index),Array.from({length:10},(_,i)=>i+1));
+assert.ok(teachingSteps.find(step=>step.id==='step-10').partIds.includes('acrylic-clip'));
+assert.ok(teachingSteps.find(step=>step.id==='step-04').partIds.includes('short-screw'));
+assert.ok(!teachingSteps.find(step=>step.id==='step-05').partIds.includes('ring-cover'),'Do not fit the cap before temporary clipping');
 assert.ok(!partIDs.has('m3-nut'),'M3 nuts are not used in the assembly');
 assert.ok(partIDs.has('extrusion-bolt')&&partIDs.has('t-slot-nut'),'Extrusion connection hardware is required');
 assert.ok(teachingParts.every(part=>part.material.zh.trim()&&part.material.en.trim()),'Every BOM part needs a bilingual material');
@@ -32,7 +43,7 @@ for(const [id,quantity] of [['printed-ring',56],['ring-cover',56],['acrylic',56]
 for(const id of ['frame-l-bracket','aluminum-frame','extrusion-bolt','t-slot-nut']){const part=teachingParts.find(part=>part.id===id);assert.equal(part.suppliedBy,'organizer');assert.equal(part.quantity,null,'Organizer-provided items must not invent quantities');}
 assert.match(teachingParts.find(part=>part.id==='locator').specification.en,/18 mm.*M6/);assert.match(teachingParts.find(part=>part.id==='locator').specification.en,/Cylindrical/);
 for(const language of ['zh','en']){
- const csv=bomCSV(language);assert.equal(csv.split('\r\n').length,14);assert.ok(!/Receipt checked|收料/.test(csv));assert.ok(csv.split('\r\n')[0].includes(language==='en'?'Material':'材料'));assert.ok(csv.split('\r\n')[0].includes(language==='en'?'Quantity breakdown':'数量构成'));assert.ok(csv.split('\r\n')[0].includes(language==='en'?'Supply':'供应方式'));
+ const csv=bomCSV(language);assert.equal(csv.split('\r\n').length,15);assert.ok(!/Receipt checked|收料/.test(csv));assert.ok(csv.split('\r\n')[0].includes(language==='en'?'Material':'材料'));assert.ok(csv.split('\r\n')[0].includes(language==='en'?'Quantity breakdown':'数量构成'));assert.ok(csv.split('\r\n')[0].includes(language==='en'?'Supply':'供应方式'));
  const row=id=>csv.split('\r\n').find(line=>line.startsWith(`"${id}",`));assert.ok(row('short-screw').includes('"448"'));assert.ok(row('locator').includes('"32"'));assert.ok(row('ring-support').includes('"42"'));for(const id of ['frame-l-bracket','aluminum-frame','extrusion-bolt','t-slot-nut'])assert.ok(row(id).includes(language==='en'?'Provided by organizers':'官方提供'));
 }
 const visibleResources=manifest.resources.filter(resource=>resource.visibility==='resources'&&resource.updateStatus==='current');

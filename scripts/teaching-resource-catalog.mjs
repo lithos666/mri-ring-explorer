@@ -72,10 +72,10 @@ export function buildTeachingResources({ project, source, matlabDirectory, prese
   }
 
   for (const [index, filename] of fs.readdirSync(path.join(source, '磁铁放置信息')).entries()) addSource(`磁铁放置信息/${filename}`, `placement-${String(index + 1).padStart(2, '0')}`, 'placement', filename, filename.includes('1736') ? '1,736 magnet coordinates' : filename.endsWith('.txt') ? '14-layer magnet placement notes' : filename.includes('边缘') ? '14-layer edge dimensions' : 'Magnet-layout source reference', ['magnet-cube'], ['step-03', 'step-09']);
-  addSource('M3螺丝尺寸.png', 'fastener-m3-reference', 'fastener-reference', 'M3 螺丝参考图（长度待确认）', 'M3 screw reference (length to confirm)', ['short-screw'], ['step-05'], undefined, { versionStatus: 'reference-thread-confirmed-length-pending', referenceNoteZh: '原图标记 M3×18；M3 螺纹已确认，实际长度尚未确认。', referenceNoteEn: 'The supplied image is labeled M3×18. M3 thread is confirmed; the installed length remains unconfirmed.' });
+  addSource('M3螺丝尺寸.png', 'fastener-m3-reference', 'fastener-reference', 'M3 螺丝参考图（长度待确认）', 'M3 screw reference (length to confirm)', ['short-screw'], ['step-04'], undefined, { versionStatus: 'reference-thread-confirmed-length-pending', referenceNoteZh: '原图标记 M3×18；M3 螺纹已确认，实际长度尚未确认。', referenceNoteEn: 'The supplied image is labeled M3×18. M3 thread is confirmed; the installed length remains unconfirmed.' });
   for (const [filename, id, zh, en, partIds, stepIds] of [
     ['l-bracket.svg', 'fastener-l-bracket-diagram', '铝型材 L 型角码示意', 'Aluminum-frame L-bracket diagram', ['frame-l-bracket', 'aluminum-frame'], ['step-08']],
-    ['m3-hardware.svg', 'fastener-m3-diagram', 'M3 螺丝 · 壳体盖板与透明盖板', 'M3 screws · housing cap and clear cover', ['short-screw', 'ring-cover', 'acrylic'], ['step-04', 'step-05']],
+    ['m3-hardware.svg', 'fastener-m3-diagram', 'M3 螺丝 · 壳体盖板与透明盖板', 'M3 screws · housing cap and clear cover', ['short-screw', 'ring-cover', 'acrylic'], ['step-04']],
     ['m6-hardware.svg', 'fastener-m6-diagram', 'M6 紧固件 · 层间连接', 'M6 hardware · inter-layer connection', ['through-rod', 'm6-nut', 'locator'], ['step-06', 'step-07', 'step-09']],
     ['extrusion-bolt.svg', 'fastener-extrusion-bolt-diagram', '铝型材连接螺栓示意', 'Extrusion mounting bolt diagram', ['extrusion-bolt', 'frame-l-bracket', 'aluminum-frame'], ['step-08']],
     ['t-slot-nut.svg', 'fastener-t-slot-nut-diagram', 'T 型槽螺母示意', 'T-slot nut diagram', ['t-slot-nut', 'extrusion-bolt', 'aluminum-frame'], ['step-08']],

@@ -2,6 +2,7 @@ import { models, ringName } from "./mri.ts";
 import resources from "./teaching-resources.json" with { type: "json" };
 import bomCADAssets from "./bom-cad-assets.json" with { type: "json" };
 import bomProductAssets from "./bom-product-assets.json" with { type: "json" };
+import acrylicClipAsset from "./acrylic-clip-asset.json" with { type: "json" };
 
 export type Bilingual = { zh: string; en: string };
 export type PartCategory = "magnet" | "printed" | "structure" | "fastener";
@@ -31,7 +32,7 @@ export interface TeachingResource {
 export interface BOMCADView {
   id: string;
   label: Bilingual;
-  quantity: number;
+  quantity: number | null;
   modelURL: string;
   imageURL: string;
   sourceName: string;
@@ -115,16 +116,23 @@ export const teachingParts: TeachingPart[] = [
     quantityBreakdown: text("4 件 × 14 层", "4 pieces × 14 layers"),
     unit: text("件 / 台", "pieces / magnet"), specification: text("孔位与对应层底座配合", "Matched to the holes in each layer base"),
     material: text("PLA（当前打印文件设置；实际制造材料待确认）", "PLA (current print-file setting; actual manufacturing material to confirm)"),
-    note: text("定位并封盖磁铁壳体。已确认每层 4 件，14 层共 56 件；阶段 4 定位，阶段 5 检查透明盖板后用 M3 螺丝紧固。", "Positions and closes the magnet housing. Confirmed: 4 pieces per layer, 56 across 14 layers. Position in stage 4 and secure with M3 screws after checking the clear cover in stage 5."),
-    assetIds: resourcesMatching(/cover|盖/i), stepIds: ["step-04", "step-05"],
+    note: text("定位并封盖磁铁壳体。已确认每层 4 件，14 层共 56 件；先覆盖亚克力并用临时卡扣夹住透明盖板与底盖，阶段 6 安装壳体盖板时逐个取下卡扣，保持磁铁受约束，再用 M3 螺丝紧固。", "Positions and closes the magnet housing. Confirmed: 4 pieces per layer, 56 across 14 layers. First fit the acrylic and temporarily clip it to the lower housing; in stage 6, remove clips one at a time as the housing cap takes over restraint, then secure with M3 screws."),
+    assetIds: resourcesMatching(/cover|盖/i), stepIds: ["step-04"],
   },
   {
     id: "acrylic", name: text("透明盖板", "Clear cover"), category: "structure", quantity: 56,
     quantityBreakdown: text("4 件 × 14 层", "4 pieces × 14 layers"),
     unit: text("件 / 台", "pieces / magnet"), specification: text("沿圆周弧形导槽装入", "Inserted along the curved circumferential guide"),
     material: text("亚克力（PMMA）", "Acrylic (PMMA)"),
-    note: text("已确认每层 4 件，14 层共 56 件；厚度与加工图待确认。截图中的 40° 不作为安装角度。", "Confirmed: 4 pieces per layer, 56 across 14 layers. Thickness and machining drawings remain to be confirmed. The 40° screenshot value is not an installation angle."),
-    assetIds: resourcesMatching(/acrylic|亚克力/i), stepIds: ["step-05"],
+    note: text("已确认每层 4 件，14 层共 56 件。覆盖后需用临时卡扣与底盖夹紧：相互吸引的磁铁不能仅靠亚克力盖住。安装壳体盖板时再取下卡扣并完成 M3 紧固。厚度与加工图待确认；截图中的 40° 不是安装角度。", "Confirmed: 4 pieces per layer, 56 across 14 layers. After fitting, temporarily clip the acrylic to the lower housing: the clear cover alone does not retain mutually attracting magnets. Remove the clips during housing-cap installation, then complete M3 fastening. Thickness and machining drawings remain unconfirmed; the screenshot's 40° is not an installation angle."),
+    assetIds: resourcesMatching(/acrylic|亚克力/i), stepIds: ["step-05", "step-10", "step-04"],
+  },
+  {
+    id: "acrylic-clip", name: text("亚克力临时固定卡扣", "Temporary acrylic retaining clip"), category: "printed", quantity: null,
+    unit: text("个（可复用工装）", "clips (reusable assembly tool)"), specification: text("夹住透明盖板与底盖；安装壳体盖板时取下", "Clips the clear cover to the lower housing; remove during housing-cap installation"),
+    material: text("3D 打印材料待确认", "3D-print material to confirm"),
+    note: text("按提供的用于固定亚克力卡扣.step 展示实际卡扣外形。亚克力覆盖后先卡紧，防止相互吸引的磁铁使盖板失去约束；下一步安装壳体盖板时逐个取下并回收。卡扣是临时工装，不留在成品中。每环用量、夹持位置、打印材料和实际夹持配合待确认；四份 Final 打印包不新增未核对的零件分配。", "The supplied 用于固定亚克力卡扣.step defines the displayed clip shape. Clip the fitted acrylic to the lower housing to restrain the mutually attracting magnets; remove and recover clips one at a time during the next housing-cap stage. This is a temporary tool, not a component left in the finished magnet. Per-ring quantity, mounting positions, print material and physical fit remain to be confirmed. No unverified allocation is added to the four Final print batches."),
+    assetIds: [], stepIds: ["step-10", "step-04"],
   },
   {
     id: "ring-support", name: text("框架安装支撑", "Frame mounting supports"), category: "printed", quantity: 42,
@@ -156,7 +164,7 @@ export const teachingParts: TeachingPart[] = [
     material: text("待确认", "To confirm"),
     note: text("已确认每层 32 个，14 层共 448 个；螺丝长度、材料、工具与扭矩待确认。旧 CAD 的 182 个螺丝实例及 2.9×16 BF 名称仅为历史展示几何；M3×18 参考图不等于已确认的安装长度。", "Confirmed: 32 screws per layer, 448 across 14 layers. Screw length, material, tools and torque remain unconfirmed. The old CAD's 182 screw instances and 2.9×16 BF names are historical display geometry only; the M3×18 reference does not confirm installation length."),
     assetIds: teachingResources.filter(r => r.category === "fastener-reference" && /螺丝|screw|M3/i.test(r.sourceRelativePath)).map(r => r.id),
-    stepIds: ["step-05"],
+    stepIds: ["step-04"],
   },
   {
     id: "m6-nut", name: text("M6 螺母", "M6 nuts"), category: "fastener", quantity: 8,
@@ -176,7 +184,7 @@ export const teachingParts: TeachingPart[] = [
     id: "aluminum-frame", name: text("铝型材框架", "Aluminum profile frame"), category: "structure", quantity: null, suppliedBy: "organizer",
     unit: text("套 / 台", "sets / magnet"), specification: text("预装框架；与三处支撑接口核对", "Preassembled frame; verify the three support interfaces"),
     material: text("铝；具体合金牌号待确认", "Aluminium; alloy grade to confirm"),
-    note: text("官方提供。按现场提供的型材规格、切割长度与连接件准备框架；在步骤 7 放入磁环前预装，并核对 L 型角码连接。", "Provided by the organizers. Prepare the frame with the supplied profiles, cut lengths and connectors; preassemble before mounting the ring in step 7 and check the L-bracket joints."),
+    note: text("官方提供。按现场提供的型材规格、切割长度与连接件准备框架；在步骤 8 放入磁环前预装，并核对 L 型角码连接。", "Provided by the organizers. Prepare the frame with the supplied profiles, cut lengths and connectors; preassemble before mounting the ring in step 8 and check the L-bracket joints."),
     assetIds: resourcesMatching(/frame|框架|new_genneration/i), stepIds: ["step-08", "step-09"],
   },
   {
@@ -232,6 +240,9 @@ supportPart.image = { src: bomCADCatalog.find(asset => asset.id === "frame-suppo
 const spacerPart = teachingParts.find(part => part.id === "locator")!;
 spacerPart.cadViews = [cadView("spacer", text("层间隔块", "Inter-layer spacer"), 32)];
 spacerPart.image = { src: spacerPart.cadViews[0].imageURL, alt: text("层间隔块.step 生成的 18 mm 圆柱形隔块渲染图", "18 mm cylindrical spacer rendered from the supplied 层间隔块.step"), kind: "cad-render" };
+const acrylicClipPart = teachingParts.find(part => part.id === "acrylic-clip")!;
+acrylicClipPart.cadViews = [{ id: "acrylic-clip", label: acrylicClipPart.name, quantity: null, modelURL: acrylicClipAsset.url, imageURL: acrylicClipAsset.thumbnail.url, sourceName: acrylicClipAsset.sourceFilename }];
+acrylicClipPart.image = { src: acrylicClipAsset.thumbnail.url, alt: text("提供的用于固定亚克力卡扣.step 生成的临时固定卡扣渲染图", "Temporary acrylic retaining clip rendered from the supplied STEP"), kind: "cad-render", caption: text("卡扣外形来自提供的 STEP；安装位置和运动为教学示意，实际夹持配合需实物核对。", "Clip geometry comes from the supplied STEP; placement and motion are instructional illustrations. Verify physical clamping fit on the real parts.") };
 
 export const teachingSteps: TeachingStep[] = [
   {
@@ -252,44 +263,52 @@ export const teachingSteps: TeachingStep[] = [
     summary: text("先核对一列独立方块的 N/S 与径向顺序，再扩展到 28 列。", "Check N/S polarity and radial order in one column of separate cubes, then repeat over 28 columns."),
     action: [text("选择 R01–R14 中当前要装配的环，按该环初始排布逐块检查磁化方向。", "Select the ring to assemble and check each cube against that ring's initial magnetization sequence."), text("从内到外装入独立的 12 mm 方块；长条示意由多颗磁铁组成。", "Place separate 12 mm cubes from inner to outer positions; a drawn bar represents multiple magnets."), text("按 28 列完成整环；R05–R10 的混合方向逐层核对。", "Complete all 28 columns; verify the mixed directions in R05–R10 layer by layer.")],
     checks: [{ id: "step-03-poles", text: text("每块 N/S 与选定环的径向顺序一致。", "Every cube's N/S orientation matches the selected ring's radial sequence.") }, { id: "step-03-columns", text: text("28 列齐全，方块数量与当前环清单一致。", "All 28 columns are present and the cube count matches the selected ring.") }],
-    note: text("教学采用初始排布；实验台里的自定义方向不会改动这里。实际装配的磁铁约束、装载顺序和夹具需另行确认。", "Teaching uses the initial layout; custom Lab directions do not change it. Confirm physical restraint, loading order and fixtures separately."), partIds: ["magnet-cube", "printed-ring"],
+    note: text("教学采用初始排布；实验台里的自定义方向不会改动这里。接下来覆盖亚克力，再用临时卡扣夹住亚克力与底盖。磁铁相互吸引，不能把亚克力本身当作可靠的最终约束；装填和转移时的夹持方式需按现场工艺核对。", "Teaching uses the initial layout; custom Lab directions do not change it. Next fit the acrylic, then temporarily clip it to the lower housing. Mutually attracting magnets cannot be retained by the acrylic alone; verify the loading and transfer restraint against the workshop procedure."), partIds: ["magnet-cube", "printed-ring"],
   },
   {
-    id: "step-04", index: 4, sceneStep: 4, title: text("定位壳体盖板", "Position the housing cap"),
-    summary: text("对齐孔位并下降到位，此时保持未锁紧。", "Align the holes and lower the cover into position, leaving it unfastened."),
-    action: [text("辨认盖板正反面，使孔位与当前环对应。", "Identify the cover faces and match its holes to the selected ring."), text("从悬空位置对齐后下降，检查磁铁与盖板之间的干涉。", "Align above the ring, lower the cover and inspect for interference with the magnets.")],
-    checks: [{ id: "step-04-holes", text: text("孔位吻合、盖板平整；暂未锁紧。", "The holes align and the cover is flat; it remains unfastened.") }], partIds: ["ring-cover", "printed-ring"],
+    id: "step-04", index: 6, sceneStep: 4, title: text("安装上盖并取下临时卡扣", "Fit the cap and remove temporary clips"),
+    summary: text("保持磁铁受约束，使上盖接替卡扣，再取下卡扣并用 M3 螺丝锁紧。", "Keep the magnets restrained as the cap takes over from the clips, then remove the clips and secure with M3 screws."),
+    action: [text("先确认透明盖板已与底盖卡紧，再辨认壳体盖板正反面并对齐孔位。", "First confirm the acrylic is clipped to the lower housing, then orient the housing cap and align its holes."), text("在上盖能接替对应位置约束时逐个取下临时卡扣；不要先全部取下，避免磁铁因相互吸引移位。", "Remove temporary clips one at a time as the cap takes over restraint at each position. Do not remove all clips first: magnetic attraction can displace the magnets."), text("确认上盖、亚克力与底盖到位后，用 M3 短螺丝紧固，并回收全部临时卡扣。", "Once the cap, acrylic and lower housing are seated, secure with M3 short screws and recover every temporary clip.")],
+    checks: [{ id: "step-04-cap-holes-v3", text: text("上盖孔位吻合、盖板平整，磁铁及透明盖板保持到位。", "The cap holes align, the cap sits flat and the magnets and acrylic remain seated.") }, { id: "step-04-restraint-v3", text: text("卡扣仅在上盖接替约束时取下；全部已回收，成品内无遗留卡扣。", "Clips were removed only as the cap took over restraint; all are recovered and none remain in the assembly.") }, { id: "step-04-fasteners-v3", text: text("M3 螺丝紧固已检查，实际长度与紧固要求已核实。", "M3 fastening is checked and the actual screw length and fastening requirements are verified.") }],
+    note: text("临时卡扣的取下时机是本步骤的关键。准确夹持位置、上盖与卡扣的过渡配合、工具及紧固顺序须以实物核对，动画不代表已经验证夹持力或装配公差。已确认使用 M3 螺丝；长度与扭矩待确认。", "The timing of clip removal is critical. Verify the clamping positions, cap-to-clip restraint transfer, tools and fastening sequence on the real assembly; the animation does not validate clamping force or fit tolerances. M3 screws are confirmed; lengths and torque remain unconfirmed."), partIds: ["ring-cover", "acrylic", "printed-ring", "acrylic-clip", "short-screw"],
   },
   {
-    id: "step-05", index: 5, sceneStep: 5, title: text("滑入透明盖板并锁紧", "Slide clear cover and secure"),
-    summary: text("沿弧形导槽进入，透过亚克力检查后再紧固盖板。", "Slide along the curved guide, inspect through the acrylic, then secure the cover."),
-    action: [text("使透明盖板与圆周弧形导槽匹配，沿导槽进入，不径向穿过磁铁。", "Match the clear cover to the circumferential curved guide and slide along it, without passing radially through magnets."), text("透过透明盖板检查限位与磁铁位置，再用 M3 螺丝紧固壳体盖板、透明盖板与壳体。", "Inspect retention and magnet positions through the clear cover, then fasten the housing cap, clear cover and housing with M3 screws.")],
-    checks: [{ id: "step-05-guide", text: text("亚克力完整进入导槽，磁铁位置与限位可见。", "The acrylic seats in the guide and magnet placement and retention are visible.") }, { id: "step-05-fastener", text: text("实际螺丝规格和紧固要求已核实。", "The actual screw specification and fastening requirements have been verified.") }],
-    note: text("已确认此处使用 M3 螺丝。蓝色悬浮层仅说明圆周滑动，透明盖板的实际 CAD、厚度与到位层位待确认。40° 是截图视角信息，不是安装角度；螺丝长度和扭矩待确认。", "M3 screws are confirmed here. The floating blue layer explains circumferential sliding only; actual clear-cover CAD, thickness and seating remain unconfirmed. 40° describes the screenshot view, not an installation angle; screw lengths and torque await confirmation."), partIds: ["acrylic", "ring-cover", "short-screw"],
+    id: "step-05", index: 4, sceneStep: 5, title: text("覆盖透明亚克力盖板", "Fit the clear acrylic cover"),
+    summary: text("先覆盖亚克力并核对磁铁位置；下一步立即用临时卡扣固定到底盖。", "Fit the acrylic and check the magnet positions, then temporarily clip it to the lower housing in the next stage."),
+    action: [text("使透明盖板与圆周弧形导槽匹配，沿导槽进入，不径向穿过磁铁。", "Match the clear cover to the circumferential curved guide and slide along it, without passing radially through magnets."), text("透过亚克力检查每颗磁铁和盖板到位情况，保持约束，准备下一步卡紧；此时尚不安装壳体上盖。", "Inspect each magnet and the acrylic seating through the clear cover. Maintain restraint and prepare to clip it in the next stage; do not install the housing cap yet.")],
+    checks: [{ id: "step-05-guide-v3", text: text("亚克力进入对应导槽，磁铁位置与限位可见。", "The acrylic seats in its guide and magnet placement and retention are visible.") }, { id: "step-05-restraint-v3", text: text("已准备临时卡扣；未将仅覆盖亚克力视为锁紧完成。", "Temporary clips are ready; acrylic coverage alone has not been treated as completed fastening.") }],
+    note: text("相互吸引的磁铁不能仅靠亚克力盖住，下一步的临时卡紧不可省略。蓝色悬浮层仅说明圆周滑动；亚克力实际 CAD、厚度与到位层位待确认。40° 是截图视角信息，不是安装角度。", "The acrylic alone cannot restrain mutually attracting magnets, so do not skip temporary clipping in the next stage. The floating blue layer explains circumferential sliding only; actual clear-cover CAD, thickness and seating remain unconfirmed. 40° describes the screenshot view, not an installation angle."), partIds: ["acrylic", "printed-ring"],
   },
   {
-    id: "step-06", index: 6, sceneStep: 6, title: text("安装框架支撑与层间隔块", "Fit mounting supports and spacers"),
+    id: "step-10", index: 5, sceneStep: 10, title: text("临时卡紧亚克力与底盖", "Temporarily clip acrylic to the base"),
+    summary: text("用提供的卡扣夹住亚克力与底盖，暂时约束相互吸引的磁铁。", "Use the supplied clip to hold the acrylic against the lower housing and temporarily restrain the mutually attracting magnets."),
+    action: [text("确认亚克力已覆盖到位，辨认卡扣开口与亚克力、底盖之间的夹持关系。", "Confirm the acrylic is seated and identify how the clip opening captures the acrylic and lower housing."), text("在经实物核对的夹持位置装上卡扣，使亚克力与底盖先卡紧，检查磁铁没有移位。", "Fit clips at the physically verified clamping positions to hold the acrylic to the lower housing, and check that the magnets have not shifted."), text("保持卡扣到位进入下一步；安装上盖时再逐个取下，不把卡扣留在成品内。", "Keep clips fitted for the next stage; remove them one at a time during cap installation and leave none in the finished assembly.")],
+    checks: [{ id: "step-10-capture", text: text("卡扣同时夹住亚克力与底盖，盖板及磁铁均保持到位。", "Clips capture both the acrylic and lower housing, keeping the cover and magnets seated.") }, { id: "step-10-transfer", text: text("已理解下一步由上盖接替约束后再移除卡扣。", "The clips will be removed only as the housing cap takes over restraint in the next stage.") }],
+    note: text("此步骤是必要的临时固定，不是最终紧固。卡扣外形取自提供的 STEP；动画中的安装位置和路径用于解释动作，实际用量、材料、夹持位置及夹持力尚待实物核对。", "This temporary restraint is essential and is not final fastening. The clip shape comes from the supplied STEP; animated placement and paths explain the action. Verify the actual quantity, material, clamping positions and holding force on the real assembly."), partIds: ["acrylic-clip", "acrylic", "printed-ring"],
+  },
+  {
+    id: "step-06", index: 7, sceneStep: 6, title: text("安装框架支撑与层间隔块", "Fit mounting supports and spacers"),
     summary: text("核对左、右、下三处框架安装支撑与层间隔块接口。", "Check the left, right and lower mounting-support interfaces and the inter-layer spacers."),
     action: [text("将框架安装支撑与磁环左、右、下方缺口对应，检查支撑朝向。", "Match the mounting supports to the left, right and lower ring notches and check their orientation."), text("识别相邻层组件之间的层间隔块及贯穿孔，核对与下一层的配合关系。", "Identify the spacers between adjacent layer assemblies and the through-holes, and check the relationship to the next layer.")],
     checks: [{ id: "step-06-support", text: text("三处支撑对位，定位件与贯穿孔轴线一致。", "All three supports align; spacers and through-hole axes correspond.") }],
     note: text("当前层间隔块已确认为长度 18 mm 的圆柱，共 32 件（4 × 8）；外径、孔径与安装分布待确认。场景中的旧方块 CAD 仅作历史接口参考；请在 BOM 查看新圆柱示意。26 mm 是磁铁面间净距。", "Current spacers are confirmed as 18 mm-long cylinders, 32 pieces (4 × 8); outer diameter, bore diameter and mounting distribution remain unconfirmed. Old block CAD in the scene is a historical interface reference; see the cylindrical illustration in BOM. 26 mm is the magnet-face gap."), partIds: ["ring-support", "locator"],
   },
   {
-    id: "step-07", index: 9, sceneStep: 7, title: text("最后安装贯穿螺杆", "Insert the through-rods last"),
+    id: "step-07", index: 10, sceneStep: 7, title: text("最后安装贯穿螺杆", "Insert the through-rods last"),
     summary: text("十四层全部装到框架后，再沿对齐的贯穿孔插入 M6 螺杆并紧固。", "After mounting all fourteen layers in the frame, insert the M6 through-rods along the aligned holes and fasten them."),
     action: [text("先确认 R01–R14 已全部安装到框架，支撑与层间隔块均到位，贯穿孔轴线连续。", "First confirm that R01–R14 are all mounted in the frame, supports and inter-layer spacers are seated, and the through-hole axes line up."), text("沿已对齐的孔轴插入 M6 贯穿螺杆；用 M6 螺母按确认工艺紧固，再完成最终检查。", "Insert the M6 through-rods along the aligned axes; fasten with M6 nuts using the confirmed procedure, then perform the final inspection.")],
     checks: [{ id: "step-07-axes", text: text("十四层已装到框架；M6 长杆沿正确轴线贯穿，杆长与端部配置已核实。", "All fourteen layers are mounted in the frame; M6 rods pass along the correct axes, with rod lengths and end hardware verified.") }, { id: "step-07-final", text: text("所有层的约束、定位与最终紧固均已完成实物检查并记录。", "Restraint, positioning and final fastening of every layer have been physically checked and recorded.") }],
     note: text("这是最后一个装配阶段。每台已确认 8 根 M6 贯穿螺杆、8 个 M6 螺母；现有 CAD 仅提供 4 条候选孔轴，完整安装位置、杆长、材料和扭矩待确认。M3 短螺丝为每层 32 个，共 448 个。完成主磁体不等于完成 MRI 成像系统。", "This is the final assembly stage. Confirmed per magnet: 8 M6 through-rods and 8 M6 nuts. Existing CAD has only 4 candidate hole axes; complete mounting positions, rod lengths, material and torque remain unconfirmed. M3 short screws total 448, 32 per layer. A completed main magnet is not yet a complete MRI imaging system."), partIds: ["through-rod", "m6-nut"],
   },
   {
-    id: "step-08", index: 7, sceneStep: 8, title: text("放入铝型材框架", "Mount in the frame"),
+    id: "step-08", index: 8, sceneStep: 8, title: text("放入铝型材框架", "Mount in the frame"),
     summary: text("把已准备的框架与三处支撑接口联系起来。", "Relate the prepared frame to the three support interfaces."),
     action: [text("提前准备铝型材框架，核对 L 型角码、连接螺栓与 T 型槽螺母，并核实支撑接口的安装空间。", "Prepare the aluminium frame, check its L-brackets, mounting bolts and T-slot nuts, and verify installation space at the support interfaces."), text("定位磁环组件，检查左、右、下框架安装支撑的接触和固定关系；此时尚不插入贯穿螺杆。", "Position the ring assembly and inspect contact and fastening at the left, right and lower mounting supports; do not insert the through-rods yet.")],
     checks: [{ id: "step-08-frame", text: text("三处支撑对应框架接口，固定配置已核实。", "All three supports match the frame interfaces and fastening is verified.") }],
     note: text("铝型材框架、L 型角码、连接螺栓与 T 型槽螺母由官方提供；按现场物料核对规格和连接。图中框架表达接口关系，不作为型材切割清单。", "The aluminium frame, L-brackets, mounting bolts and T-slot nuts are provided by the organizers; check specifications and joints against the supplied parts. The displayed frame explains interfaces rather than providing a cut list."), partIds: ["aluminum-frame", "frame-l-bracket", "extrusion-bolt", "t-slot-nut", "ring-support"],
   },
   {
-    id: "step-09", index: 8, sceneStep: 9, title: text("安装全部十四层", "Mount all fourteen layers"),
+    id: "step-09", index: 9, sceneStep: 9, title: text("安装全部十四层", "Mount all fourteen layers"),
     summary: text("沿共同中心轴依次定位 R01–R14，展开检查层号与磁化方向。", "Position R01–R14 along the common axis and use the exploded view to check layer IDs and magnetization."),
     action: [text("按 R01–R14 顺序把全部磁环安装到框架，核对层间隔块和支撑配合。", "Mount all rings in the frame in R01–R14 order, checking inter-layer spacers and support fit."), text("逐环核对磁铁数量与初始方向，确认各层孔轴连续；十四层全部安装后，下一步再插入 M6 贯穿螺杆。", "Check each ring's magnet count and initial directions and confirm alignment of the holes; after all fourteen layers are mounted, insert the M6 through-rods in the next stage.")],
     checks: [{ id: "step-09-order", text: text("14 层顺序正确，每环 28 列，合计 1,736 块磁铁。", "All 14 layers are in order, with 28 columns per ring and 1,736 magnets in total.") }, { id: "step-09-final", text: text("全部磁环已装到框架，层间定位到位，孔轴对齐，准备最后插入贯穿螺杆。", "All rings are mounted in the frame, inter-layer spacers are seated and hole axes align, ready for final through-rod insertion.") }],
@@ -297,6 +316,7 @@ export const teachingSteps: TeachingStep[] = [
     partIds: ["printed-ring", "magnet-cube", "locator", "ring-support", "m6-nut", "aluminum-frame"],
   },
 ].sort((a, b) => a.index - b.index);
+export const TEACHING_STAGE_COUNT = teachingSteps.length;
 export const partById = new Map(teachingParts.map(part => [part.id, part]));
 export const stepById = new Map(teachingSteps.map(step => [step.id, step]));
 export const resourceById = new Map(teachingResources.map(resource => [resource.id, resource]));
@@ -305,19 +325,23 @@ export interface TeachingProgress {
   schemaVersion: 1;
   tutorialId: typeof TEACHING_ID;
   currentStep: number;
-  stepOrderVersion?: 2;
+  stepOrderVersion?: 2 | 3;
   currentRing: number;
   completedStepIds: string[];
 }
-export const initialProgress = (): TeachingProgress => ({ schemaVersion: 1, tutorialId: TEACHING_ID, currentStep: 1, stepOrderVersion: 2, currentRing: 1, completedStepIds: [] });
+export const initialProgress = (): TeachingProgress => ({ schemaVersion: 1, tutorialId: TEACHING_ID, currentStep: 1, stepOrderVersion: 3, currentRing: 1, completedStepIds: [] });
 export function validateProgress(value: unknown): TeachingProgress | null {
   if (!value || typeof value !== "object") return null;
   const doc = value as Record<string, unknown>;
   if (doc.schemaVersion !== TEACHING_VERSION || doc.tutorialId !== TEACHING_ID || !Array.isArray(doc.completedStepIds)) return null;
-  const storedStep = typeof doc.currentStep === "number" && Number.isInteger(doc.currentStep) && doc.currentStep >= 1 && doc.currentStep <= 9 ? doc.currentStep : 1;
-  // Preserve the selected semantic stage from the former rod/frame/layers order.
-  const currentStep = doc.stepOrderVersion === 2 ? storedStep : ({ 7: 9, 8: 7, 9: 8 } as Record<number, number>)[storedStep] ?? storedStep;
-  return { schemaVersion: 1, tutorialId: TEACHING_ID, currentStep, stepOrderVersion: 2, currentRing: typeof doc.currentRing === "number" && Number.isInteger(doc.currentRing) && doc.currentRing >= 1 && doc.currentRing <= 14 ? doc.currentRing : 1, completedStepIds: [...new Set(doc.completedStepIds.filter((id): id is string => typeof id === "string" && stepById.has(id)))] };
+  const currentOrder = doc.stepOrderVersion === 3;
+  const storedStep = typeof doc.currentStep === "number" && Number.isInteger(doc.currentStep) && doc.currentStep >= 1 && doc.currentStep <= (currentOrder ? TEACHING_STAGE_COUNT : 9) ? doc.currentStep : 1;
+  // First normalize the former rod/frame/layers order, then preserve the
+  // selected semantic stage through the acrylic/clip/cap sequence change.
+  const previousStep = doc.stepOrderVersion === 2 || currentOrder ? storedStep : ({ 7: 9, 8: 7, 9: 8 } as Record<number, number>)[storedStep] ?? storedStep;
+  const currentStep = currentOrder ? storedStep : ({ 4: 6, 5: 4, 6: 7, 7: 8, 8: 9, 9: 10 } as Record<number, number>)[previousStep] ?? previousStep;
+  const changedStages = new Set(["step-04", "step-05", "step-10"]);
+  return { schemaVersion: 1, tutorialId: TEACHING_ID, currentStep, stepOrderVersion: 3, currentRing: typeof doc.currentRing === "number" && Number.isInteger(doc.currentRing) && doc.currentRing >= 1 && doc.currentRing <= 14 ? doc.currentRing : 1, completedStepIds: [...new Set(doc.completedStepIds.filter((id): id is string => typeof id === "string" && stepById.has(id) && (currentOrder || !changedStages.has(id))))] };
 }
 export function validateStoredIds(value: unknown, allowed: Set<string>): string[] | null {
   if (!value || typeof value !== "object") return null;

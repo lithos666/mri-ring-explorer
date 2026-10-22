@@ -1,0 +1,101 @@
+{
+  "schemaVersion": 1,
+  "id": "acrylic-clip",
+  "role": "temporary-acrylic-retaining-clip",
+  "unit": "millimeter",
+  "sourceFilename": "用于固定亚克力卡扣.step",
+  "sourceRelativePath": "assets/cad/acrylic-clip.step",
+  "sourceSha256": "49baa8ad41d1ac5644d75815cedfe995cf2688e92688d6c5bffa4c0e493c7281",
+  "sourceBytes": 40529,
+  "sourceBoundsMM": {
+    "min": [
+      450.954083834706,
+      96.4628564166241,
+      145.88081946898822
+    ],
+    "max": [
+      478.05408383470706,
+      143.684980576214,
+      196.518894086958
+    ],
+    "size": [
+      27.100000000001046,
+      47.222124159589896,
+      50.63807461796978
+    ]
+  },
+  "sourceMeshCount": 1,
+  "vertices": 588,
+  "triangles": 572,
+  "url": "/assembly/tools/acrylic-clip.glb",
+  "bytes": 22384,
+  "sha256": "a79186a2024fc2da313a129a55cc59d6c85eed909561ddac5a0fc5a86d0cf25c",
+  "centeredBoundsMM": {
+    "min": [
+      -23.611062079794948,
+      -25.31903730898489,
+      -13.550000000000523
+    ],
+    "max": [
+      23.611062079794948,
+      25.31903730898489,
+      13.550000000000523
+    ],
+    "size": [
+      47.222124159589896,
+      50.63807461796978,
+      27.100000000001046
+    ]
+  },
+  "sourceToPreview": [
+    0,
+    0,
+    1,
+    0,
+    1,
+    0,
+    0,
+    0,
+    0,
+    1,
+    0,
+    0,
+    -120.07391849641905,
+    -171.1998567779731,
+    -464.50408383470653,
+    1
+  ],
+  "jawOpening": {
+    "axis": [
+      0,
+      0,
+      1
+    ],
+    "clearanceMM": 17.1,
+    "innerPlanesMM": [
+      -8.55,
+      8.55
+    ],
+    "insertionOpeningDirection": [
+      -0.5405078640591351,
+      -0.8413389619471047,
+      0
+    ],
+    "sourceInnerPlanesMM": [
+      455.954083834706,
+      473.054083834707
+    ],
+    "evidence": "Opposed STEP faces have axial normals +X and -X and are 17.1 mm apart. Centered preview maps original X to Z. This does not establish acrylic thickness, safe retention force or verified installation points."
+  },
+  "materialStatus": "unconfirmed",
+  "quantityStatus": "unconfirmed",
+  "assemblyRegistrationStatus": "conceptual-contact-demonstration-not-validated-ring-placement",
+  "presentation": "Exact STEP mesh; display colour is illustrative, not a manufacturing material specification.",
+  "thumbnail": {
+    "url": "/bom/acrylic-clip.png",
+    "bytes": 11931,
+    "sha256": "60f3d36b1055001642f729c77446abebc0c13caef1bb9b72fdc439cca5bf5264",
+    "width": 800,
+    "height": 520
+  }
+}

@@ -709,7 +709,7 @@
       "short-screw"
     ],
     "stepIds": [
-      "step-05"
+      "step-04"
     ],
     "visibility": "bom",
     "updateStatus": "current",
@@ -754,8 +754,7 @@
       "acrylic"
     ],
     "stepIds": [
-      "step-04",
-      "step-05"
+      "step-04"
     ],
     "visibility": "bom",
     "updateStatus": "current",

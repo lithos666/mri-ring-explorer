@@ -31,6 +31,12 @@ export const assemblyTiming={
  remainingMagnetColumns:[.63,.89],
  acrylicSlide:[.055,.7],
  coverFasteners:[.69,.9],
+ temporaryClip:[.055,.72],
+ // Maintain temporary restraint while the cap approaches. Only withdraw the
+ // clip after the cap has reached the schematic contact plane, then fasten.
+ capApproach:[.055,.39],
+ temporaryClipRemoval:[.42,.64],
+ capFinalSeat:[.65,.76],
  supports:[.055,.64],
  spacers:[.57,.88],
  layers:[.055,.88],
