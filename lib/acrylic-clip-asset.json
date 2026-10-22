@@ -88,8 +88,8 @@
     "evidence": "Opposed STEP faces have axial normals +X and -X and are 17.1 mm apart. Centered preview maps original X to Z. This does not establish acrylic thickness, safe retention force or verified installation points."
   },
   "materialStatus": "unconfirmed",
-  "quantityStatus": "unconfirmed",
-  "assemblyRegistrationStatus": "conceptual-contact-demonstration-not-validated-ring-placement",
+  "quantityStatus": "user-confirmed-12-per-ring-reusable",
+  "assemblyRegistrationStatus": "illustrative-full-ring-positions-authorized-by-user",
   "presentation": "Exact STEP mesh; display colour is illustrative, not a manufacturing material specification.",
   "thumbnail": {
     "url": "/bom/acrylic-clip.png",
@@ -97,5 +97,11 @@
     "sha256": "60f3d36b1055001642f729c77446abebc0c13caef1bb9b72fdc439cca5bf5264",
     "width": 800,
     "height": 520
+  },
+  "confirmedUsage": {
+    "quartersPerRing": 4,
+    "clipsPerQuarter": 3,
+    "clipsPerRing": 12,
+    "reusable": true
   }
 }

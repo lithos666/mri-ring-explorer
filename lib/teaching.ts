@@ -2,6 +2,7 @@ import { models, ringName } from "./mri.ts";
 import resources from "./teaching-resources.json" with { type: "json" };
 import bomCADAssets from "./bom-cad-assets.json" with { type: "json" };
 import bomProductAssets from "./bom-product-assets.json" with { type: "json" };
+import { CLEAR_COVER_QUARTERS, CLIPS_PER_QUARTER, TEMPORARY_CLIP_COUNT } from "./assembly-ring-retainers.ts";
 import acrylicClipAsset from "./acrylic-clip-asset.json" with { type: "json" };
 
 export type Bilingual = { zh: string; en: string };
@@ -25,6 +26,8 @@ export interface TeachingResource {
   referenceNoteEn?: string;
   downloadFilename?: string;
   estimatedPrintMinutes?: number;
+  previousEstimatedPrintMinutes?: number;
+  printEstimateStatus?: "pending-reestimate";
   downloadAvailable?: boolean;
   visibility: "resources" | "bom" | "hidden";
   updateStatus: "current" | "pending-update" | "retired";
@@ -75,6 +78,7 @@ export const TEACHING_STORAGE = {
 export const teachingResources: TeachingResource[] = resources as TeachingResource[];
 export const finalPrintFiles = teachingResources.filter(resource => resource.category === "print" && resource.updateStatus === "current");
 export const totalPrintMinutes = finalPrintFiles.reduce((sum, resource) => sum + (resource.estimatedPrintMinutes ?? 0), 0);
+export const printEstimatePending = finalPrintFiles.some(resource => typeof resource.estimatedPrintMinutes !== "number");
 export function formatPrintDuration(minutes:number, language:"zh"|"en", asHours=false):string {
   const days=asHours?0:Math.floor(minutes/1440),hours=asHours?Math.floor(minutes/60):Math.floor(minutes%1440/60),remainder=minutes%60;
   return language==="zh" ? `${days?days+"天":""}${hours?hours+"小时":""}${remainder}分钟` : `${days?days+"d ":""}${hours?hours+"h ":""}${remainder}min`;
@@ -128,10 +132,11 @@ export const teachingParts: TeachingPart[] = [
     assetIds: resourcesMatching(/acrylic|亚克力/i), stepIds: ["step-05", "step-10", "step-04"],
   },
   {
-    id: "acrylic-clip", name: text("亚克力临时固定卡扣", "Temporary acrylic retaining clip"), category: "printed", quantity: null,
+    id: "acrylic-clip", name: text("亚克力临时固定卡扣", "Temporary acrylic retaining clip"), category: "printed", quantity: TEMPORARY_CLIP_COUNT,
+    quantityBreakdown: text(`${CLEAR_COVER_QUARTERS} 块亚克力 × ${CLIPS_PER_QUARTER} 个 = ${TEMPORARY_CLIP_COUNT} 个；完成一环后取下复用`, `${CLEAR_COVER_QUARTERS} acrylic quarters × ${CLIPS_PER_QUARTER} clips = ${TEMPORARY_CLIP_COUNT}; recover and reuse after each ring`),
     unit: text("个（可复用工装）", "clips (reusable assembly tool)"), specification: text("夹住透明盖板与底盖；安装壳体盖板时取下", "Clips the clear cover to the lower housing; remove during housing-cap installation"),
     material: text("3D 打印材料待确认", "3D-print material to confirm"),
-    note: text("按提供的用于固定亚克力卡扣.step 展示实际卡扣外形。亚克力覆盖后先卡紧，防止相互吸引的磁铁使盖板失去约束；下一步安装壳体盖板时逐个取下并回收。卡扣是临时工装，不留在成品中。每环用量、夹持位置、打印材料和实际夹持配合待确认；四份 Final 打印包不新增未核对的零件分配。", "The supplied 用于固定亚克力卡扣.step defines the displayed clip shape. Clip the fitted acrylic to the lower housing to restrain the mutually attracting magnets; remove and recover clips one at a time during the next housing-cap stage. This is a temporary tool, not a component left in the finished magnet. Per-ring quantity, mounting positions, print material and physical fit remain to be confirmed. No unverified allocation is added to the four Final print batches."),
+    note: text("采用提供的 STEP 卡扣，在完整圆环的四块亚克力上各放 3 个，每环共 12 个。覆盖后先卡紧，安装上盖并由上盖接替约束后再逐个取下。卡扣完成一环后复用，不留在成品内。图中卡点按教学展示排布；打印材料和实际夹持配合待核对。", "Use the supplied STEP clip on the complete ring: three clips on each of four acrylic quarters, twelve per ring. Clip the covers first; remove clips only as the housing cap takes over restraint. Recover and reuse them after each ring; none remain in the finished magnet. Displayed positions illustrate the procedure; verify print material and physical fit."),
     assetIds: [], stepIds: ["step-10", "step-04"],
   },
   {
@@ -241,7 +246,7 @@ const spacerPart = teachingParts.find(part => part.id === "locator")!;
 spacerPart.cadViews = [cadView("spacer", text("层间隔块", "Inter-layer spacer"), 32)];
 spacerPart.image = { src: spacerPart.cadViews[0].imageURL, alt: text("层间隔块.step 生成的 18 mm 圆柱形隔块渲染图", "18 mm cylindrical spacer rendered from the supplied 层间隔块.step"), kind: "cad-render" };
 const acrylicClipPart = teachingParts.find(part => part.id === "acrylic-clip")!;
-acrylicClipPart.cadViews = [{ id: "acrylic-clip", label: acrylicClipPart.name, quantity: null, modelURL: acrylicClipAsset.url, imageURL: acrylicClipAsset.thumbnail.url, sourceName: acrylicClipAsset.sourceFilename }];
+acrylicClipPart.cadViews = [{ id: "acrylic-clip", label: acrylicClipPart.name, quantity: TEMPORARY_CLIP_COUNT, modelURL: acrylicClipAsset.url, imageURL: acrylicClipAsset.thumbnail.url, sourceName: acrylicClipAsset.sourceFilename }];
 acrylicClipPart.image = { src: acrylicClipAsset.thumbnail.url, alt: text("提供的用于固定亚克力卡扣.step 生成的临时固定卡扣渲染图", "Temporary acrylic retaining clip rendered from the supplied STEP"), kind: "cad-render", caption: text("卡扣外形来自提供的 STEP；安装位置和运动为教学示意，实际夹持配合需实物核对。", "Clip geometry comes from the supplied STEP; placement and motion are instructional illustrations. Verify physical clamping fit on the real parts.") };
 
 export const teachingSteps: TeachingStep[] = [
@@ -269,22 +274,22 @@ export const teachingSteps: TeachingStep[] = [
     id: "step-04", index: 6, sceneStep: 4, title: text("安装上盖并取下临时卡扣", "Fit the cap and remove temporary clips"),
     summary: text("保持磁铁受约束，使上盖接替卡扣，再取下卡扣并用 M3 螺丝锁紧。", "Keep the magnets restrained as the cap takes over from the clips, then remove the clips and secure with M3 screws."),
     action: [text("先确认透明盖板已与底盖卡紧，再辨认壳体盖板正反面并对齐孔位。", "First confirm the acrylic is clipped to the lower housing, then orient the housing cap and align its holes."), text("在上盖能接替对应位置约束时逐个取下临时卡扣；不要先全部取下，避免磁铁因相互吸引移位。", "Remove temporary clips one at a time as the cap takes over restraint at each position. Do not remove all clips first: magnetic attraction can displace the magnets."), text("确认上盖、亚克力与底盖到位后，用 M3 短螺丝紧固，并回收全部临时卡扣。", "Once the cap, acrylic and lower housing are seated, secure with M3 short screws and recover every temporary clip.")],
-    checks: [{ id: "step-04-cap-holes-v3", text: text("上盖孔位吻合、盖板平整，磁铁及透明盖板保持到位。", "The cap holes align, the cap sits flat and the magnets and acrylic remain seated.") }, { id: "step-04-restraint-v3", text: text("卡扣仅在上盖接替约束时取下；全部已回收，成品内无遗留卡扣。", "Clips were removed only as the cap took over restraint; all are recovered and none remain in the assembly.") }, { id: "step-04-fasteners-v3", text: text("M3 螺丝紧固已检查，实际长度与紧固要求已核实。", "M3 fastening is checked and the actual screw length and fastening requirements are verified.") }],
+    checks: [{ id: "step-04-cap-holes-v3", text: text("上盖孔位吻合、盖板平整，磁铁及透明盖板保持到位。", "The cap holes align, the cap sits flat and the magnets and acrylic remain seated.") }, { id: "step-04-restraint-v4", text: text("12 个卡扣均在对应上盖接替约束后取下并回收，成品内无遗留卡扣。", "All twelve clips were removed and recovered only as the corresponding cap took over restraint; none remain in the assembly.") }, { id: "step-04-fasteners-v3", text: text("M3 螺丝紧固已检查，实际长度与紧固要求已核实。", "M3 fastening is checked and the actual screw length and fastening requirements are verified.") }],
     note: text("临时卡扣的取下时机是本步骤的关键。准确夹持位置、上盖与卡扣的过渡配合、工具及紧固顺序须以实物核对，动画不代表已经验证夹持力或装配公差。已确认使用 M3 螺丝；长度与扭矩待确认。", "The timing of clip removal is critical. Verify the clamping positions, cap-to-clip restraint transfer, tools and fastening sequence on the real assembly; the animation does not validate clamping force or fit tolerances. M3 screws are confirmed; lengths and torque remain unconfirmed."), partIds: ["ring-cover", "acrylic", "printed-ring", "acrylic-clip", "short-screw"],
   },
   {
     id: "step-05", index: 4, sceneStep: 5, title: text("覆盖透明亚克力盖板", "Fit the clear acrylic cover"),
-    summary: text("先覆盖亚克力并核对磁铁位置；下一步立即用临时卡扣固定到底盖。", "Fit the acrylic and check the magnet positions, then temporarily clip it to the lower housing in the next stage."),
-    action: [text("使透明盖板与圆周弧形导槽匹配，沿导槽进入，不径向穿过磁铁。", "Match the clear cover to the circumferential curved guide and slide along it, without passing radially through magnets."), text("透过亚克力检查每颗磁铁和盖板到位情况，保持约束，准备下一步卡紧；此时尚不安装壳体上盖。", "Inspect each magnet and the acrylic seating through the clear cover. Maintain restraint and prepare to clip it in the next stage; do not install the housing cap yet.")],
-    checks: [{ id: "step-05-guide-v3", text: text("亚克力进入对应导槽，磁铁位置与限位可见。", "The acrylic seats in its guide and magnet placement and retention are visible.") }, { id: "step-05-restraint-v3", text: text("已准备临时卡扣；未将仅覆盖亚克力视为锁紧完成。", "Temporary clips are ready; acrylic coverage alone has not been treated as completed fastening.") }],
-    note: text("相互吸引的磁铁不能仅靠亚克力盖住，下一步的临时卡紧不可省略。蓝色悬浮层仅说明圆周滑动；亚克力实际 CAD、厚度与到位层位待确认。40° 是截图视角信息，不是安装角度。", "The acrylic alone cannot restrain mutually attracting magnets, so do not skip temporary clipping in the next stage. The floating blue layer explains circumferential sliding only; actual clear-cover CAD, thickness and seating remain unconfirmed. 40° describes the screenshot view, not an installation angle."), partIds: ["acrylic", "printed-ring"],
+    summary: text("在完整圆环上依次覆盖四块亚克力，再用每块三个卡扣固定到底盖。", "Fit all four acrylic quarters on the complete ring, then secure each quarter to the base with three temporary clips."),
+    action: [text("依次放入完整圆环的四块四分之一亚克力，使每块进入对应导槽，覆盖整环全部磁铁。", "Fit all four quarter-ring acrylic covers into their guides, covering the magnets around the complete ring."), text("透过亚克力检查每颗磁铁和盖板到位情况，保持约束，准备下一步卡紧；此时尚不安装壳体上盖。", "Inspect each magnet and the acrylic seating through the clear cover. Maintain restraint and prepare to clip it in the next stage; do not install the housing cap yet.")],
+    checks: [{ id: "step-05-four-covers-v4", text: text("四块亚克力均进入对应导槽，整环磁铁位置与限位可见。", "All four acrylic quarters are seated, with magnet placement and retention visible around the ring.") }, { id: "step-05-restraint-v3", text: text("已准备临时卡扣；未将仅覆盖亚克力视为锁紧完成。", "Temporary clips are ready; acrylic coverage alone has not been treated as completed fastening.") }],
+    note: text("相互吸引的磁铁不能仅靠亚克力盖住，下一步的临时卡紧不可省略。动画展示四块亚克力的完整圆环覆盖；亚克力形状和厚度为教学示意，制造尺寸须另行核对。40° 是截图视角信息，不是安装角度。", "The acrylic alone cannot restrain mutually attracting magnets, so do not skip temporary clipping in the next stage. The animation shows all four acrylic quarters covering the complete ring. Acrylic shape and thickness are illustrative; verify manufacturing dimensions separately. 40° describes the screenshot view, not an installation angle."), partIds: ["acrylic", "printed-ring"],
   },
   {
     id: "step-10", index: 5, sceneStep: 10, title: text("临时卡紧亚克力与底盖", "Temporarily clip acrylic to the base"),
-    summary: text("用提供的卡扣夹住亚克力与底盖，暂时约束相互吸引的磁铁。", "Use the supplied clip to hold the acrylic against the lower housing and temporarily restrain the mutually attracting magnets."),
-    action: [text("确认亚克力已覆盖到位，辨认卡扣开口与亚克力、底盖之间的夹持关系。", "Confirm the acrylic is seated and identify how the clip opening captures the acrylic and lower housing."), text("在经实物核对的夹持位置装上卡扣，使亚克力与底盖先卡紧，检查磁铁没有移位。", "Fit clips at the physically verified clamping positions to hold the acrylic to the lower housing, and check that the magnets have not shifted."), text("保持卡扣到位进入下一步；安装上盖时再逐个取下，不把卡扣留在成品内。", "Keep clips fitted for the next stage; remove them one at a time during cap installation and leave none in the finished assembly.")],
-    checks: [{ id: "step-10-capture", text: text("卡扣同时夹住亚克力与底盖，盖板及磁铁均保持到位。", "Clips capture both the acrylic and lower housing, keeping the cover and magnets seated.") }, { id: "step-10-transfer", text: text("已理解下一步由上盖接替约束后再移除卡扣。", "The clips will be removed only as the housing cap takes over restraint in the next stage.") }],
-    note: text("此步骤是必要的临时固定，不是最终紧固。卡扣外形取自提供的 STEP；动画中的安装位置和路径用于解释动作，实际用量、材料、夹持位置及夹持力尚待实物核对。", "This temporary restraint is essential and is not final fastening. The clip shape comes from the supplied STEP; animated placement and paths explain the action. Verify the actual quantity, material, clamping positions and holding force on the real assembly."), partIds: ["acrylic-clip", "acrylic", "printed-ring"],
+    summary: text("在完整圆环上给每块亚克力装三个卡扣，共十二个，夹紧亚克力与底盖。", "Fit three clips to each acrylic quarter on the complete ring, twelve in total, to retain the covers against the base."),
+    action: [text("确认亚克力已覆盖到位，辨认卡扣开口与亚克力、底盖之间的夹持关系。", "Confirm the acrylic is seated and identify how the clip opening captures the acrylic and lower housing."), text("四块亚克力各安装 3 个卡扣，共 12 个；检查每个卡扣同时夹住亚克力与底盖，磁铁没有移位。", "Fit three clips to each of the four acrylic quarters, twelve in total. Check that every clip captures both acrylic and base and the magnets have not shifted."), text("保持卡扣到位进入下一步；安装上盖时再逐个取下，不把卡扣留在成品内。", "Keep clips fitted for the next stage; remove them one at a time during cap installation and leave none in the finished assembly.")],
+    checks: [{ id: "step-10-count-v4", text: text("完整圆环的四块亚克力各有 3 个卡扣，共 12 个。", "Each of the four acrylic quarters has three clips, twelve around the full ring.") }, { id: "step-10-capture", text: text("卡扣同时夹住亚克力与底盖，盖板及磁铁均保持到位。", "Clips capture both the acrylic and lower housing, keeping the cover and magnets seated.") }, { id: "step-10-transfer", text: text("已理解下一步由上盖接替约束后再移除卡扣。", "The clips will be removed only as the housing cap takes over restraint in the next stage.") }],
+    note: text("此步骤是必要的临时固定，不是最终紧固。卡扣外形取自提供的 STEP；动画中的安装位置和路径用于解释动作，数量已确认为每块亚克力 3 个、每环 12 个；图中卡点为教学排布，材料、配合及夹持力需实物核对。", "This temporary restraint is essential and is not final fastening. The clip shape comes from the supplied STEP; animated placement and paths explain the action. Quantity is confirmed at three per acrylic quarter, twelve per ring. Display positions illustrate the procedure; verify material, fit and holding force on the real assembly."), partIds: ["acrylic-clip", "acrylic", "printed-ring"],
   },
   {
     id: "step-06", index: 7, sceneStep: 6, title: text("安装框架支撑与层间隔块", "Fit mounting supports and spacers"),

@@ -3,7 +3,8 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { models } from '../lib/mri.ts';
-import { bomCSV, teachingParts, teachingSteps, finalPrintFiles, totalPrintMinutes, formatPrintDuration } from '../lib/teaching.ts';
+import { bomCSV, teachingParts, teachingSteps, finalPrintFiles, totalPrintMinutes, printEstimatePending, formatPrintDuration } from '../lib/teaching.ts';
+import { CLEAR_COVER_QUARTERS, CLIPS_PER_QUARTER, TEMPORARY_CLIP_COUNT, RETAINER_LOCATIONS, ringCapQuarterProgress, ringClipArrival } from '../lib/assembly-ring-retainers.ts';
 
 const project=path.resolve(import.meta.dirname,'..');
 const manifest=JSON.parse(fs.readFileSync(path.join(project,'lib/cad-manifest.json'),'utf8'));
@@ -24,9 +25,22 @@ assert.deepEqual(manifest.resources,JSON.parse(fs.readFileSync(path.join(project
 const partIDs=new Set(teachingParts.map(p=>p.id)),stepIDs=new Set(teachingSteps.map(s=>s.id));
 assert.equal(teachingParts.length,14,'The reference BOM includes thirteen components and one temporary acrylic-clip tool');
 const clipPart=teachingParts.find(part=>part.id==='acrylic-clip');
-assert.equal(clipPart.quantity,null,'Do not invent a quantity for the temporary clip');
+assert.equal(clipPart.quantity,12,'Four acrylic quarters each use three reusable temporary clips');
 assert.match(clipPart.material.en,/to confirm/);
-assert.equal(clipPart.cadViews[0].quantity,null);
+assert.equal(clipPart.cadViews[0].quantity,12);
+assert.equal(CLEAR_COVER_QUARTERS,4);assert.equal(CLIPS_PER_QUARTER,3);assert.equal(TEMPORARY_CLIP_COUNT,12);
+assert.equal(RETAINER_LOCATIONS.length,12);
+for(let quarter=0;quarter<4;quarter++)assert.equal(RETAINER_LOCATIONS.filter(location=>location.quarter===quarter).length,3);
+for(const location of RETAINER_LOCATIONS){assert.equal(ringClipArrival(1,location.quarter,location.slot).amount,1);assert.equal(ringClipArrival(1,location.quarter,location.slot).visible,true);}
+// Every displayed tool must remain until its own quarter's cap takes over;
+// fastening must wait until all three tools of that quarter have departed.
+for(let sample=0;sample<=200;sample++)for(let quarter=0;quarter<4;quarter++){
+ const state=ringCapQuarterProgress(sample/200,quarter);
+ for(let slot=0;slot<3;slot++){
+  if(state.clipWithdrawal(slot)>0)assert.equal(state.restrained,true,'A clip cannot leave an unrestrained quarter');
+  if(state.fasten>0)assert.equal(state.clipWithdrawal(slot),1,'Fastening follows removal of all three temporary clips');
+ }
+}
 assert.equal(clipPart.cadViews[0].modelURL,'/assembly/tools/acrylic-clip.glb');
 assert.deepEqual(clipPart.stepIds,['step-10','step-04']);
 assert.deepEqual(teachingSteps.map(step=>[step.id,step.sceneStep]),[['step-01',1],['step-02',2],['step-03',3],['step-05',5],['step-10',10],['step-04',4],['step-06',6],['step-08',8],['step-09',9],['step-07',7]],'Clip the acrylic before cap installation; insert through-rods last');
@@ -67,8 +81,9 @@ for(const resource of manifest.resources) {
  assert.ok(resource.stepIds.every(id=>stepIDs.has(id)),`Unknown assembly link: ${resource.id}`);
 }
 assert.deepEqual(finalPrintFiles.map(resource=>resource.downloadFilename),['Final_1.3mf','Final_2.3mf','Final_3.3mf','Final_4.3mf']);
-assert.deepEqual(finalPrintFiles.map(resource=>resource.estimatedPrintMinutes),[8358,5379,2269,1008]);
-assert.equal(totalPrintMinutes,17014);assert.equal(formatPrintDuration(totalPrintMinutes,'zh'),'11天19小时34分钟');assert.equal(formatPrintDuration(totalPrintMinutes,'zh',true),'283小时34分钟');assert.equal(formatPrintDuration(totalPrintMinutes,'en'),'11d 19h 34min');
+assert.deepEqual(finalPrintFiles.map(resource=>resource.estimatedPrintMinutes),[8358,5379,2269,undefined]);
+assert.equal(finalPrintFiles[3].previousEstimatedPrintMinutes,1008);assert.equal(finalPrintFiles[3].printEstimateStatus,'pending-reestimate');assert.equal(printEstimatePending,true);
+assert.equal(totalPrintMinutes,16006,'Only the first three current estimates are known');assert.equal(formatPrintDuration(totalPrintMinutes,'zh'),'11天2小时46分钟');assert.equal(formatPrintDuration(totalPrintMinutes,'zh',true),'266小时46分钟');assert.equal(formatPrintDuration(totalPrintMinutes,'en'),'11d 2h 46min');
 assert.deepEqual(fs.readdirSync(path.join(project,'public/resources')).filter(name=>/\.(?:3mf|step|stp|stl|obj|gltf|glb)$/i.test(name)).sort(),['Final_1.3mf','Final_2.3mf','Final_3.3mf','Final_4.3mf'],'Only four model downloads are published');
 assert.equal(manifest.resources.filter(r=>r.category==='cad').length,20);assert.ok(manifest.resources.filter(r=>r.category==='cad').every(r=>r.downloadAvailable===false));
 for(const filename of ['print-side-support.3mf','print-interlayer-support.3mf','print-holder-v1.3mf','print-layer-01.3mf','print-prototype-v4.3mf'])assert.ok(!fs.existsSync(publicFile(`/resources/${filename}`)),`Old print download remains: ${filename}`);
@@ -119,4 +134,4 @@ assert.deepEqual(manifest.hardware.extrusionConnections.partIds,['extrusion-bolt
 assert.equal(manifest.hardware.coverAcrylicBase.quantity,448);assert.equal(manifest.hardware.interLayer.rodQuantity,8);assert.equal(manifest.hardware.interLayer.nutQuantity,8);assert.equal(manifest.hardware.spacers.quantity,32);assert.equal(manifest.hardware.spacers.lengthMM,18);assert.equal(manifest.hardware.spacers.shape,'cylinder');assert.equal(manifest.hardware.spacers.outerDiameterStatus,'provided-cad-nominal');assert.equal(manifest.hardware.spacers.boreDiameterStatus,'provided-cad-nominal');assert.equal(manifest.hardware.frameBrackets.suppliedBy,'organizer');assert.equal(manifest.hardware.extrusionFrame.suppliedBy,'organizer');assert.equal(manifest.hardware.extrusionConnections.suppliedBy,'organizer');
 assert.deepEqual([manifest.hardware.spacers.nominalGeometryMM.length,manifest.hardware.spacers.nominalGeometryMM.outerDiameter,manifest.hardware.spacers.nominalGeometryMM.throughHoleDiameter],[18,14,6.2]);
 assert.ok(!manifest.parts.some(p=>p.role==='acrylic'),'Do not misidentify independent acrylic CAD');
-console.log(JSON.stringify({status:'passed',layers:14,columns:28,magnets:1736,BOMCategories:teachingParts.length,catalogEntries:manifest.resources.length,visibleResourceDownloads:visibleResources.length,finalPrintFiles:finalPrintFiles.length,estimatedPrintMinutes:totalPrintMinutes,retiredCADDownloads:manifest.resources.filter(r=>r.downloadAvailable===false).length,bomReferenceDownloads:6,retainedMATLABPrograms:7,CADInstances:manifest.confirmedCADInstanceCounts,nominalPocketConflicts:conflicts,properRigidRegistrations:14},null,2));
+console.log(JSON.stringify({status:'passed',layers:14,columns:28,magnets:1736,BOMCategories:teachingParts.length,catalogEntries:manifest.resources.length,visibleResourceDownloads:visibleResources.length,finalPrintFiles:finalPrintFiles.length,knownEstimatedPrintMinutes:totalPrintMinutes,printEstimatePending,retiredCADDownloads:manifest.resources.filter(r=>r.downloadAvailable===false).length,bomReferenceDownloads:6,retainedMATLABPrograms:7,CADInstances:manifest.confirmedCADInstanceCounts,nominalPocketConflicts:conflicts,properRigidRegistrations:14},null,2));

@@ -6,7 +6,7 @@ export const FINAL_PRINT_FILES = [
   { filename: 'Final_1.3mf', id: 'print-final-1', estimatedPrintMinutes: 8358 },
   { filename: 'Final_2.3mf', id: 'print-final-2', estimatedPrintMinutes: 5379 },
   { filename: 'Final_3.3mf', id: 'print-final-3', estimatedPrintMinutes: 2269 },
-  { filename: 'Final_4.3mf', id: 'print-final-4', estimatedPrintMinutes: 1008 },
+  { filename: 'Final_4.3mf', id: 'print-final-4', previousEstimatedPrintMinutes: 1008, printEstimateStatus: 'pending-reestimate' },
 ];
 const retiredCAD = resource => ({ ...resource, visibility: 'hidden', updateStatus: 'retired', downloadAvailable: false });
 
@@ -62,12 +62,12 @@ export function buildTeachingResources({ project, source, matlabDirectory, prese
   addSource('模型/surport.step', 'cad-ring-support', 'cad', '框架安装支撑 CAD', 'Frame mounting support CAD', ['ring-support'], ['step-06', 'step-08', 'step-09']);
   const legacySpacer = { versionStatus: 'legacy-block-reference-not-release-confirmed', referenceNoteZh: '历史文件是方块形隔块，不符合当前已确认的 18 mm 长圆柱形隔块。仅供旧接口参考；不能据此制造当前圆柱。', referenceNoteEn: 'This historical file contains block-shaped spacers, not the confirmed 18 mm-long cylinders. Use it only as an old interface reference, not to manufacture the current cylinder.' };
   addSource('模型/support_layer.step', 'cad-locator', 'cad', '历史方块层间隔块 CAD（非当前圆柱）', 'Historical block-spacer CAD (not the current cylinder)', ['locator'], ['step-06', 'step-07', 'step-09'], undefined, legacySpacer);
-  for (const { filename, id, estimatedPrintMinutes } of FINAL_PRINT_FILES) {
+  for (const { filename, id, ...printEstimate } of FINAL_PRINT_FILES) {
     // These are complete print batches. Their per-file BOM allocation has
     // not been supplied, so do not invent part or assembly-stage mappings.
     addSource(`打印文件/${filename}`, id, 'print', filename, filename, [], [], undefined, {
       versionStatus: 'user-confirmed-final-print-batch', downloadFilename: filename,
-      estimatedPrintMinutes, estimateSource: 'user-provided', packageScope: 'complete-final-print-set',
+      ...printEstimate, estimateSource: typeof printEstimate.estimatedPrintMinutes === 'number' ? 'user-provided' : 'previous-version-user-provided', packageScope: 'complete-final-print-set',
     });
   }
 

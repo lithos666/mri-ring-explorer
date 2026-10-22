@@ -101,3 +101,10 @@ Principles & Lab keeps the initial 3D view and adds a transverse/FOV tab. The XY
 The current lesson has ten eight-second stages. Clear-cover insertion now precedes a new temporary-retainer stage, then cap fitting and clip removal under continued restraint. The supplied STEP is converted to an exact, independently audited clip mesh; its source is archived for reproduction. The local interface uses explanatory mating surfaces because installed clip coordinates, acrylic thickness, physical retention force and per-ring quantity have not been confirmed. The clip is removed before the completed magnet view. See [the bilingual assembly and migration notes](temporary-acrylic-retainer.md).
 
 The overview places a typographic event-website link above the main headline, while the logo retains its event link. The new reusable clip appears in BOM with unknown quantity/material and an isolated CAD viewer. Resources continues to expose only the four final print models plus the existing nine layout references; this update does not assign the new clip to an unverified print batch. Learning progress migrates by semantic stage, with affected cap/acrylic inspections reopened. The magnetic model and cached fields are unchanged.
+
+
+### Full-ring retainers and revised Final_4 — 2026-10-23
+
+The cover, temporary-clip and cap-removal lessons now keep the entire circular ring visible. Four individually outlined acrylic quarters are fitted; each receives three supplied CAD clips, twelve around the full ring. The next stage transfers restraint and removes the tools around the same ring. The previous isolated rectangular interface is no longer the teaching view. Displayed positions are user-authorized illustrations; manufacturing fit and material are separate from the confirmed usage count.
+
+Final_4.3mf alone is replaced with the revised source. Final_1–3 and the physical field data stay unchanged. As the user has not re-estimated printing time, Final_4 and the complete package total are explicitly pending; the known first-three subtotal is 266 h 46 min. Download links include the resource content hash to select the current file after revisions.

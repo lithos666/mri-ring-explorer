@@ -37035,8 +37035,8 @@
       "type": "3MF",
       "sourceRelativePath": "打印文件/Final_4.3mf",
       "url": "/resources/Final_4.3mf",
-      "bytes": 568671,
-      "sha256": "51cc31a21d3e23cce90e9fafeb0e3e33faf714695e6b99aaf7c28e74eccf2da0",
+      "bytes": 621537,
+      "sha256": "763693c91163042af2695972f90f08d0c7b9c0d54abd29cf8e879922716283f2",
       "category": "print",
       "partIds": [],
       "stepIds": [],
@@ -37044,8 +37044,9 @@
       "updateStatus": "current",
       "versionStatus": "user-confirmed-final-print-batch",
       "downloadFilename": "Final_4.3mf",
-      "estimatedPrintMinutes": 1008,
-      "estimateSource": "user-provided",
+      "previousEstimatedPrintMinutes": 1008,
+      "printEstimateStatus": "pending-reestimate",
+      "estimateSource": "previous-version-user-provided",
       "packageScope": "complete-final-print-set"
     },
     {
