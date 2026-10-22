@@ -552,9 +552,9 @@
     "versionStatus": "user-confirmed-final-print-batch",
     "downloadFilename": "Final_4.3mf",
     "previousEstimatedPrintMinutes": 1008,
-    "printEstimateStatus": "pending-reestimate",
-    "estimateSource": "previous-version-user-provided",
-    "packageScope": "complete-final-print-set"
+    "estimateSource": "user-provided",
+    "packageScope": "complete-final-print-set",
+    "estimatedPrintMinutes": 1169
   },
   {
     "id": "placement-01",

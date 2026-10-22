@@ -22,4 +22,4 @@ Existing learning progress is migrated by semantic stage identity. The changed c
 
 原学习进度按对应装配阶段迁移；顺序已变更的透明盖板与壳体上盖检查需重新确认，新增卡扣步骤默认为未完成。磁铁设计及其历史与学习进度独立。
 
-Final_4.3mf was replaced on 2026-10-23; its current printing time and complete-package total await re-estimation. Final_1–3 remain byte-identical. / 2026-10-23 已替换 Final_4.3mf，新打印时长和整套总时长待重新估算；Final_1–3 文件字节保持不变。
+Final_4.3mf was replaced on 2026-10-23. The user confirmed an additional 2 h 41 min, bringing its estimate from 16 h 48 min to 19 h 29 min; the complete package totals 286 h 15 min (11 d 22 h 15 min). Final_1–3 remain byte-identical. / 2026-10-23 已替换 Final_4.3mf；用户确认打印时间增加 2小时41分钟，由 16小时48分钟更新为 19小时29分钟，整套合计 286小时15分钟（11天22小时15分钟）。Final_1–3 文件字节保持不变。

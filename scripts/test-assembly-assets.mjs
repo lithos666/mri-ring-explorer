@@ -81,9 +81,9 @@ for(const resource of manifest.resources) {
  assert.ok(resource.stepIds.every(id=>stepIDs.has(id)),`Unknown assembly link: ${resource.id}`);
 }
 assert.deepEqual(finalPrintFiles.map(resource=>resource.downloadFilename),['Final_1.3mf','Final_2.3mf','Final_3.3mf','Final_4.3mf']);
-assert.deepEqual(finalPrintFiles.map(resource=>resource.estimatedPrintMinutes),[8358,5379,2269,undefined]);
-assert.equal(finalPrintFiles[3].previousEstimatedPrintMinutes,1008);assert.equal(finalPrintFiles[3].printEstimateStatus,'pending-reestimate');assert.equal(printEstimatePending,true);
-assert.equal(totalPrintMinutes,16006,'Only the first three current estimates are known');assert.equal(formatPrintDuration(totalPrintMinutes,'zh'),'11天2小时46分钟');assert.equal(formatPrintDuration(totalPrintMinutes,'zh',true),'266小时46分钟');assert.equal(formatPrintDuration(totalPrintMinutes,'en'),'11d 2h 46min');
+assert.deepEqual(finalPrintFiles.map(resource=>resource.estimatedPrintMinutes),[8358,5379,2269,1169]);
+assert.equal(finalPrintFiles[3].previousEstimatedPrintMinutes,1008);assert.equal(finalPrintFiles[3].printEstimateStatus,undefined);assert.equal(printEstimatePending,false);
+assert.equal(totalPrintMinutes,17175,'All four current estimates are confirmed');assert.equal(formatPrintDuration(totalPrintMinutes,'zh'),'11天22小时15分钟');assert.equal(formatPrintDuration(totalPrintMinutes,'zh',true),'286小时15分钟');assert.equal(formatPrintDuration(totalPrintMinutes,'en'),'11d 22h 15min');
 assert.deepEqual(fs.readdirSync(path.join(project,'public/resources')).filter(name=>/\.(?:3mf|step|stp|stl|obj|gltf|glb)$/i.test(name)).sort(),['Final_1.3mf','Final_2.3mf','Final_3.3mf','Final_4.3mf'],'Only four model downloads are published');
 assert.equal(manifest.resources.filter(r=>r.category==='cad').length,20);assert.ok(manifest.resources.filter(r=>r.category==='cad').every(r=>r.downloadAvailable===false));
 for(const filename of ['print-side-support.3mf','print-interlayer-support.3mf','print-holder-v1.3mf','print-layer-01.3mf','print-prototype-v4.3mf'])assert.ok(!fs.existsSync(publicFile(`/resources/${filename}`)),`Old print download remains: ${filename}`);

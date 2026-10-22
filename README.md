@@ -13,9 +13,8 @@ The final three stages are: mount in the frame → mount all fourteen layers →
 | Final_1.3mf | 5天19小时18分钟 / 5d 19h 18min |
 | Final_2.3mf | 3天17小时39分钟 / 3d 17h 39min |
 | Final_3.3mf | 1天13小时49分钟 / 1d 13h 49min |
-| Final_4.3mf | 已更新，待重新估时 / Updated; re-estimate pending |
-| **整套总计 / Complete total** | **待确认 / Pending** |
-| 前三份已知估时 / Known subtotal for files 1–3 | 266小时46分钟 / 266h 46min |
+| Final_4.3mf | 19小时29分钟 / 19h 29min |
+| **整套总计 / Complete total** | **11天22小时15分钟 / 11d 22h 15min（286小时15分钟 / 286h 15min）** |
 
 预计时间由用户提供；四份文件构成完整打印包，未推断单份文件与 BOM 零件的对应关系。原始工程目录不受下载清理影响。
 

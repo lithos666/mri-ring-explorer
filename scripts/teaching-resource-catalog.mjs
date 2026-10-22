@@ -6,7 +6,7 @@ export const FINAL_PRINT_FILES = [
   { filename: 'Final_1.3mf', id: 'print-final-1', estimatedPrintMinutes: 8358 },
   { filename: 'Final_2.3mf', id: 'print-final-2', estimatedPrintMinutes: 5379 },
   { filename: 'Final_3.3mf', id: 'print-final-3', estimatedPrintMinutes: 2269 },
-  { filename: 'Final_4.3mf', id: 'print-final-4', previousEstimatedPrintMinutes: 1008, printEstimateStatus: 'pending-reestimate' },
+  { filename: 'Final_4.3mf', id: 'print-final-4', estimatedPrintMinutes: 1169, previousEstimatedPrintMinutes: 1008 },
 ];
 const retiredCAD = resource => ({ ...resource, visibility: 'hidden', updateStatus: 'retired', downloadAvailable: false });
 
