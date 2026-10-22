@@ -22,8 +22,11 @@ export interface TeachingResource {
   versionStatus?: string;
   referenceNoteZh?: string;
   referenceNoteEn?: string;
+  downloadFilename?: string;
+  estimatedPrintMinutes?: number;
+  downloadAvailable?: boolean;
   visibility: "resources" | "bom" | "hidden";
-  updateStatus: "current" | "pending-update";
+  updateStatus: "current" | "pending-update" | "retired";
 }
 export interface BOMCADView {
   id: string;
@@ -69,6 +72,12 @@ export const TEACHING_STORAGE = {
   checks: "mri-hackathon-checks-v1",
 } as const;
 export const teachingResources: TeachingResource[] = resources as TeachingResource[];
+export const finalPrintFiles = teachingResources.filter(resource => resource.category === "print" && resource.updateStatus === "current");
+export const totalPrintMinutes = finalPrintFiles.reduce((sum, resource) => sum + (resource.estimatedPrintMinutes ?? 0), 0);
+export function formatPrintDuration(minutes:number, language:"zh"|"en", asHours=false):string {
+  const days=asHours?0:Math.floor(minutes/1440),hours=asHours?Math.floor(minutes/60):Math.floor(minutes%1440/60),remainder=minutes%60;
+  return language==="zh" ? `${days?days+"天":""}${hours?hours+"小时":""}${remainder}分钟` : `${days?days+"d ":""}${hours?hours+"h ":""}${remainder}min`;
+}
 const resourcesMatching = (pattern: RegExp, category?: ResourceCategory) => teachingResources
   .filter(resource => (!category || resource.category === category) && pattern.test(resource.sourceRelativePath))
   .map(resource => resource.id);

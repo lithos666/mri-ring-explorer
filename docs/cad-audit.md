@@ -1,6 +1,6 @@
 # 本地教学版 CAD 核对记录 / Local teaching CAD audit
 
-适用版本：新版 14 层、28 列、1,736 颗 12 mm 磁铁。核对输入为 `new_generation_prototype/模型`、同目录打印与放置说明，以及项目 MATLAB 文件；原始参考下载按字节保留，新增紧固件示意独立标注。每个文件的 SHA-256、大小和对应步骤列于 `lib/cad-manifest.json`。
+适用版本：新版 14 层、28 列、1,736 颗 12 mm 磁铁。场景核对输入为 `new_generation_prototype/模型`、同目录放置说明及项目 MATLAB 文件。2026-10-22 起模型下载仅保留 Final_1.3mf–Final_4.3mf；旧 CAD 的身份与 SHA-256 作为场景来源保留，标为 hidden / retired / downloadAvailable=false，其 STEP 发布副本已撤下。新增紧固件示意独立标注。资源 SHA-256、大小及已知对应步骤列于 `lib/cad-manifest.json`。
 
 ## 真实零件实例及单位
 
@@ -25,8 +25,8 @@ R01、R14 是独立 XY 平面模型；R02–R13 位于源 CAD 的 YZ 平面，�
 3. 未在提供的 STEP 中独立确认亚克力实体。页面的透明亚克力滑入演示是关系示意；厚度、分段、路径与最终加工文件仍需确认。
 4. 用户已确认壳体盖板、透明盖板与壳体之间使用 **M3 螺丝，不使用 M3 螺母**；每层 32 个，整台 **448 个**。CAD 螺丝名称仍为 `2.9×16 BF`，共 182 个几何实例，仅是历史展示；参考图 `M3×18` 不确立安装长度。长度、材料和扭矩仍待确认。
 5. 用户已确认整台 **8 根 M6 贯穿螺杆、8 个 M6 螺母**，装配不使用 M10。原 M10 图片已退出网站目录与发布副本。旧定位块只给出四条候选孔轴，未确立全部八根的位置；M6 螺纹不等于实际孔径。杆长、孔隙配合、材料、垫片配置和扭矩仍待确认，数量不再待确认。贯穿杆在十四层全部就位后最后插入。
-6. 当前圆柱隔块数量 **32（4 × 8）**；新提供的 `层间隔块.step` 确认名义长度 **18 mm**、外径 **14 mm**、通孔直径 **6.2 mm**。实际制造公差、M6 配合和安装分布仍需实物核对。26 mm 是磁铁端面净距，不能当作隔块厚度。旧方块 CAD 与 3MF 保留并明确标为历史参考。
-7. 用户指定 **`prototypev4.3mf` 为当前教学打印版本**；`prototypev0`–`prototypev3` 已退出网站目录与发布副本，用户本地原件保留。其他侧支撑、层间支撑、holder v1 和 layer1 打印参考继续保留。`layer1.3mf` 不代表已经取得全部十四层的打印发行包。
+6. 当前圆柱隔块数量 **32（4 × 8）**；新提供的 `层间隔块.step` 确认名义长度 **18 mm**、外径 **14 mm**、通孔直径 **6.2 mm**。实际制造公差、M6 配合和安装分布仍需实物核对。26 mm 是磁铁端面净距，不能当作隔块厚度。旧方块 CAD 来源记录仍保留在场景中，其 CAD 和 3MF 下载均已撤下。
+7. 当前用户指定的最终打印包为 **Final_1.3mf、Final_2.3mf、Final_3.3mf、Final_4.3mf**。全部旧 STEP、prototype v0–v4、侧支撑、层间支撑、holder v1 和 layer1 的网页模型下载副本均撤下；原工程目录不删除。四份预计时间合计 17,014 分钟，即 **283小时34分钟 / 11天19小时34分钟**。未根据乱码对象名称猜测单份文件的完整零件分配。
 8. 用户确认铝型材 **框架、L 型角码、连接螺栓及 T 型槽螺母均由官方提供**。BOM 用供应状态代替待确认数量，不推定数量；具体外形、槽系列、螺纹与材料按提供物料核对，不直接套用层间 M6。用途示意图不是加工图，现有模型不提供切割清单或紧固扭矩。
 
 ## 当前材料与资料展示状态
@@ -39,7 +39,7 @@ R01、R14 是独立 XY 平面模型；R02–R13 位于源 CAD 的 YZ 平面，�
 
 分段磁铁壳体 56（4 × 14）、壳体盖板 56（4 × 14）、透明盖板 56（4 × 14）、框架支撑 42（侧支撑 28 + 底部 14）、圆柱层间隔块 32（4 × 8）、贯穿螺杆 8、M3 短螺丝 448（32 × 14）、M6 螺母 8。L 型角码、铝型材框架、型材连接螺栓及 T 型槽螺母由官方提供。清单、详情及双语 CSV 共用这些数量、数量构成与供应状态；不从 CAD 实例数反推采购数量。
 
-当前 BOM 为 13 类物料，删除收料记录界面和 M3 螺母条目。Resources 提供 31 项当前 CAD、打印与排布/尺寸下载；6 项紧固件参考和本次 3 项零件 STEP 从对应 BOM 详情下载。原 7 份 MATLAB 代码与发布副本逐字节保留，目录标记 `hidden` / `pending-update`，教学网页显示待更新状态且不再提供旧下载入口。收到新版文件后再另行核对；现有求场继续使用已核对模型。
+当前 BOM 为 13 类物料，删除收料记录界面和 M3 螺母条目。Resources 提供 13 项下载：4 份最终打印文件与原有 9 份排布/尺寸资料；6 项紧固件参考仍从对应 BOM 详情下载。20 项历史 CAD 仅保留来源元数据，BOM 的图像与独立 GLB 保留，STEP 下载撤下。原 7 份 MATLAB 代码与发布副本逐字节保留，目录标记 `hidden` / `pending-update`，教学网页显示待更新状态且不再提供旧下载入口。收到新版文件后再另行核对；现有求场继续使用已核对模型。
 
 ## 卡扣与闭环演示路径
 
@@ -55,7 +55,7 @@ R01、R14 是独立 XY 平面模型；R02–R13 位于源 CAD 的 YZ 平面，�
 
 预生成的 GLB 已包含在本地项目中，普通 `npm.cmd run dev`/构建不需要安装 CAD 转换器。若需转换更新后的 STEP，单独安装 `occt-import-js`，然后运行 `node scripts/generate-assembly-assets.mjs --source=<new_generation_prototype目录> --toolkit=<occt-import-js.js路径> --matlab=<项目matlab目录>`。转换器仅用于离线准备，不向浏览器发送 STEP/WASM。
 
-仅更新下载清单时使用 `node scripts/refresh-teaching-resources.mjs --source=<new_generation_prototype目录>`；它重新核对资源大小和 SHA-256，默认保留现有发布 STEP 文件，避免源目录中的新草稿与当前已转换模型不一致。明确核对过新 CAD 后才可使用 `--update-cad-references` 更新参考文件；正式发布前还须同步转换和核对场景模型。完整 CAD 转换入口继续按新输入更新参考文件。两种入口共用资源展示规则，均只发布 prototype v4，并保留 MATLAB 待更新及紧固件仅在 BOM 展示的策略，不会重新加入旧版本或 M10 图片。本次核对的 7 个 MATLAB 程序与用户项目目录逐字节一致，保持原样。
+仅更新下载清单时使用 `node scripts/refresh-teaching-resources.mjs --source=<new_generation_prototype目录>`；它按字节复制四份最终 3MF，核对大小与 SHA-256，默认保留已有场景的 CAD 来源身份以及其他已核对参考资料。CAD 仅作为 hidden / retired 来源记录，不再复制为网页下载。`--update-cad-references` 用于经过明确核对的来源更新，仍不会恢复 CAD 下载；更新场景还须另行转换与核对。两种资源生成入口共用最终四份文件允许列表，并清理旧模型发布副本；MATLAB 待更新及紧固件仅在 BOM 展示的策略保留。原工程目录、7 个 MATLAB 程序和 GLB 场景不受下载清理影响。
 
 2026-10-13 资料刷新发现源 `new_genneration.step` 已于 2026-10-12 17:09:53 重存为 166,823,709 字节，并增加 PROCESS_PLANNING_SCHEMA 与大量实体，不能视为时间戳变化。当前发布继续保留与已转换模型一致的 286,529 字节模板（SHA-256 `e7ddf592048db9ac1b64ceb88d0cc1dd50e3b486816f9faa0a6d0b1cb5be786d`）；用户新源文件未改动，留待后续设计更新核对。
 
@@ -65,7 +65,7 @@ R01、R14 是独立 XY 平面模型；R02–R13 位于源 CAD 的 YZ 平面，�
 
 The local teaching assets retain STEP world coordinates in millimetres and apply one proper rigid transform per layer. Each layer contains four actual base and four cover instances; never duplicate them as if the file were a single quadrant. The fourteen files contain 56 base, 56 cover and 182 short-screw instances. These are CAD observations, not released procurement quantities.
 
-All 28 slot columns register to the same MATLAB physical azimuth lattice. Cube centers remain at the MATLAB radii and at local Z=9 mm. The R05/R10 outer pocket has a **0.2 mm nominal inner-wall interference**; the model preserves this discrepancy. Confirmed one-magnet BOM quantities are 56 housings, 56 caps, 56 clear covers, 42 mounting supports (28 side + 14 bottom), 32 cylindrical spacers (4 × 8), 8 M6 rods, 448 M3 screws and 8 M6 nuts. The organizers provide the extrusion frame, L-brackets, extrusion bolts and T-slot nuts. The supplied spacer STEP defines an 18 mm length, 14 mm OD and 6.2 mm through-hole; manufacturing fit and full mounting distribution remain unverified. Old block-shaped spacer CAD/3MF remain explicitly labeled historical references. Four old candidate rod axes do not establish all eight positions. Hardware lengths, materials and tightening specifications still require confirmation. Through-rods are inserted last. Only prototype v4 is published; original files and magnetic calculations are preserved.
+All 28 slot columns register to the same MATLAB physical azimuth lattice. Cube centers remain at the MATLAB radii and at local Z=9 mm. The R05/R10 outer pocket has a **0.2 mm nominal inner-wall interference**; the model preserves this discrepancy. Confirmed one-magnet BOM quantities are 56 housings, 56 caps, 56 clear covers, 42 mounting supports (28 side + 14 bottom), 32 cylindrical spacers (4 × 8), 8 M6 rods, 448 M3 screws and 8 M6 nuts. The organizers provide the extrusion frame, L-brackets, extrusion bolts and T-slot nuts. The supplied spacer STEP defines an 18 mm length, 14 mm OD and 6.2 mm through-hole; manufacturing fit and full mounting distribution remain unverified. Old CAD provenance remains with the lesson geometry, while old CAD/print downloads are withdrawn. Four old candidate rod axes do not establish all eight positions. Hardware lengths, materials and tightening specifications still require confirmation. Through-rods are inserted last. Model downloads contain only Final_1.3mf–Final_4.3mf, with a user-supplied total estimate of 283h 34min. Original engineering files and magnetic calculations are preserved.
 
 ## 本次独立 BOM CAD / Supplied BOM CAD
 

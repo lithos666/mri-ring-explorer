@@ -22,10 +22,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 1,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-layer-02",
@@ -50,10 +51,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 2,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-layer-03",
@@ -78,10 +80,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 3,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-layer-04",
@@ -106,10 +109,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 4,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-layer-05",
@@ -134,10 +138,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 5,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-layer-06",
@@ -162,10 +167,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 6,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-layer-07",
@@ -190,10 +196,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 7,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-layer-08",
@@ -218,10 +225,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 8,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-layer-09",
@@ -246,10 +254,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 9,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-layer-10",
@@ -274,10 +283,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 10,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-layer-11",
@@ -302,10 +312,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 11,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-layer-12",
@@ -330,10 +341,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 12,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-layer-13",
@@ -358,10 +370,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 13,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-layer-14",
@@ -386,10 +399,11 @@
       "step-05",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "layer": 14,
-    "versionStatus": "source-reference"
+    "versionStatus": "source-reference",
+    "downloadAvailable": false
   },
   {
     "id": "cad-template",
@@ -410,8 +424,9 @@
       "step-02",
       "step-04"
     ],
-    "visibility": "resources",
-    "updateStatus": "current"
+    "visibility": "hidden",
+    "updateStatus": "retired",
+    "downloadAvailable": false
   },
   {
     "id": "cad-ring-support",
@@ -431,8 +446,9 @@
       "step-08",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current"
+    "visibility": "hidden",
+    "updateStatus": "retired",
+    "downloadAvailable": false
   },
   {
     "id": "cad-locator",
@@ -452,126 +468,92 @@
       "step-07",
       "step-09"
     ],
-    "visibility": "resources",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "versionStatus": "legacy-block-reference-not-release-confirmed",
     "referenceNoteZh": "历史文件是方块形隔块，不符合当前已确认的 18 mm 长圆柱形隔块。仅供旧接口参考；不能据此制造当前圆柱。",
-    "referenceNoteEn": "This historical file contains block-shaped spacers, not the confirmed 18 mm-long cylinders. Use it only as an old interface reference, not to manufacture the current cylinder."
+    "referenceNoteEn": "This historical file contains block-shaped spacers, not the confirmed 18 mm-long cylinders. Use it only as an old interface reference, not to manufacture the current cylinder.",
+    "downloadAvailable": false
   },
   {
-    "id": "print-side-support",
-    "titleZh": "侧边支撑打印参考",
-    "titleEn": "Side-support print reference",
+    "id": "print-final-1",
+    "titleZh": "Final_1.3mf",
+    "titleEn": "Final_1.3mf",
     "type": "3MF",
-    "sourceRelativePath": "打印文件/侧边支撑.3mf",
-    "url": "/resources/print-side-support.3mf",
-    "bytes": 225905,
-    "sha256": "673bb5a819b3fda46f416b12ab14f5c5fddd8af221d6ba1932c2e4e88025b568",
+    "sourceRelativePath": "打印文件/Final_1.3mf",
+    "url": "/resources/Final_1.3mf",
+    "bytes": 1753921,
+    "sha256": "b6bc3540ede88c6c7a621cc74dc04009514116e5eb746218e6010f419898cb6a",
     "category": "print",
-    "partIds": [
-      "ring-support"
-    ],
-    "stepIds": [
-      "step-01",
-      "step-04",
-      "step-06"
-    ],
+    "partIds": [],
+    "stepIds": [],
     "visibility": "resources",
     "updateStatus": "current",
-    "versionStatus": "print-reference-not-release-confirmed"
+    "versionStatus": "user-confirmed-final-print-batch",
+    "downloadFilename": "Final_1.3mf",
+    "estimatedPrintMinutes": 8358,
+    "estimateSource": "user-provided",
+    "packageScope": "complete-final-print-set"
   },
   {
-    "id": "print-interlayer-support",
-    "titleZh": "历史方块层间支撑打印参考（非当前圆柱）",
-    "titleEn": "Historical block-spacer print reference (not the current cylinder)",
+    "id": "print-final-2",
+    "titleZh": "Final_2.3mf",
+    "titleEn": "Final_2.3mf",
     "type": "3MF",
-    "sourceRelativePath": "打印文件/曾与层之间的支撑.3mf",
-    "url": "/resources/print-interlayer-support.3mf",
-    "bytes": 104859,
-    "sha256": "c4bf25754a2eb77bc04e810992a550e03f0c931b233fb596207cdde60b96fb42",
+    "sourceRelativePath": "打印文件/Final_2.3mf",
+    "url": "/resources/Final_2.3mf",
+    "bytes": 1569093,
+    "sha256": "6975066f69e57d787df15afba17118b785172f7af99427539f9499a9bf61fd53",
     "category": "print",
-    "partIds": [
-      "locator"
-    ],
-    "stepIds": [
-      "step-01",
-      "step-04",
-      "step-06"
-    ],
+    "partIds": [],
+    "stepIds": [],
     "visibility": "resources",
     "updateStatus": "current",
-    "versionStatus": "legacy-block-reference-not-release-confirmed",
-    "referenceNoteZh": "历史文件是方块形隔块，不符合当前已确认的 18 mm 长圆柱形隔块。仅供旧接口参考；不能据此制造当前圆柱。",
-    "referenceNoteEn": "This historical file contains block-shaped spacers, not the confirmed 18 mm-long cylinders. Use it only as an old interface reference, not to manufacture the current cylinder."
+    "versionStatus": "user-confirmed-final-print-batch",
+    "downloadFilename": "Final_2.3mf",
+    "estimatedPrintMinutes": 5379,
+    "estimateSource": "user-provided",
+    "packageScope": "complete-final-print-set"
   },
   {
-    "id": "print-holder-v1",
-    "titleZh": "holder v1 打印参考",
-    "titleEn": "holder v1 print reference",
+    "id": "print-final-3",
+    "titleZh": "Final_3.3mf",
+    "titleEn": "Final_3.3mf",
     "type": "3MF",
-    "sourceRelativePath": "打印文件/holderv1.3mf",
-    "url": "/resources/print-holder-v1.3mf",
-    "bytes": 219720,
-    "sha256": "4f05bcf60ad375969a179f913c0c150358120a7f76937845dd13256a2ff5b2bc",
+    "sourceRelativePath": "打印文件/Final_3.3mf",
+    "url": "/resources/Final_3.3mf",
+    "bytes": 1060219,
+    "sha256": "e10105574f044d772d086187ff1ec05903b65ad95944b0ab9497e01a7d6c2466",
     "category": "print",
-    "partIds": [
-      "ring-support"
-    ],
-    "stepIds": [
-      "step-01",
-      "step-04",
-      "step-06"
-    ],
+    "partIds": [],
+    "stepIds": [],
     "visibility": "resources",
     "updateStatus": "current",
-    "versionStatus": "print-reference-not-release-confirmed"
+    "versionStatus": "user-confirmed-final-print-batch",
+    "downloadFilename": "Final_3.3mf",
+    "estimatedPrintMinutes": 2269,
+    "estimateSource": "user-provided",
+    "packageScope": "complete-final-print-set"
   },
   {
-    "id": "print-layer-01",
-    "titleZh": "layer1 打印参考",
-    "titleEn": "layer1 print reference",
+    "id": "print-final-4",
+    "titleZh": "Final_4.3mf",
+    "titleEn": "Final_4.3mf",
     "type": "3MF",
-    "sourceRelativePath": "打印文件/layer1.3mf",
-    "url": "/resources/print-layer-01.3mf",
-    "bytes": 998945,
-    "sha256": "79868838906a948151cc9852123b2cfbf426f46d13c2cfc20883bcbce52059b7",
+    "sourceRelativePath": "打印文件/Final_4.3mf",
+    "url": "/resources/Final_4.3mf",
+    "bytes": 568671,
+    "sha256": "51cc31a21d3e23cce90e9fafeb0e3e33faf714695e6b99aaf7c28e74eccf2da0",
     "category": "print",
-    "partIds": [
-      "printed-ring",
-      "ring-cover"
-    ],
-    "stepIds": [
-      "step-01",
-      "step-04",
-      "step-06"
-    ],
+    "partIds": [],
+    "stepIds": [],
     "visibility": "resources",
     "updateStatus": "current",
-    "layer": 1,
-    "versionStatus": "print-reference-not-release-confirmed"
-  },
-  {
-    "id": "print-prototype-v4",
-    "titleZh": "prototype v4 · 当前教学打印版本",
-    "titleEn": "prototype v4 · current teaching print version",
-    "type": "3MF",
-    "sourceRelativePath": "打印文件/prototypev4.3mf",
-    "url": "/resources/print-prototype-v4.3mf",
-    "bytes": 987757,
-    "sha256": "a7d022a55e1ffe6af5241d6b145f8732ee7218daec62b62f8a30e7f4706abbfc",
-    "category": "print",
-    "partIds": [
-      "printed-ring",
-      "ring-cover"
-    ],
-    "stepIds": [
-      "step-01",
-      "step-04",
-      "step-06"
-    ],
-    "visibility": "resources",
-    "updateStatus": "current",
-    "versionStatus": "user-selected-teaching-version"
+    "versionStatus": "user-confirmed-final-print-batch",
+    "downloadFilename": "Final_4.3mf",
+    "estimatedPrintMinutes": 1008,
+    "estimateSource": "user-provided",
+    "packageScope": "complete-final-print-set"
   },
   {
     "id": "placement-01",
@@ -1053,11 +1035,12 @@
       "step-06",
       "step-09"
     ],
-    "visibility": "bom",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "versionStatus": "user-provided-bom-cad",
     "referenceNoteZh": "与 BOM 示意图采用同一份提供的 STEP；完整装配位置与打印工艺须另行核对。",
-    "referenceNoteEn": "The same supplied STEP used for the BOM rendering; verify full-assembly placement and printing separately."
+    "referenceNoteEn": "The same supplied STEP used for the BOM rendering; verify full-assembly placement and printing separately.",
+    "downloadAvailable": false
   },
   {
     "id": "bom-cad-side-support",
@@ -1077,11 +1060,12 @@
       "step-08",
       "step-09"
     ],
-    "visibility": "bom",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "versionStatus": "user-provided-bom-cad",
     "referenceNoteZh": "与 BOM 示意图采用同一份提供的 STEP；完整装配位置与打印工艺须另行核对。",
-    "referenceNoteEn": "The same supplied STEP used for the BOM rendering; verify full-assembly placement and printing separately."
+    "referenceNoteEn": "The same supplied STEP used for the BOM rendering; verify full-assembly placement and printing separately.",
+    "downloadAvailable": false
   },
   {
     "id": "bom-cad-bottom-support",
@@ -1101,10 +1085,11 @@
       "step-08",
       "step-09"
     ],
-    "visibility": "bom",
-    "updateStatus": "current",
+    "visibility": "hidden",
+    "updateStatus": "retired",
     "versionStatus": "user-provided-bom-cad",
     "referenceNoteZh": "与 BOM 示意图采用同一份提供的 STEP；完整装配位置与打印工艺须另行核对。",
-    "referenceNoteEn": "The same supplied STEP used for the BOM rendering; verify full-assembly placement and printing separately."
+    "referenceNoteEn": "The same supplied STEP used for the BOM rendering; verify full-assembly placement and printing separately.",
+    "downloadAvailable": false
   }
 ]
