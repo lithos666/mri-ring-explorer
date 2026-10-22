@@ -3,6 +3,7 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowRight, ArrowUpRight, Box, Check, ChevronDown, Download, FileText, FlaskConical, Layers3, Languages, ListChecks, Menu, Package, RotateCcw, Search, X } from "lucide-react";
 import { useLanguage } from "@/lib/language-context";
+import { siteBranding } from "@/lib/site-branding";
 import { usePageVisibility } from "@/lib/use-page-visibility";
 import { bomCSV, finalPrintFiles, formatPrintDuration, initialProgress, partById, stepById, TEACHING_ID, TEACHING_STORAGE, teachingParts, teachingReferences, teachingResources, teachingRings, teachingSteps, totalPrintMinutes, validateProgress, validateStoredIds, type PartCategory, type TeachingPart, type TeachingProgress, type TeachingResource } from "@/lib/teaching";
 
@@ -81,7 +82,7 @@ export default function HackathonPortal() {
   const viewResources = (id: string) => { setResourcePart(id); navigate("resources"); };
   const resetProgress = () => { setProgress(initialProgress()); setChecks([]); setNotice(t("装配进度已重置；磁铁设计已保留。", "Assembly progress reset. Magnet designs are retained.")); };
   return <div className="hack-portal" data-teaching-version="1" data-section={section}>
-    <header className="hack-header"><div className="hack-header-top"><button className="hack-brand" onClick={() => navigate("overview")} aria-label={t("回到整体总览", "Return to Overview")}><img className="hack-brand-logo" src="/brand/mri-hardware-ai-transparent.png" width={1465} height={1073} alt="MRI · Hardware · AI"/><span><strong>MRI Nerdfeast</strong><small>{t("从零件到磁体", "From parts to a magnet")}</small></span></button><div className="hack-header-tools"><span className="hack-local-pill">{t("黑客松教学版", "Hackathon teaching edition")}</span><button className="hack-language" onClick={() => setLanguage(language === "zh" ? "en" : "zh")} aria-label={language === "zh" ? "Switch to English" : "切换为中文"}><Languages size={17}/>{language === "zh" ? "English" : "中文"}</button></div></div>
+    <header className="hack-header"><div className="hack-header-top"><div className="hack-brand"><a className="hack-brand-event" href={siteBranding.eventWebsite} target="_blank" rel="noopener noreferrer" aria-label={t("打开 portableMRI NerdFest - 2 活动官网（新标签页）", "Open the portableMRI NerdFest - 2 event website (new tab)")} title={t("活动官网（新标签页）", "Event website (new tab)")}><img className="hack-brand-logo" src="/brand/mri-hardware-ai-transparent.png" width={1465} height={1073} alt="MRI · Hardware · AI"/></a><button className="hack-brand-home" onClick={() => navigate("overview")} aria-label={t("回到整体总览", "Return to Overview")}><strong>{siteBranding.name}</strong><small>{siteBranding.subtitle[language]}</small></button></div><div className="hack-header-tools"><span className="hack-local-pill">{t("黑客松教学版", "Hackathon teaching edition")}</span><button className="hack-language" onClick={() => setLanguage(language === "zh" ? "en" : "zh")} aria-label={language === "zh" ? "Switch to English" : "切换为中文"}><Languages size={17}/>{language === "zh" ? "English" : "中文"}</button></div></div>
       <nav className="hack-tabs" aria-label={t("教学板块", "Teaching sections")}>{tabs.map(tab => <button key={tab.id} data-testid={`tab-${tab.id}`} aria-current={section === tab.id ? "page" : undefined} onClick={() => navigate(tab.id)}><tab.icon size={19}/>{t(tab.zh, tab.en)}</button>)}</nav>
     </header>
     {notice && <div className="hack-notice" role="status">{notice}<button aria-label={t("关闭提示", "Dismiss message")} onClick={() => setNotice("")}><X size={15}/></button></div>}
@@ -114,7 +115,7 @@ export default function HackathonPortal() {
       {section === "lab" && <PrinciplesPanel onWorkbench={() => document.getElementById("hack-physics-workbench")?.scrollIntoView({ behavior: "smooth" })}/>}
       {section === "resources" && <ResourcesPanel selectedPart={resourcePart} setSelectedPart={setResourcePart} onPart={setPartId} onStep={goStep}/>}
     </main>
-    <footer className="hack-footer"><span>MRI Hackathon · {t("新版磁体教学", "New-generation magnet teaching")}</span><span>{t("学习记录保存在此浏览器", "Learning records stay in this browser")}</span><button onClick={resetProgress}><RotateCcw size={13}/>{t("重置学习进度", "Reset learning progress")}</button></footer>
+    <footer className="hack-footer"><span>{siteBranding.name} · {t("新版磁体教学", "New-generation magnet teaching")}</span><span>{t("学习记录保存在此浏览器", "Learning records stay in this browser")}</span><button onClick={resetProgress}><RotateCcw size={13}/>{t("重置学习进度", "Reset learning progress")}</button></footer>
     {partId && partById.has(partId) && <PartDialog key={partId} part={partById.get(partId)!} ring={ring} onClose={() => setPartId(null)} onStep={goStep} onResources={viewResources}/>}
   </div>;
 }
