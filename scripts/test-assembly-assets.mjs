@@ -42,20 +42,24 @@ for(let sample=0;sample<=200;sample++)for(let quarter=0;quarter<4;quarter++){
  }
 }
 assert.equal(clipPart.cadViews[0].modelURL,'/assembly/tools/acrylic-clip.glb');
-assert.deepEqual(clipPart.stepIds,['step-10','step-04']);
-assert.deepEqual(teachingSteps.map(step=>[step.id,step.sceneStep]),[['step-01',1],['step-02',2],['step-03',3],['step-05',5],['step-10',10],['step-04',4],['step-06',6],['step-08',8],['step-09',9],['step-07',7]],'Clip the acrylic before cap installation; insert through-rods last');
-assert.deepEqual(teachingSteps.map(step=>step.index),Array.from({length:10},(_,i)=>i+1));
-assert.ok(teachingSteps.find(step=>step.id==='step-10').partIds.includes('acrylic-clip'));
-assert.ok(teachingSteps.find(step=>step.id==='step-04').partIds.includes('short-screw'));
-assert.ok(!teachingSteps.find(step=>step.id==='step-05').partIds.includes('ring-cover'),'Do not fit the cap before temporary clipping');
+assert.deepEqual(clipPart.stepIds,['step-12','step-13','step-14','step-16']);
+assert.deepEqual(teachingSteps.map(step=>[step.id,step.sceneStep]),Array.from({length:11},(_,i)=>[`step-${i+11}`,i+11]),'The eleven-stage process assembles two retained semicircles before joining the layer');
+assert.deepEqual(teachingSteps.map(step=>step.index),Array.from({length:11},(_,i)=>i+1));
+assert.ok(teachingSteps.find(step=>step.id==='step-12').partIds.includes('acrylic-clip'));
+assert.ok(teachingSteps.find(step=>step.id==='step-13').partIds.includes('short-screw'));
+assert.ok(!teachingSteps.find(step=>step.id==='step-12').partIds.includes('ring-cover'),'Load with acrylic restraint before installing central caps');
+assert.equal(teachingSteps.at(-1).status,'pending-design','The unfinished comb CAD must not be presented as a completed design');
 assert.ok(!partIDs.has('m3-nut'),'M3 nuts are not used in the assembly');
 assert.ok(partIDs.has('extrusion-bolt')&&partIDs.has('t-slot-nut'),'Extrusion connection hardware is required');
 assert.ok(teachingParts.every(part=>part.material.zh.trim()&&part.material.en.trim()),'Every BOM part needs a bilingual material');
 assert.equal(teachingParts.find(part=>part.id==='magnet-cube').quantity,1736);
 assert.match(teachingParts.find(part=>part.id==='magnet-cube').material.en,/N52.*NdFeB/);
 for(const [id,quantity] of [['printed-ring',56],['ring-cover',56],['acrylic',56],['ring-support',42],['locator',32],['through-rod',8],['short-screw',448],['m6-nut',8]])assert.equal(teachingParts.find(part=>part.id===id).quantity,quantity,`Confirmed BOM quantity: ${id}`);
-for(const id of ['frame-l-bracket','aluminum-frame','extrusion-bolt','t-slot-nut']){const part=teachingParts.find(part=>part.id===id);assert.equal(part.suppliedBy,'organizer');assert.equal(part.quantity,null,'Organizer-provided items must not invent quantities');}
-assert.match(teachingParts.find(part=>part.id==='locator').specification.en,/18 mm.*M6/);assert.match(teachingParts.find(part=>part.id==='locator').specification.en,/Cylindrical/);
+for(const [id,quantity] of [['frame-l-bracket',20],['aluminum-frame',1],['extrusion-bolt',112],['t-slot-nut',112]]){const part=teachingParts.find(part=>part.id===id);assert.equal(part.suppliedBy,'organizer');assert.equal(part.quantity,quantity,'Use the user-confirmed organizer quantities');}
+for(const id of ['through-rod','short-screw','m6-nut'])assert.equal(teachingParts.find(part=>part.id===id).material.en,'Brass');
+assert.match(teachingParts.find(part=>part.id==='acrylic').specification.en,/2 mm/);
+for(const id of ['magnet-cube','acrylic','through-rod','short-screw','m6-nut'])assert.equal(teachingParts.find(part=>part.id===id).cadViews[0].kind,'product','The product image and 3D model must match');
+assert.match(teachingParts.find(part=>part.id==='locator').specification.en,/18 mm.*M6/);assert.match(teachingParts.find(part=>part.id==='locator').note.en,/cylindrical/i);
 for(const language of ['zh','en']){
  const csv=bomCSV(language);assert.equal(csv.split('\r\n').length,15);assert.ok(!/Receipt checked|收料/.test(csv));assert.ok(csv.split('\r\n')[0].includes(language==='en'?'Material':'材料'));assert.ok(csv.split('\r\n')[0].includes(language==='en'?'Quantity breakdown':'数量构成'));assert.ok(csv.split('\r\n')[0].includes(language==='en'?'Supply':'供应方式'));
  const row=id=>csv.split('\r\n').find(line=>line.startsWith(`"${id}",`));assert.ok(row('short-screw').includes('"448"'));assert.ok(row('locator').includes('"32"'));assert.ok(row('ring-support').includes('"42"'));for(const id of ['frame-l-bracket','aluminum-frame','extrusion-bolt','t-slot-nut'])assert.ok(row(id).includes(language==='en'?'Provided by organizers':'官方提供'));
@@ -132,6 +136,9 @@ assert.equal(manifest.hardware.coverAcrylicBase.thread,'M3');assert.equal(manife
 assert.deepEqual(manifest.hardware.coverAcrylicBase.partIds,['short-screw']);
 assert.deepEqual(manifest.hardware.extrusionConnections.partIds,['extrusion-bolt','t-slot-nut']);assert.equal(manifest.hardware.extrusionConnections.threadStatus,'pending');
 assert.equal(manifest.hardware.coverAcrylicBase.quantity,448);assert.equal(manifest.hardware.interLayer.rodQuantity,8);assert.equal(manifest.hardware.interLayer.nutQuantity,8);assert.equal(manifest.hardware.spacers.quantity,32);assert.equal(manifest.hardware.spacers.lengthMM,18);assert.equal(manifest.hardware.spacers.shape,'cylinder');assert.equal(manifest.hardware.spacers.outerDiameterStatus,'provided-cad-nominal');assert.equal(manifest.hardware.spacers.boreDiameterStatus,'provided-cad-nominal');assert.equal(manifest.hardware.frameBrackets.suppliedBy,'organizer');assert.equal(manifest.hardware.extrusionFrame.suppliedBy,'organizer');assert.equal(manifest.hardware.extrusionConnections.suppliedBy,'organizer');
+assert.deepEqual(manifest.hardware.interLayer.rodGroups,[{layers:[1,2,3,4,5],rodQuantity:4},{layers:[10,11,12,13,14],rodQuantity:4}]);
+assert.equal(manifest.hardware.clearCover.thicknessMM,2);assert.equal(manifest.hardware.clearCover.holeDrawingStatus,'awaiting-user-dxf');
+assert.equal(manifest.hardware.frameBrackets.quantity,20);assert.equal(manifest.hardware.extrusionFrame.quantity,1);assert.equal(manifest.hardware.extrusionConnections.boltQuantity,112);assert.equal(manifest.hardware.extrusionConnections.tSlotNutQuantity,112);
 assert.deepEqual([manifest.hardware.spacers.nominalGeometryMM.length,manifest.hardware.spacers.nominalGeometryMM.outerDiameter,manifest.hardware.spacers.nominalGeometryMM.throughHoleDiameter],[18,14,6.2]);
 assert.ok(!manifest.parts.some(p=>p.role==='acrylic'),'Do not misidentify independent acrylic CAD');
 console.log(JSON.stringify({status:'passed',layers:14,columns:28,magnets:1736,BOMCategories:teachingParts.length,catalogEntries:manifest.resources.length,visibleResourceDownloads:visibleResources.length,finalPrintFiles:finalPrintFiles.length,knownEstimatedPrintMinutes:totalPrintMinutes,printEstimatePending,retiredCADDownloads:manifest.resources.filter(r=>r.downloadAvailable===false).length,bomReferenceDownloads:6,retainedMATLABPrograms:7,CADInstances:manifest.confirmedCADInstanceCounts,nominalPocketConflicts:conflicts,properRigidRegistrations:14},null,2));

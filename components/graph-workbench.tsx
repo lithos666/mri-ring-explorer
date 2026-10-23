@@ -14,7 +14,7 @@ export default function GraphWorkbench(props:Props){
  return <div className={"graph-workspace"+(!snapshot?" has-no-field":"")}>
   <div className="graph-edit-pane"><DesignDiagram {...props}/></div>
   <section className={"graph-field-pane"+(props.needsCompute&&snapshot?" is-stale":"")} aria-label={t("完整阵列磁场","Full-array field")} data-snapshot-state={snapshot?props.needsCompute?"previous":"current":"empty"}>
-   <div className="graph-pane-heading"><strong>{t("磁场","Field")}</strong><span>{t("全 14 环","All 14 rings")}</span></div>
+   <div className="graph-pane-heading"><strong>{t("磁场","Field")}</strong><span>{t("全 14 层","All 14 layers")}</span></div>
    <DesignFieldStatus quiet data={snapshot?.data??null} status={props.status} progress={props.progress} needsCompute={props.needsCompute}/>
    <p className="field-snapshot-label" role="status">{state}</p>
    {snapshot?<FieldSection compact key={snapshot.model.id} data={snapshot.data} displayModel={snapshot.model} readOnly={props.status==="computing"} onSelect={props.onSelect}/>:<div className="graph-field-placeholder">{t("方向修改不会自动计算。","Orientation edits do not compute automatically.")}</div>}

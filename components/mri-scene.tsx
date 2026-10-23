@@ -37,7 +37,7 @@ export default function MRIScene(props:Props){
   renderer.setClearColor(0xffffff,0);renderer.outputColorSpace=THREE.SRGBColorSpace;
   renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;
   container.appendChild(renderer.domElement);
-  renderer.domElement.setAttribute("aria-label",t("磁环三维模型。拖动旋转，滚轮缩放，右键平移；点击磁铁查看详情。","3D magnet-ring model. Drag to rotate, scroll to zoom, and right-drag to pan. Select a magnet for details."));
+  renderer.domElement.setAttribute("aria-label",t("磁层三维模型。拖动旋转，滚轮缩放，右键平移；点击磁铁查看详情。","3D magnet-layer model. Drag to rotate, scroll to zoom, and right-drag to pan. Select a magnet for details."));
   renderer.domElement.setAttribute("role","img");
   const scene=new THREE.Scene();
   let studioEnvironment:THREE.WebGLRenderTarget|null=null;
@@ -199,7 +199,7 @@ export default function MRIScene(props:Props){
   }};
   return ()=>{runtime.current?.dispose();runtime.current=null;};
  },[]);
- useEffect(()=>{host.current?.querySelector("canvas")?.setAttribute("aria-label",t("磁环三维模型。拖动旋转，滚轮缩放，右键平移；点击磁铁查看详情。","3D magnet-ring model. Drag to rotate, scroll to zoom, and right-drag to pan. Select a magnet for details."));},[language]);
+ useEffect(()=>{host.current?.querySelector("canvas")?.setAttribute("aria-label",t("磁层三维模型。拖动旋转，滚轮缩放，右键平移；点击磁铁查看详情。","3D magnet-layer model. Drag to rotate, scroll to zoom, and right-drag to pan. Select a magnet for details."));},[language]);
  useEffect(()=>{runtime.current?.setActive(active);},[active]);
  useEffect(()=>{runtime.current?.update(props);},[props.ring,props.selected,props.mode,props.expansion,props.arrows,props.reset,props.field,props.fieldData,props.layers,props.gradientAxis,props.rfPhase,model]);
  return <div className="scene-host" ref={host} data-render-active={active} data-scheme={model.id} data-magnet-count={magnets.length} data-columns={REPEATS} data-magnets-visible={props.mode!=="assembly"||props.layers.magnet} data-gradients-visible={props.mode==="assembly"&&props.layers.gradient} data-rf-visible={props.mode==="assembly"&&props.layers.rf} data-gradient-axis={props.gradientAxis} data-rf-phase={props.rfPhase} data-field-visible={props.field&&props.mode==="assembly"&&props.expansion===0&&!!props.fieldData} data-scene-ready={ready} data-webgl-error={error}>
@@ -209,6 +209,6 @@ export default function MRIScene(props:Props){
   <span ref={northLabel} className="pole-label pole-n">N</span><span ref={southLabel} className="pole-label pole-s">S</span>
   {ready&&!error&&props.mode==="assembly"&&!props.layers.magnet&&!props.layers.gradient&&!props.layers.rf&&!props.field&&<div className="scene-message">{t("所有结构图层已隐藏，可在上方重新打开。","All structural layers are hidden. Use the controls above to show them again.")}</div>}
   {!ready&&!error&&<div className="scene-message">{t(`正在载入 ${magnets.length} 块磁铁…`,`Loading ${magnets.length} magnets…`)}</div>}
-  {error&&<div className="scene-message"><strong>{t("此浏览器暂时无法显示 3D","3D is unavailable in this browser")}</strong><p>{props.basic?t("请使用右侧的磁环与径向位置按钮修改方向，或切换到「磁场」查看结果。","Use the ring and radial-position controls to edit orientations, or switch to Field to view the result."):t("请切换「径向剖面」或打开「排布清单」，仍可核对所有磁铁方向和数量。","Switch to Radial section or open the Layout list to check all magnet directions and counts.")}</p></div>}
+  {error&&<div className="scene-message"><strong>{t("此浏览器暂时无法显示 3D","3D is unavailable in this browser")}</strong><p>{props.basic?t("请使用右侧的磁层与径向位置按钮修改方向，或切换到「磁场」查看结果。","Use the layer and radial-position controls to edit orientations, or switch to Field to view the result."):t("请切换「径向剖面」或打开「排布清单」，仍可核对所有磁铁方向和数量。","Switch to Radial section or open the Layout list to check all magnet directions and counts.")}</p></div>}
  </div>;
 }

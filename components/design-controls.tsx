@@ -63,7 +63,7 @@ export default function DesignControls({selectedRing,selected,onRing,onSelect,on
  return <section className="magnet-design" aria-label={t("磁铁方向设计","Magnet orientation designer")} data-edit-scope="layer">
   <div className="magnet-design-heading"><h2>{t("修改磁铁方向","Edit magnet direction")}</h2><span className={"design-save-state "+(design.isSaved?"is-saved":"is-dirty")} data-modified-count={design.modifiedCount}>{design.modifiedCount}{t(" 块已改"," edited")}</span></div>
   <div className="magnet-design-editor">
-   <label className="basic-ring-picker"><span>{t("1 · 选择磁环","1 · Choose a ring")}</span><select value={ring} onChange={event=>{setFileError(null);onRing(Number(event.currentTarget.value));}} aria-label={t("选择磁环","Choose a ring")}>{model.rings.map(item=><option key={item.id} value={item.id}>{ringName(item.id)}</option>)}</select></label>
+   <label className="basic-ring-picker"><span>{t("1 · 选择磁层","1 · Choose a layer")}</span><select value={ring} onChange={event=>{setFileError(null);onRing(Number(event.currentTarget.value));}} aria-label={t("选择磁层","Choose a layer")}>{model.rings.map(item=><option key={item.id} value={item.id}>{ringName(item.id)}</option>)}</select></label>
    <div className="layer-strip-heading"><span>{t("2 · 选择径向位置","2 · Choose a radial position")}</span><span>{t("由内到外","Inner to outer")}</span></div>
    <div className="edit-layer-strip" role="group" aria-label={t("放大的径向排布条","Enlarged radial layer strip")}>{model.rings[ring-1].directions.map((_,index)=>{
     const members=ringMagnets.filter(item=>item.radial===index+1),same=members.every(item=>item.direction===members[0].direction);

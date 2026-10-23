@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { normalizeTeachingResource } from '../lib/teaching-step-links.mjs';
 
 export const FINAL_PRINT_FILES = [
   { filename: 'Final_1.3mf', id: 'print-final-1', estimatedPrintMinutes: 8358 },
@@ -123,24 +124,25 @@ export function buildTeachingResources({ project, source, matlabDirectory, prese
     if (path.dirname(target) !== path.resolve(resourceDirectory)) throw new Error('Resource cleanup escaped its publication directory');
     if (fs.statSync(target).isFile()) fs.unlinkSync(target);
   }
-  return resources;
+  return resources.map(normalizeTeachingResource);
 }
 
 export function updateConfirmedHardwareMetadata(manifest) {
   manifest.rodAxes = manifest.rodAxes.map(axis => ({ ...axis, hardwareThread: 'M6', hardwareStatus: 'user-confirmed', status: 'axis-candidate-hole-diameter-pending' }));
-  manifest.confirmedBOMQuantities = { magnetCube: 1736, segmentedHousing: 56, housingCap: 56, clearCover: 56, mountingSupports: { total: 42, side: 28, bottom: 14 }, cylindricalSpacers: { total: 32, breakdown: [4, 8], lengthMM: 18 }, throughRods: 8, m3ShortScrews: 448, m6Nuts: 8 };
+  manifest.confirmedBOMQuantities = { magnetCube: 1736, segmentedHousing: 56, housingCap: 56, clearCover: 56, mountingSupports: { total: 42, side: 28, bottom: 14 }, cylindricalSpacers: { total: 32, breakdown: [4, 8], lengthMM: 18 }, throughRods: 8, m3ShortScrews: 448, m6Nuts: 8, frameLBrackets: 20, extrusionFrames: 1, extrusionMountingBolts: 112, tSlotNuts: 112 };
   for (const part of manifest.parts) {
     if (part.role === 'support') { part.procurementQuantityStatus = 'user-confirmed'; part.confirmedQuantity = 42; }
     if (part.role === 'locator') { part.procurementQuantityStatus = 'user-confirmed'; part.confirmedQuantity = 32; part.geometryStatus = 'historical-block-reference-not-current-cylinder'; }
   }
   manifest.hardware = {
     confirmation: 'user-confirmed-thread-use-and-quantities',
-    coverAcrylicBase: { thread: 'M3', partIds: ['short-screw'], lengthStatus: 'pending', quantity: 448, quantityPerLayer: 32, quantityStatus: 'user-confirmed', materialStatus: 'pending' },
-    interLayer: { thread: 'M6', partIds: ['through-rod', 'm6-nut'], rodLengthStatus: 'pending', rodQuantity: 8, nutQuantity: 8, quantityStatus: 'user-confirmed', completePlacementStatus: 'pending-cad-has-only-four-candidate-axes' },
-    spacers: { partId: 'locator', shape: 'cylinder', lengthMM: 18, passageFor: 'M6', quantity: 32, quantityBreakdown: [4, 8], quantityStatus: 'user-confirmed', outerDiameterStatus: 'pending', boreDiameterStatus: 'pending', mountingDistributionStatus: 'pending', sourceCADStatus: 'historical-block-reference-not-current-cylinder' },
-    frameBrackets: { partId: 'frame-l-bracket', suppliedBy: 'organizer', dimensionsStatus: 'supplied-part-reference', quantityStatus: 'organizer-provided', materialStatus: 'pending' },
-    extrusionFrame: { partId: 'aluminum-frame', suppliedBy: 'organizer', quantityStatus: 'organizer-provided', material: 'aluminium', alloyGradeStatus: 'pending' },
-    extrusionConnections: { partIds: ['extrusion-bolt', 't-slot-nut'], suppliedBy: 'organizer', threadStatus: 'pending', slotSeriesStatus: 'pending', quantityStatus: 'organizer-provided', materialStatus: 'pending' },
+    coverAcrylicBase: { thread: 'M3', partIds: ['short-screw'], lengthStatus: 'pending', quantity: 448, quantityPerLayer: 32, quantityStatus: 'user-confirmed', material: 'brass', materialStatus: 'user-confirmed' },
+    clearCover: { partId: 'acrylic', material: 'PMMA', thicknessMM: 2, thicknessStatus: 'user-confirmed', holeDrawingStatus: 'awaiting-user-dxf' },
+    interLayer: { thread: 'M6', partIds: ['through-rod', 'm6-nut'], rodLengthStatus: 'pending', rodQuantity: 8, nutQuantity: 8, quantityStatus: 'user-confirmed', material: 'brass', materialStatus: 'user-confirmed', rodGroups: [{ layers: [1,2,3,4,5], rodQuantity: 4 }, { layers: [10,11,12,13,14], rodQuantity: 4 }], completePlacementStatus: 'user-confirmed-two-five-layer-groups' },
+    spacers: { partId: 'locator', shape: 'cylinder', lengthMM: 18, passageFor: 'M6', quantity: 32, quantityBreakdown: [4, 8], quantityStatus: 'user-confirmed', outerDiameterStatus: 'pending', boreDiameterStatus: 'pending', mountingDistributionStatus: 'user-confirmed', gapsAfterLayers: [1,2,3,4,10,11,12,13], sourceCADStatus: 'historical-block-reference-not-current-cylinder' },
+    frameBrackets: { partId: 'frame-l-bracket', suppliedBy: 'organizer', dimensionsStatus: 'supplied-part-reference', quantity: 20, quantityStatus: 'user-confirmed', materialStatus: 'pending' },
+    extrusionFrame: { partId: 'aluminum-frame', suppliedBy: 'organizer', quantity: 1, quantityStatus: 'user-confirmed', material: 'aluminium', alloyGradeStatus: 'pending' },
+    extrusionConnections: { partIds: ['extrusion-bolt', 't-slot-nut'], suppliedBy: 'organizer', threadStatus: 'pending', slotSeriesStatus: 'pending', boltQuantity: 112, tSlotNutQuantity: 112, quantityStatus: 'user-confirmed', materialStatus: 'pending' },
   };
   const bomCADFile = path.join(path.resolve(import.meta.dirname, '..'), 'lib/bom-cad-assets.json');
   if (fs.existsSync(bomCADFile)) {
@@ -153,11 +155,11 @@ export function updateConfirmedHardwareMetadata(manifest) {
       manifest.hardware.spacers.manufacturingFitStatus = 'pending';
     }
   }
-  const obsolete = manifest.pending.filter(item => /Screw conflict|rod specifications|hardware thread|M3 thread confirmed|M6 layer-connection thread confirmed|L-bracket dimensions|Procurement quantities|Profile cut list and connectors|Cylindrical spacers|Eight M6 rods/i.test(item));
+  const obsolete = manifest.pending.filter(item => /Screw conflict|rod specifications|hardware thread|M3 thread confirmed|M6 layer-connection thread confirmed|L-bracket dimensions|Procurement quantities|Profile cut list and connectors|Cylindrical spacers|Eight M6 rods|M3 quantity confirmed|Organizer provides|Independent acrylic|Clear cover|R05\/R10/i.test(item));
   const spacerPending = manifest.hardware.spacers.nominalGeometryMM
-    ? 'Cylindrical spacers: supplied CAD has 18 mm length, 14 mm outer diameter and 6.2 mm passage; physical printing fit and complete mounting distribution pending'
+    ? 'Cylindrical spacers: supplied CAD has 18 mm length, 14 mm outer diameter and 6.2 mm passage; four spacers in each internal gap of R01–R05 and R10–R14 confirmed; physical printing fit pending'
     : 'Cylindrical spacers: 32 pieces (4 × 8), length 18 mm, passage for M6 confirmed; OD, bore diameter, mounting distribution and current manufacturing file pending';
-  manifest.pending = [...manifest.pending.filter(item => !obsolete.includes(item)), 'M3 quantity confirmed at 448 (32 per layer); screw length, material and torque pending (historical CAD 2.9×16 BF versus M3×18 reference)', 'Eight M6 rods and eight M6 nuts confirmed; rod length, material, torque, hole clearance and complete mounting positions pending', spacerPending, 'Organizer provides aluminium frame, L-brackets, extrusion bolts and T-slot nuts; use supplied specifications', 'Manufacturing materials and tolerances not established by BOM quantity confirmation'];
+  manifest.pending = [...manifest.pending.filter(item => !obsolete.includes(item)), 'M3 brass screws confirmed at 448 (32 per layer); screw length and torque pending (historical CAD 2.9×16 BF versus M3×18 reference)', 'Eight brass M6 rods: four across R01–R05 and four across R10–R14; eight brass M6 nuts confirmed; rod cut lengths and tightening requirements pending', spacerPending, 'Clear cover: PMMA, 2 mm thick confirmed; hole-pattern DXF and comb-like alignment-device CAD not yet completed by the user', 'Organizer provides 20 L-brackets, one aluminium frame, 112 extrusion bolts and 112 T-slot nuts; use supplied specifications', 'Manufacturing materials and tolerances not established by BOM quantity confirmation'];
   manifest.pending = [...new Set(manifest.pending)];
   return manifest;
 }

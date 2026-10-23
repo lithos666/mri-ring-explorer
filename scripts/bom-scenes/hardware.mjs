@@ -15,6 +15,9 @@ export async function buildPart(THREE, id) {
   const crest = new THREE.MeshStandardMaterial({ color: 0xd2d7de, metalness: 0.86, roughness: 0.27 });
   const recess = new THREE.MeshStandardMaterial({ color: 0x697581, metalness: 0.76, roughness: 0.4 });
   const darkSteel = new THREE.MeshStandardMaterial({ color: 0x67717e, metalness: 0.82, roughness: 0.32 });
+  const brass = new THREE.MeshStandardMaterial({color: 0xb18b3e, metalness: .88, roughness: .3});
+  const brassCrest = new THREE.MeshStandardMaterial({color: 0xc29d50, metalness: .9, roughness: .26});
+  const brassRecess = new THREE.MeshStandardMaterial({color: 0x7b602c, metalness: .8, roughness: .43});
 
   const mesh = (geometry, material, parent = object) => {
     const result = new THREE.Mesh(geometry, material);
@@ -87,7 +90,7 @@ export async function buildPart(THREE, id) {
     ];
     return mesh(new THREE.LatheGeometry(points, 48), material, parent);
   };
-  const socketScrew = (shaftRadius, length, headRadius, headHeight, pitch, material = silver) => {
+  const socketScrew = (shaftRadius, length, headRadius, headHeight, pitch, material = silver, threadMaterial = crest, socketMaterial = recess) => {
     const screw = new THREE.Group();
     const headShape = new THREE.Shape();
     headShape.absarc(0, 0, headRadius, 0, Math.PI * 2);
@@ -97,9 +100,9 @@ export async function buildPart(THREE, id) {
     onY(headShape, headHeight, material, screw, 0.18);
     // The socket is a recess rather than a through-hole: its dark floor lies
     // below the head top and remains visible through the real hex opening.
-    onY(hexagon(socketRadius), 0.12, recess, screw, 0.01).position.y = headHeight * 0.43;
+    onY(hexagon(socketRadius), 0.12, socketMaterial, screw, 0.01).position.y = headHeight * 0.43;
     chamferedCylinder(shaftRadius - 0.09, -length, 0.2, 0.18, material, screw);
-    thread(shaftRadius, -length + 0.35, -0.35, pitch, crest, screw, 0.11);
+    thread(shaftRadius, -length + 0.35, -0.35, pitch, threadMaterial, screw, 0.11);
     screw.rotation.z = -Math.PI / 2 + 0.14;
     screw.rotation.x = 0.1;
     return screw;
@@ -107,20 +110,20 @@ export async function buildPart(THREE, id) {
 
   if (id === "through-rod") {
     const rod = new THREE.Group();
-    chamferedCylinder(2.3, -48, 48, 0.35, silver, rod);
-    thread(2.31, -47.5, 47.5, 1.4, crest, rod, 0.14);
+    chamferedCylinder(2.3, -48, 48, 0.35, brass, rod);
+    thread(2.31, -47.5, 47.5, 1.4, brassCrest, rod, 0.14);
     rod.rotation.z = -Math.PI / 2 + 0.16;
     rod.rotation.x = 0.08;
     object.add(rod);
   } else if (id === "short-screw") {
-    object.add(socketScrew(1.8, 19, 3.5, 3.2, 0.82));
+    object.add(socketScrew(1.8, 19, 3.5, 3.2, 0.82, brass, brassCrest, brassRecess));
   } else if (id === "extrusion-bolt") {
     object.add(socketScrew(2.6, 20, 4.8, 4.6, 1.08));
   } else if (id === "m6-nut") {
     const body = hexagon(6.3);
     body.holes.push(circle(3.12));
-    onY(body, 4.5, silver, object, 0.38);
-    thread(3.0, 0.28, 4.2, 0.85, recess, object, 0.115);
+    onY(body, 4.5, brass, object, 0.38);
+    thread(3.0, 0.28, 4.2, 0.85, brassRecess, object, 0.115);
     object.rotation.y = Math.PI / 12;
   } else if (id === "t-slot-nut") {
     // European T-slot nut silhouette supplied by the user: an elongated,

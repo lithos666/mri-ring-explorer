@@ -4,9 +4,9 @@
 
 This teaching edition has five sections: Overview, BOM, Assembly, Principles & Lab, and Resources. Its baseline is the new 14-ring, 28-column assembly with 1,736 separate 12 mm cubes. Mechanical meshes come from supplied STEP files; magnet positions and directions come from the MATLAB data.
 
-当前装配路线最后三步为：放入框架 → 安装全部十四层 → 最后插入贯穿螺杆。M3 螺丝用于壳体盖板、透明盖板与磁铁壳体，M6 用于层间连接。材料清单包含 14 类物料（含可复用临时卡扣工装），每项列出材料及配图，包括 N52 钕铁硼磁铁、L 型角码、铝型材连接螺栓和 T 型槽螺母。模型下载只提供最终的 Final_1.3mf–Final_4.3mf；旧 STEP 和打印文件的网页发布副本已撤下，现有装配场景保留原 CAD 来源记录与 GLB。七份 MATLAB 程序原样保留，教学下载入口标为待更新。
+当前装配流程为先分别完成两个半圆，再合并整层、固定左右支撑、装入框架并安装十四层，最后装入两组螺杆与隔块；第 11 步梳状定位器等待设计文件。M3 螺丝用于壳体盖板、透明盖板与磁铁壳体，M6 用于层间连接。材料清单包含 14 类物料（含可复用临时卡扣工装），每项列出材料及配图，包括 N52 钕铁硼磁铁、L 型角码、铝型材连接螺栓和 T 型槽螺母。模型下载只提供最终的 Final_1.3mf–Final_4.3mf；旧 STEP 和打印文件的网页发布副本已撤下，现有装配场景保留原 CAD 来源记录与 GLB。七份 MATLAB 程序原样保留，教学下载入口标为待更新。
 
-The final three stages are: mount in the frame → mount all fourteen layers → insert through-rods last. M3 screws secure the housing cap, clear cover and magnet housing; M6 is used between layers. The 14-category BOM, including the reusable temporary clip, includes material descriptions and images, N52 grade NdFeB magnets, L-brackets, extrusion mounting bolts and T-slot nuts. Model downloads contain only Final_1.3mf–Final_4.3mf. Old STEP and print download copies have been withdrawn; the existing lesson retains its CAD provenance and GLB geometry. All seven MATLAB programs remain unchanged; their teaching download entry is pending update.
+The eleven-stage process first completes two retained semicircles, then joins each layer, fits its side supports, mounts all fourteen layers, and inserts two rod banks with spacers. The final comb-alignment stage awaits its design files. M3 screws secure the housing cap, clear cover and magnet housing; M6 is used between layers. The 14-category BOM, including the reusable temporary clip, includes material descriptions and images, N52 grade NdFeB magnets, L-brackets, extrusion mounting bolts and T-slot nuts. Model downloads contain only Final_1.3mf–Final_4.3mf. Old STEP and print download copies have been withdrawn; the existing lesson retains its CAD provenance and GLB geometry. All seven MATLAB programs remain unchanged; their teaching download entry is pending update.
 
 | 最终文件 / Final file | 预计打印时间 / Estimated print time |
 | --- | --- |
@@ -20,7 +20,7 @@ The final three stages are: mount in the frame → mount all fourteen layers →
 
 Estimates were supplied by the user. The four files form the complete print package; no per-file BOM allocation has been inferred. Download cleanup does not alter the original engineering directory.
 
-每台最新确认的物料数量：分段磁铁壳体、壳体盖板、透明盖板各 56 件（4 × 14）；框架安装支撑 42 件（左右 28 件，底部 14 件）；圆柱层间隔块 32 件（4 × 8）；贯穿螺杆 8 根；M3 短螺丝 448 个（32 × 14）；M6 螺母 8 个。L 型角码、铝型材框架、T 型槽螺母和型材连接螺栓由官方提供。新隔块 STEP 的名义尺寸为长 18 mm、外径 14 mm、通孔 6.2 mm，实际配合公差与安装位置仍需核对。
+每台最新确认的物料数量：分段磁铁壳体、壳体盖板、透明盖板各 56 件（4 × 14）；框架安装支撑 42 件（左右 28 件，底部 14 件）；圆柱层间隔块 32 件（4 × 8）；贯穿螺杆 8 根；M3 短螺丝 448 个（32 × 14）；M6 螺母 8 个。L 型角码 20 个、铝型材框架 1 套、T 型槽螺母 112 个和型材连接螺栓 112 个由官方提供。M3 螺丝、M6 螺杆与 M6 螺母为黄铜；透明盖板厚 2 mm，孔位 DXF 尚未完成。前五层与后五层分别使用 4 根螺杆。新隔块 STEP 的名义尺寸为长 18 mm、外径 14 mm、通孔 6.2 mm，实际配合公差与安装位置仍需核对。
 
 Confirmed quantities per unit: 56 segmented magnet housings, 56 housing caps and 56 clear covers (4 × 14 each); 42 frame supports (28 side, 14 bottom); 32 cylindrical inter-layer spacers (4 × 8); 8 through-rods; 448 M3 short screws (32 × 14); and 8 M6 nuts. L-brackets, the aluminium frame, T-slot nuts and extrusion mounting bolts are supplied by the organizers. The new spacer STEP defines an 18 mm length, 14 mm outer diameter and 6.2 mm through-hole; verify actual tolerances and installed locations separately.
 
@@ -247,3 +247,5 @@ Web source is at the root; MATLAB programs are in `matlab/`. Geometries and Br a
 图上的磁化箭头显示 MATLAB 初始方向；方向编辑保持尺寸和位置不变。图片是名义磁铁几何，不含槽加工余量、公差、胶层和隔墙设计。旧方案有独立尺寸，因此不显示本新版尺寸图。资产在 `public/diagrams/mri-14-layer-edge-dimensions-{zh,en}.{svg,png}`。
 
 The new configuration includes a bilingual surface-dimension diagram below the workbench. The language switch also changes the drawing and its full-size / PNG / SVG links. Labels show radial face positions, face-to-face gaps, and axial end-face coordinates. The 12 mm cubes repeat in 28 columns across 14 axial layers, totaling 1,736 magnets; adjacent axial faces are 26 mm apart and the overall axial extent is 506 mm. Zero radial gaps mean touching faces. Arrows show the initial MATLAB orientations; direction edits do not move or resize magnets. Slot clearance, tolerances and separating walls are not specified. This diagram is not shown for the original configuration.
+
+当前装配流程与确认参数 / Current process and confirmed inputs: [2026-10-23 assembly update](docs/assembly-process-2026-10-23.md).

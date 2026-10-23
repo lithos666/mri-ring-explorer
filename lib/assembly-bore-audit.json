@@ -1,0 +1,540 @@
+{
+  "schemaVersion": 1,
+  "unit": "millimeter",
+  "method": "OCCT BREP cylindrical wall vertices, fitted per face after the registered rigid source transform. Source hashes were checked against the registered assembly manifest; R05/R06 use matching archived source exports.",
+  "nominalBoreDiameterMM": 6.2,
+  "layers": [
+    {
+      "ring": 1,
+      "sourceSha256": "d0a86bf24abe04a85b0d784a50786107f66a1c8c027de64910977ec37f267f26",
+      "axes": [
+        {
+          "x": 29.980180021781212,
+          "y": -131.35175102765214,
+          "radius": 3.0999999999999828,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 4.6629367034256575e-14
+        },
+        {
+          "x": 131.35175102765226,
+          "y": 29.980180021781056,
+          "radius": 3.0999999999998944,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 3.019806626980426e-13
+        },
+        {
+          "x": -29.980180021781518,
+          "y": 131.35175102765209,
+          "radius": 3.1000000000002172,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 4.4142467459096224e-13
+        },
+        {
+          "x": -131.35175102765203,
+          "y": -29.98018002178144,
+          "radius": 3.099999999999866,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 3.2862601528904634e-13
+        }
+      ]
+    },
+    {
+      "ring": 2,
+      "sourceSha256": "5922ad66a6a37b3182cd92b72c2a76573b44859971153a907f997ca3045de363",
+      "axes": [
+        {
+          "x": -105.33592581311594,
+          "y": 84.00259772925136,
+          "radius": 3.1000000000001586,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 9.037215420448774e-13
+        },
+        {
+          "x": -84.00259772925135,
+          "y": -105.3359258131159,
+          "radius": 3.100000000000179,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 4.0900616227190767e-13
+        },
+        {
+          "x": 105.3359258131164,
+          "y": -84.00259772925196,
+          "radius": 3.0999999999993695,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.3358203432289883e-12
+        },
+        {
+          "x": 84.00259772925138,
+          "y": 105.33592581311613,
+          "radius": 3.1000000000001657,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 5.129230373768223e-13
+        }
+      ]
+    },
+    {
+      "ring": 3,
+      "sourceSha256": "3d67597de621e25fcc04aa24a82f70eb195451ca35cc33aee19984d0f28f4f21",
+      "axes": [
+        {
+          "x": -105.33592581311625,
+          "y": 84.00259772925124,
+          "radius": 3.1000000000002728,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 5.728750807065808e-13
+        },
+        {
+          "x": -84.00259772925135,
+          "y": -105.33592581311629,
+          "radius": 3.0999999999999397,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 3.468336728928989e-13
+        },
+        {
+          "x": 105.33592581311578,
+          "y": -84.00259772925146,
+          "radius": 3.100000000000105,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 5.31574784190525e-13
+        },
+        {
+          "x": 84.00259772925138,
+          "y": 105.33592581311613,
+          "radius": 3.1000000000000996,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 9.316991622654314e-13
+        }
+      ]
+    },
+    {
+      "ring": 4,
+      "sourceSha256": "f43b8a952009dd9062bfc0c3b86b12fa4287af37d5d5c97781c457bc751b0f37",
+      "axes": [
+        {
+          "x": -105.335925813116,
+          "y": 84.00259772925074,
+          "radius": 3.099999999999716,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.6227019727921288e-12
+        },
+        {
+          "x": -84.00259772925148,
+          "y": -105.33592581311636,
+          "radius": 3.099999999999907,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 5.373479439185758e-13
+        },
+        {
+          "x": 105.3359258131159,
+          "y": -84.00259772925135,
+          "radius": 3.100000000000149,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 4.813927034774679e-13
+        },
+        {
+          "x": 84.00259772925138,
+          "y": 105.33592581311613,
+          "radius": 3.100000000000146,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 3.9168668308775523e-13
+        }
+      ]
+    },
+    {
+      "ring": 5,
+      "sourceSha256": "e2ba6cb82f7c8c1f39878636133a68418a6658cbc13dcc043fdf81938cecdd61",
+      "axes": [
+        {
+          "x": -105.33592581311576,
+          "y": 84.00259772925062,
+          "radius": 3.0999999999994694,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.2669865157022286e-12
+        },
+        {
+          "x": -84.00259772925106,
+          "y": -105.33592581311595,
+          "radius": 3.0999999999999455,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 4.143352327901084e-13
+        },
+        {
+          "x": 105.33592581311653,
+          "y": -84.00259772925146,
+          "radius": 3.0999999999996257,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 8.899547765395255e-13
+        },
+        {
+          "x": 84.00259772925075,
+          "y": 105.3359258131162,
+          "radius": 3.1000000000005774,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.318944953254686e-12
+        }
+      ]
+    },
+    {
+      "ring": 6,
+      "sourceSha256": "53f6a1fc9d7e125e506ee66e433be684eef395223bf4b09d77540046c869d67a",
+      "axes": [
+        {
+          "x": -105.33592581311669,
+          "y": 84.00259772925061,
+          "radius": 3.1000000000000725,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 9.809930645587883e-13
+        },
+        {
+          "x": -84.00259772925108,
+          "y": -105.33592581311616,
+          "radius": 3.099999999999857,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 5.861977570020827e-13
+        },
+        {
+          "x": 105.33592581311616,
+          "y": -84.00259772925185,
+          "radius": 3.099999999999625,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 9.36584143573782e-13
+        },
+        {
+          "x": 84.00259772925114,
+          "y": 105.33592581311582,
+          "radius": 3.100000000000094,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.1572964808692632e-12
+        }
+      ]
+    },
+    {
+      "ring": 7,
+      "sourceSha256": "2db292174723da920f32aee38500fed4e0fcfb05669ee2f2c19794e51a6b3934",
+      "axes": [
+        {
+          "x": -105.33592581311555,
+          "y": 84.002597729251,
+          "radius": 3.099999999999615,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.0262901639634947e-12
+        },
+        {
+          "x": -84.00259772925071,
+          "y": -105.33592581311598,
+          "radius": 3.0999999999996675,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.056488230233299e-12
+        },
+        {
+          "x": 105.33592581311609,
+          "y": -84.0025977292517,
+          "radius": 3.099999999999718,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 6.559197629485425e-13
+        },
+        {
+          "x": 84.00259772925126,
+          "y": 105.33592581311589,
+          "radius": 3.1000000000001044,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 8.784084570834239e-13
+        }
+      ]
+    },
+    {
+      "ring": 8,
+      "sourceSha256": "2db292174723da920f32aee38500fed4e0fcfb05669ee2f2c19794e51a6b3934",
+      "axes": [
+        {
+          "x": -105.33592581311555,
+          "y": 84.002597729251,
+          "radius": 3.099999999999615,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.0262901639634947e-12
+        },
+        {
+          "x": -84.00259772925071,
+          "y": -105.33592581311598,
+          "radius": 3.0999999999996675,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.056488230233299e-12
+        },
+        {
+          "x": 105.33592581311609,
+          "y": -84.0025977292517,
+          "radius": 3.099999999999718,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 6.559197629485425e-13
+        },
+        {
+          "x": 84.00259772925126,
+          "y": 105.33592581311589,
+          "radius": 3.1000000000001044,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 8.784084570834239e-13
+        }
+      ]
+    },
+    {
+      "ring": 9,
+      "sourceSha256": "53f6a1fc9d7e125e506ee66e433be684eef395223bf4b09d77540046c869d67a",
+      "axes": [
+        {
+          "x": -105.33592581311669,
+          "y": 84.00259772925061,
+          "radius": 3.1000000000000725,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 9.809930645587883e-13
+        },
+        {
+          "x": -84.00259772925108,
+          "y": -105.33592581311616,
+          "radius": 3.099999999999857,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 5.861977570020827e-13
+        },
+        {
+          "x": 105.33592581311616,
+          "y": -84.00259772925185,
+          "radius": 3.099999999999625,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 9.36584143573782e-13
+        },
+        {
+          "x": 84.00259772925114,
+          "y": 105.33592581311582,
+          "radius": 3.100000000000094,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.1572964808692632e-12
+        }
+      ]
+    },
+    {
+      "ring": 10,
+      "sourceSha256": "e2ba6cb82f7c8c1f39878636133a68418a6658cbc13dcc043fdf81938cecdd61",
+      "axes": [
+        {
+          "x": -105.33592581311576,
+          "y": 84.00259772925062,
+          "radius": 3.0999999999994694,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.2669865157022286e-12
+        },
+        {
+          "x": -84.00259772925106,
+          "y": -105.33592581311595,
+          "radius": 3.0999999999999455,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 4.143352327901084e-13
+        },
+        {
+          "x": 105.33592581311653,
+          "y": -84.00259772925146,
+          "radius": 3.0999999999996257,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 8.899547765395255e-13
+        },
+        {
+          "x": 84.00259772925075,
+          "y": 105.3359258131162,
+          "radius": 3.1000000000005774,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.318944953254686e-12
+        }
+      ]
+    },
+    {
+      "ring": 11,
+      "sourceSha256": "f43b8a952009dd9062bfc0c3b86b12fa4287af37d5d5c97781c457bc751b0f37",
+      "axes": [
+        {
+          "x": -105.335925813116,
+          "y": 84.00259772925074,
+          "radius": 3.099999999999716,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.6227019727921288e-12
+        },
+        {
+          "x": -84.00259772925148,
+          "y": -105.33592581311636,
+          "radius": 3.099999999999907,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 5.373479439185758e-13
+        },
+        {
+          "x": 105.3359258131159,
+          "y": -84.00259772925135,
+          "radius": 3.100000000000149,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 4.813927034774679e-13
+        },
+        {
+          "x": 84.00259772925138,
+          "y": 105.33592581311613,
+          "radius": 3.100000000000146,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 3.9168668308775523e-13
+        }
+      ]
+    },
+    {
+      "ring": 12,
+      "sourceSha256": "3d67597de621e25fcc04aa24a82f70eb195451ca35cc33aee19984d0f28f4f21",
+      "axes": [
+        {
+          "x": -105.33592581311625,
+          "y": 84.00259772925124,
+          "radius": 3.1000000000002728,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 5.728750807065808e-13
+        },
+        {
+          "x": -84.00259772925135,
+          "y": -105.33592581311629,
+          "radius": 3.0999999999999397,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 3.468336728928989e-13
+        },
+        {
+          "x": 105.33592581311578,
+          "y": -84.00259772925146,
+          "radius": 3.100000000000105,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 5.31574784190525e-13
+        },
+        {
+          "x": 84.00259772925138,
+          "y": 105.33592581311613,
+          "radius": 3.1000000000000996,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 9.316991622654314e-13
+        }
+      ]
+    },
+    {
+      "ring": 13,
+      "sourceSha256": "5922ad66a6a37b3182cd92b72c2a76573b44859971153a907f997ca3045de363",
+      "axes": [
+        {
+          "x": -105.33592581311594,
+          "y": 84.00259772925136,
+          "radius": 3.1000000000001586,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 9.037215420448774e-13
+        },
+        {
+          "x": -84.00259772925135,
+          "y": -105.3359258131159,
+          "radius": 3.100000000000179,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 4.0900616227190767e-13
+        },
+        {
+          "x": 105.3359258131164,
+          "y": -84.00259772925196,
+          "radius": 3.0999999999993695,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 1.3358203432289883e-12
+        },
+        {
+          "x": 84.00259772925138,
+          "y": 105.33592581311613,
+          "radius": 3.1000000000001657,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 5.129230373768223e-13
+        }
+      ]
+    },
+    {
+      "ring": 14,
+      "sourceSha256": "d0a86bf24abe04a85b0d784a50786107f66a1c8c027de64910977ec37f267f26",
+      "axes": [
+        {
+          "x": 29.980180021781212,
+          "y": -131.35175102765214,
+          "radius": 3.0999999999999828,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 4.6629367034256575e-14
+        },
+        {
+          "x": 131.35175102765226,
+          "y": 29.980180021781056,
+          "radius": 3.0999999999998944,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 3.019806626980426e-13
+        },
+        {
+          "x": -29.980180021781518,
+          "y": 131.35175102765209,
+          "radius": 3.1000000000002172,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 4.4142467459096224e-13
+        },
+        {
+          "x": -131.35175102765203,
+          "y": -29.98018002178144,
+          "radius": 3.099999999999866,
+          "baseFaces": 1,
+          "capFaces": 1,
+          "maxRadialResidualMM": 3.2862601528904634e-13
+        }
+      ]
+    }
+  ]
+}

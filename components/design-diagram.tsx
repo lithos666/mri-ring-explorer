@@ -37,10 +37,10 @@ export default function DesignDiagram({ring,selected,scope,mode,onMode,onSelect,
     <Button variant="ghost" aria-pressed={mode==="radial"} onClick={()=>onMode("radial")}>{t("径向","Radial")}</Button>
    </div>
   </div>
-  {mode==="radial"&&<div className="diagram-rings" role="group" aria-label={t("径向图磁环","Radial diagram ring")}>{model.rings.map(r=><Button key={r.id} variant="ghost" aria-pressed={ring===r.id} onClick={()=>onRing(r.id)}>{ringName(r.id)}</Button>)}</div>}
-  <p className="diagram-context">{mode==="section"?t("14 环 · A01 与对置列","14 rings · A01 and opposite column"):ringName(ring)+t(" · 从 R01 端看 · "," · Viewed from R01 · ")+model.repeats+t(" 列"," columns")}</p>
+  {mode==="radial"&&<div className="diagram-rings" role="group" aria-label={t("径向图磁层","Radial diagram layer")}>{model.rings.map(r=><Button key={r.id} variant="ghost" aria-pressed={ring===r.id} onClick={()=>onRing(r.id)}>{ringName(r.id)}</Button>)}</div>}
+  <p className="diagram-context">{mode==="section"?t("14 层 · A01 与对置列","14 layers · A01 and opposite column"):ringName(ring)+t(" · 从 R01 端看 · "," · Viewed from R01 · ")+model.repeats+t(" 列"," columns")}</p>
   <div className="diagram-canvas">
-   <svg data-testid="design-diagram" data-mode={mode} viewBox={box.join(" ")} aria-label={mode==="section"?t("可点选的 14 环轴向剖面","Selectable 14-ring longitudinal section"):t("可点选的磁环径向排布","Selectable radial magnet layout")}
+   <svg data-testid="design-diagram" data-mode={mode} viewBox={box.join(" ")} aria-label={mode==="section"?t("可点选的 14 层轴向剖面","Selectable 14-layer longitudinal section"):t("可点选的磁层径向排布","Selectable radial magnet layout")}
     style={{touchAction:panning?"none":"pan-y",cursor:panning?"grab":"default"}}
     onPointerDown={e=>{
      if(gesture.current){gesture.current.moved=true;suppress.current=true;return;}

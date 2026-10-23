@@ -33,10 +33,10 @@ export default function TileBoard({ring,selected,scope,onSelect,onMode}:Props){
     {Array.from({length:model.repeats},(_,i)=><option key={i} value={i+1}>A{String(i+1).padStart(2,"0")}{i===model.repeats/2?t(" · 对置"," · Opposite"):""}</option>)}
    </select></label>
   </div>
-  <div className="tile-ring-picker" role="group" aria-label={t("放大排布磁环","Enlarged layout ring")}>{model.rings.map(r=><Button key={r.id} variant="ghost" aria-pressed={r.id===ring} onClick={()=>chooseRing(r.id)}>{ringName(r.id)}</Button>)}</div>
+  <div className="tile-ring-picker" role="group" aria-label={t("放大排布磁层","Enlarged layout layer")}>{model.rings.map(r=><Button key={r.id} variant="ghost" aria-pressed={r.id===ring} onClick={()=>chooseRing(r.id)}>{ringName(r.id)}</Button>)}</div>
   <div className="tile-board" data-testid="tile-board">
    {model.rings.map(r=><div key={r.id} className="tile-ring-row" data-active={r.id===ring}>
-    <Button variant="ghost" className="tile-ring-label" aria-label={t("选择磁环 ","Select ring ")+ringName(r.id)} onClick={()=>chooseRing(r.id)}>{ringName(r.id)}</Button>
+    <Button variant="ghost" className="tile-ring-label" aria-label={t("选择磁层 ","Select layer ")+ringName(r.id)} onClick={()=>chooseRing(r.id)}>{ringName(r.id)}</Button>
     {r.directions.map((_,i)=>{
      const magnet=model.magnetById.get(ringName(r.id)+"-L"+(i+1)+"-A"+String(sector).padStart(2,"0"))!;
      const members=model.magnets.filter(m=>m.ring===r.id&&m.radial===i+1),mixed=members.some(m=>m.direction!==members[0].direction);

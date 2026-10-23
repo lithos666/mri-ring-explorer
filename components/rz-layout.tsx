@@ -47,6 +47,6 @@ export default function RZLayout({ring,selected,onSelect,twoSides=false}:Props){
  <text x={twoSides?(latest?-210:-276):-22} y="-225" fontSize="10" fill="#65707a">Z / {latest?"mm":t("示意","a.u.")}</text>
  <text x={twoSides?0:100} y="241" fontSize="11" fill="#65707a" textAnchor="middle">{twoSides?t("Z=0 参考面 · 显示实际列方向","Z=0 reference plane · Actual column directions"):(latest?t("R / mm · MATLAB 中心坐标","R / mm · MATLAB centers"):t("R / 示意单位","R / schematic units"))}</text>
  </svg>
- <p className="rz-caption">{twoSides?t("左右两侧属于同一圆环，不额外翻倍。","Both sides belong to the same ring; they are not counted twice."):t("每层圆周 "+model.repeats+" 列"+(model.repeatsConfirmed?"（已确认）":"（暂定）")+"；共 "+model.radialPositionCount+" 个径向位置。",model.repeats+" circumferential columns per layer ("+(model.repeatsConfirmed?"confirmed":"provisional")+"); "+model.radialPositionCount+" radial positions in total.")} {dimensionNote} {t("⊙：N 指向截面外；⊗：N 指向截面内。","⊙: N points out of the slice; ⊗: N points into it.")}</p>
+ <p className="rz-caption">{twoSides?t("左右两侧属于同一圆环，不额外翻倍。","Both sides belong to the same layer; they are not counted twice."):t("每层圆周 "+model.repeats+" 列"+(model.repeatsConfirmed?"（已确认）":"（暂定）")+"；共 "+model.radialPositionCount+" 个径向位置。",model.repeats+" circumferential columns per layer ("+(model.repeatsConfirmed?"confirmed":"provisional")+"); "+model.radialPositionCount+" radial positions in total.")} {dimensionNote} {t("⊙：N 指向截面外；⊗：N 指向截面内。","⊙: N points out of the slice; ⊗: N points into it.")}</p>
  </div>;
 }

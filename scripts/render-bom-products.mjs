@@ -24,6 +24,7 @@ const renderHTML = `<!doctype html><html><head><meta charset="utf-8"><style>html
 <script type="module">
 import * as THREE from 'three';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import {GLTFExporter} from 'three/addons/exporters/GLTFExporter.js';
 import {RoomEnvironment} from 'three/addons/environments/RoomEnvironment.js';
 import {ids as coreIds,buildPart as buildCore} from '/bom-scenes/teaching-parts.mjs';
 import {buildPart as buildHardware} from '/bom-scenes/hardware.mjs';
@@ -43,6 +44,10 @@ const rim=new THREE.DirectionalLight(0xffffff,1.25);rim.position.set(-3,2,-4);sc
 scene.add(new THREE.HemisphereLight(0xffffff,0xd8d8da,.16));
 const loadGLB=async url => (await new GLTFLoader().loadAsync(url)).scene;
 const result=await (coreIds.includes(id)?buildCore:buildHardware)(THREE,id,{loadGLB});
+// Export the exact native object before the studio's uniform display fitting.
+// PNG and isolated 3D therefore share geometry, pole colours and metal finish.
+const exported=await new GLTFExporter().parseAsync(result.object,{binary:true,onlyVisible:true});
+window.productGLB=Array.from(new Uint8Array(exported));
 const root=new THREE.Group();root.add(result.object);scene.add(root);root.updateMatrixWorld(true);
 const initialBox=new THREE.Box3().setFromObject(root),initialSize=initialBox.getSize(new THREE.Vector3());
 const scale=1/Math.max(initialSize.x,initialSize.y,initialSize.z);root.scale.setScalar(scale);root.updateMatrixWorld(true);
@@ -63,7 +68,7 @@ floor.rotation.x=-Math.PI/2;floor.position.y=-.0005;floor.receiveShadow=true;sce
 key.target.position.set(0,size.y*.25,0);scene.add(key.target);key.shadow.camera.updateProjectionMatrix();
 renderer.render(scene,camera);await new Promise(resolve=>requestAnimationFrame(()=>requestAnimationFrame(resolve)));renderer.render(scene,camera);
 let triangles=0,meshes=0;root.traverse(node=>{if(node.isMesh){meshes++;triangles+=(node.geometry.index?.count||node.geometry.attributes.position.count)/3;}});
-window.renderFacts={id,provenance:result.provenance,source:result.source||null,note:result.note||null,meshes,triangles,sourceDimensions:initialSize.toArray(),sourceURL:result.object.userData.sourceURL||null};
+window.renderFacts={id,provenance:result.provenance,source:result.source||null,note:result.note||null,meshes,triangles,sourceDimensions:initialSize.toArray(),sourceURL:result.object.userData.sourceURL||null,...(result.confirmedThicknessMM?{confirmedThicknessMM:result.confirmedThicknessMM}:{}),...(result.holeGeometryStatus?{holeGeometryStatus:result.holeGeometryStatus}:{})};
 document.body.dataset.ready='true';
 </script></body></html>`;
 const roots = { '/three/': path.join(project, 'node_modules/three'), '/bom-scenes/': path.join(project, 'scripts/bom-scenes'), '/assembly/': path.join(project, 'public/assembly') };
@@ -94,8 +99,10 @@ try {
     if(errors.length) throw new Error(errors.join('\n'));
     const filename=path.join(output,id+'.png');await page.locator('canvas').screenshot({path:filename});
     const facts=await page.evaluate(()=>window.renderFacts),bytes=fs.readFileSync(filename);
+    const modelBytes=Buffer.from(await page.evaluate(()=>window.productGLB));
+    fs.writeFileSync(path.join(output,id+'.glb'),modelBytes);
     const sourceURL=facts.sourceURL,sourceSha256=sourceURL?digest(fs.readFileSync(path.join(project,'public',sourceURL))):null;
-    assets.push({...facts,sourceSha256,url:'/bom/products/'+id+'.png',bytes:bytes.length,sha256:digest(bytes),width:960,height:624});
+    assets.push({...facts,sourceSha256,url:'/bom/products/'+id+'.png',bytes:bytes.length,sha256:digest(bytes),width:960,height:624,modelURL:'/bom/products/'+id+'.glb',modelBytes:modelBytes.length,modelSha256:digest(modelBytes)});
   }
 } finally {await browser?.close();await new Promise(resolve=>server.close(resolve));}
 assets.sort((a,b)=>allIds.indexOf(a.id)-allIds.indexOf(b.id));

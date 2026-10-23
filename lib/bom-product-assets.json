@@ -6,9 +6,9 @@
       "id": "magnet-cube",
       "provenance": "schematic",
       "source": null,
-      "note": "True 12 mm cube outer size; metallic surface and small highlight-catching edge treatment are illustrative. N/S orientation is provided by the interactive model, not invented surface markings.",
-      "meshes": 1,
-      "triangles": 1452,
+      "note": "True 12 mm cube outer size. Red indicates N and blue indicates S for teaching; these colours and edge treatment are not supplied-finish specifications.",
+      "meshes": 2,
+      "triangles": 1628,
       "sourceDimensions": [
         13.85720539171868,
         12,
@@ -17,10 +17,13 @@
       "sourceURL": null,
       "sourceSha256": null,
       "url": "/bom/products/magnet-cube.png",
-      "bytes": 27240,
-      "sha256": "b5a923c569379f30b03715447d5c582a33c36727bea0d6041b26a97fc565580e",
+      "bytes": 21305,
+      "sha256": "04e2c8c1e0a43473f2edd55f0ea071cdbbcd681a199897508ad6c19835cb384e",
       "width": 960,
-      "height": 624
+      "height": 624,
+      "modelURL": "/bom/products/magnet-cube.glb",
+      "modelBytes": 119208,
+      "modelSha256": "3357d585a18807125b34f3e8d97eddda3168a5800d36e3f2e8913ce6705da9a5"
     },
     {
       "id": "printed-ring",
@@ -66,21 +69,26 @@
       "id": "acrylic",
       "provenance": "schematic",
       "source": null,
-      "note": "Curved clear-cover illustration only. Independent source CAD, machining thickness and seating remain unconfirmed.",
+      "note": "Confirmed 2 mm clear-cover thickness. Curved outline remains illustrative: matching DXF and hole coordinates have not been provided, so no fastening holes are invented.",
       "meshes": 1,
       "triangles": 1284,
       "sourceDimensions": [
         282.84271240234375,
-        2.700000047683716,
+        2,
         118.6827163696289
       ],
       "sourceURL": null,
+      "confirmedThicknessMM": 2,
+      "holeGeometryStatus": "matching-dxf-not-provided",
       "sourceSha256": null,
       "url": "/bom/products/acrylic.png",
-      "bytes": 14393,
-      "sha256": "f482194fe9915fca28b94626dac1f4ee343c0544c2d3d0f2b62f3d1a6e311aa1",
+      "bytes": 14056,
+      "sha256": "143674b6b66c5b16e83cb452208512a85058fc7548a328dca02a160540b7ab9d",
       "width": 960,
-      "height": 624
+      "height": 624,
+      "modelURL": "/bom/products/acrylic.glb",
+      "modelBytes": 140940,
+      "modelSha256": "d329fe4134279a7a5c758744c477856b711d100e5feedb718d04aae41d508e2e"
     },
     {
       "id": "aluminum-frame",
@@ -117,10 +125,13 @@
       "sourceURL": null,
       "sourceSha256": null,
       "url": "/bom/products/through-rod.png",
-      "bytes": 92710,
-      "sha256": "e98942b3965ddc8cd78bff36f694f08f5745a180487c57015d4c4dd6176d0d0e",
+      "bytes": 99445,
+      "sha256": "babcc6c2f5e332df6627a4b351216951617c16f02f1429817b8cc1a04dc78b48",
       "width": 960,
-      "height": 624
+      "height": 624,
+      "modelURL": "/bom/products/through-rod.glb",
+      "modelBytes": 323240,
+      "modelSha256": "91b4126374e9dbf75e2f3c78658a0d51126e152d38af737c0d69aa961fead31a"
     },
     {
       "id": "short-screw",
@@ -137,10 +148,13 @@
       "sourceURL": null,
       "sourceSha256": null,
       "url": "/bom/products/short-screw.png",
-      "bytes": 102226,
-      "sha256": "3148752071939fcf03daaca307611b3986f64d2dbdac78ad75675d89123f7747",
+      "bytes": 112045,
+      "sha256": "5be3b158ee7ffbe4c7748403a0121422796fbc97d4c60253cf374275d6242d39",
       "width": 960,
-      "height": 624
+      "height": 624,
+      "modelURL": "/bom/products/short-screw.glb",
+      "modelBytes": 259420,
+      "modelSha256": "be6af47bb17b3c00a7342126a8cded0d5888875f4c054ccdee526c58311b800c"
     },
     {
       "id": "m6-nut",
@@ -157,10 +171,13 @@
       "sourceURL": null,
       "sourceSha256": null,
       "url": "/bom/products/m6-nut.png",
-      "bytes": 27837,
-      "sha256": "5cb522b9665bcad823ab67db9aef57daa0e6df44f1c40be7bf08ddf2deeb57eb",
+      "bytes": 28371,
+      "sha256": "99fb48fcf380452e29406ba81388035cfd7a2e871f5d9c005d939fa776027245",
       "width": 960,
-      "height": 624
+      "height": 624,
+      "modelURL": "/bom/products/m6-nut.glb",
+      "modelBytes": 156016,
+      "modelSha256": "02093f0cde509d83335600134ab81fa3f6334d64c7f56a3cb23e12efcb470e77"
     },
     {
       "id": "frame-l-bracket",

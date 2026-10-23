@@ -22,7 +22,7 @@ interface ViewerRuntime {
   dispose: () => void;
 }
 
-/** Isolated supplied STEP geometry. It has no installation transform. */
+/** Isolated source geometry; product illustrations preserve their native finish. */
 export default function BOMPartViewer({ modelURL, imageURL, label, sourceName, active = true }: BOMPartViewerProps) {
   const { t } = useLanguage();
   const host = useRef<HTMLDivElement>(null);
@@ -31,6 +31,7 @@ export default function BOMPartViewer({ modelURL, imageURL, label, sourceName, a
   activeRef.current = active;
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
+  const isProductIllustration = modelURL.startsWith("/bom/products/");
 
   useEffect(() => { runtime.current?.setActive(active); }, [active]);
   useEffect(() => {
@@ -45,7 +46,7 @@ export default function BOMPartViewer({ modelURL, imageURL, label, sourceName, a
     renderer.setClearColor(0xffffff);
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1;
+    renderer.toneMappingExposure = isProductIllustration ? .72 : 1;
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     renderer.domElement.tabIndex = 0;
@@ -69,8 +70,9 @@ export default function BOMPartViewer({ modelURL, imageURL, label, sourceName, a
     const room = new RoomEnvironment();
     const environment = pmrem.fromScene(room, 0.035);
     scene.environment = environment.texture;
+    if (isProductIllustration) scene.environmentIntensity = .7;
     room.dispose();
-    const key = new THREE.DirectionalLight(0xfff5e7, 3.2);
+    const key = new THREE.DirectionalLight(0xfff5e7, isProductIllustration ? 2.3 : 3.2);
     key.position.set(-2.4, 4.1, 3.2);
     key.castShadow = true;
     key.shadow.mapSize.set(1024, 1024);
@@ -80,9 +82,9 @@ export default function BOMPartViewer({ modelURL, imageURL, label, sourceName, a
     key.shadow.normalBias = 0.002;
     key.shadow.bias = -0.00005;
     scene.add(key);
-    const fill = new THREE.DirectionalLight(0xdceaff, 1.35);
+    const fill = new THREE.DirectionalLight(0xdceaff, isProductIllustration ? .55 : 1.35);
     fill.position.set(3, 1.4, -1); scene.add(fill);
-    scene.add(new THREE.HemisphereLight(0xffffff, 0xd9dde6, 0.5));
+    scene.add(new THREE.HemisphereLight(0xffffff, 0xd9dde6, isProductIllustration ? .16 : .5));
     const part = new THREE.Group();
     scene.add(part);
     const floor = new THREE.Mesh(new THREE.PlaneGeometry(20, 20), new THREE.ShadowMaterial({ color: 0x667383, opacity: 0.15 }));
@@ -152,8 +154,22 @@ export default function BOMPartViewer({ modelURL, imageURL, label, sourceName, a
       const originalMaterials = new Set<THREE.Material>();
       let meshCount = 0;
       loaded.scene.traverse(node => {
+        if (isProductIllustration && node instanceof THREE.LineSegments) {
+          cleanGeometry.add(node.geometry);
+          for (const material of Array.isArray(node.material) ? node.material : [node.material]) cleanMaterial.add(material);
+          return;
+        }
         if (!(node instanceof THREE.Mesh)) return;
         meshCount++;
+        if (isProductIllustration) {
+          // Product GLBs are exported from the same scene used for their PNGs.
+          // Keep the red N / blue S and brass material definitions intact.
+          node.castShadow = !(node.material instanceof THREE.MeshPhysicalMaterial && node.material.transmission > 0);
+          node.receiveShadow = node.castShadow;
+          cleanGeometry.add(node.geometry);
+          for (const material of Array.isArray(node.material) ? node.material : [node.material]) cleanMaterial.add(material);
+          return;
+        }
         for (const material of Array.isArray(node.material) ? node.material : [node.material]) originalMaterials.add(material);
         const surface = new THREE.MeshPhysicalMaterial({ color: 0xd4dae3, metalness: 0, roughness: 0.58, clearcoat: 0.08, clearcoatRoughness: 0.5 });
         node.material = surface; node.castShadow = true; node.receiveShadow = true;
@@ -186,14 +202,14 @@ export default function BOMPartViewer({ modelURL, imageURL, label, sourceName, a
     runtime.current = { setActive, reset: () => { fit(); render(); }, dispose };
     resize();
     return () => { dispose(); runtime.current = null; };
-  }, [modelURL]);
+  }, [modelURL, isProductIllustration]);
   useEffect(() => { host.current?.querySelector("canvas")?.setAttribute("aria-label", `${label}. ${t("拖动旋转，滚轮缩放，右键平移。", "Drag to rotate, scroll to zoom, right-drag to pan.")}`); }, [label, t, loading]);
 
   return <div className="bom-part-viewer" data-model-url={modelURL} data-active={active} data-source-name={sourceName}>
     <div ref={host} className="bom-part-viewer__canvas"/>
-    {loading && <div className="bom-part-viewer__status" role="status">{t("正在载入零件 CAD…", "Loading part CAD…")}</div>}
-    {error && <div className="bom-part-viewer__fallback"><img src={imageURL} alt={label}/><p>{t("此浏览器暂时无法显示 3D；仍可查看同一 CAD 的渲染图。", "3D is unavailable in this browser; the image shows the same CAD part.")}</p></div>}
+    {loading && <div className="bom-part-viewer__status" role="status">{t("正在载入零件模型…", "Loading part model…")}</div>}
+    {error && <div className="bom-part-viewer__fallback"><img src={imageURL} alt={label}/><p>{t("此浏览器暂时无法显示 3D；仍可查看同一零件的渲染图。", "3D is unavailable in this browser; the image shows the same part.")}</p></div>}
     <div className="bom-part-viewer__controls"><span>{t("拖动旋转 · 滚轮缩放 · 右键平移", "Drag to rotate · Scroll to zoom · Right-drag to pan")}</span><button onClick={() => runtime.current?.reset()} disabled={loading || error}><RotateCcw size={14}/>{t("复位", "Reset view")}</button></div>
-    <p className="bom-part-viewer__caption">{t("来自提供的 STEP", "From provided STEP")} · {sourceName}</p>
+    <p className="bom-part-viewer__caption">{isProductIllustration ? t("立体用途示意；以提供物料为准", "3D product illustration; check supplied parts") : t("来自提供的 STEP", "From provided STEP")} · {sourceName}</p>
   </div>;
 }

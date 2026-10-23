@@ -90,7 +90,7 @@ function ClinicalLab(){
  const [b0,setB0]=useState(.05),[g,setG]=useState(10),[bw,setBW]=useState(200),[ppm,setPPM]=useState(10),[slew,setSlew]=useState(50);
  const m=imagingMetrics(b0,g,bw,ppm,slew),shift=Math.min(75,m.shiftPixels*10);
  return <section className="clinical-lab"><div className="design-section-heading"><div><span className="eyebrow">PARAMETER LAB</span><h2>{t("从参数到图像","From parameters to images")}</h2></div><span className="evidence-tag">{t("理想公式演示","Idealized formula demonstration")}</span></div>
- <p>{t("这里的 T、mT/m 和 Hz 是独立的假设输入，不随所选磁环自动变化。保持其他条件不变，观察单个参数的影响。","The values in T, mT/m and Hz are independent hypothetical inputs and do not automatically follow the selected magnet array. Hold the other inputs constant to explore each parameter.")}</p>
+ <p>{t("这里的 T、mT/m 和 Hz 是独立的假设输入，不随所选磁层自动变化。保持其他条件不变，观察单个参数的影响。","The values in T, mT/m and Hz are independent hypothetical inputs and do not automatically follow the selected magnet array. Hold the other inputs constant to explore each parameter.")}</p>
  <div className="clinical-lab-grid"><div className="lab-inputs"><label className="lab-label">{t("假设主场 B₀","Assumed main field B₀")}</label><div className="b0-buttons">{[.05,.55,1.5,3].map(v=><Button key={v} aria-pressed={v===b0} variant="outline" onClick={()=>setB0(v)}>{v} T</Button>)}</div>
  <Setting label={t("读出梯度 G","Readout gradient G")} value={g} min={5} max={50} step={5} unit="mT/m" onChange={setG}/>
  <Setting label={t("接收带宽 / 像素","Receiver bandwidth / pixel")} value={bw} min={100} max={1000} step={50} unit="Hz/px" onChange={setBW}/>
