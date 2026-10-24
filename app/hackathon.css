@@ -99,7 +99,8 @@
  .hack-portal[data-section=lab] .hack-main{padding-top:12px}
  .hack-assembly{grid-template-columns:156px minmax(0,1fr) 260px;gap:12px}
  .hack-assembly.sidebar-closed{grid-template-columns:minmax(0,1fr) 260px}
- .hack-assembly-center>.assembly-stage{height:calc(100dvh - 235px);min-height:380px;max-height:860px;overflow:visible}
+ .hack-assembly-center>.assembly-stage{height:auto;min-height:max(380px,calc(100dvh - 235px));max-height:none;overflow:visible}
+ .hack-assembly-center .assembly-stage__canvas>canvas{position:absolute;inset:0}
  .hack-assembly-center .assembly-stage__toolbar{top:-45px;left:auto;right:10px;gap:6px}
  .hack-assembly-center .assembly-stage__views{box-shadow:none;border:0;padding:2px;background:#f5f6f8}
  .hack-assembly-center .assembly-stage__phase{display:none}
@@ -114,7 +115,7 @@
 }
 @media(min-width:900px) and (max-width:1080px){
  .hack-assembly,.hack-assembly.sidebar-closed{grid-template-columns:minmax(0,1fr) 240px}
- .hack-assembly-center>.assembly-stage{height:calc(100dvh - 280px)}
+ .hack-assembly-center>.assembly-stage{min-height:max(380px,calc(100dvh - 280px))}
  .hack-assembly-center .assembly-stage__views button{font-size:11px;padding-left:7px;padding-right:7px}
  .hack-assembly-center .hack-ring-toolbar{padding-right:265px}
  .hack-physics-host .mri-workbench{grid-template-columns:minmax(0,1fr) 304px}
